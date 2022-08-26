@@ -9,14 +9,15 @@ const helmet = require('helmet');
 const saucesRoutes = require('./routes/sauces');*/
 require('dotenv').config(); // permet de cacher des variables
 
-mongoose.connect(process.env.MY_MONGO_DB_LINK, {
+mongoose
+  .connect(process.env.MY_MONGO_DB_LINK, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-app.use(express.json());//intercèpte les requêtes qui ont un content type json  et nous met à disposition le corps de la requête dans req.body
+app.use(express.json()); //intercèpte les requêtes qui ont un content type json  et nous met à disposition le corps de la requête dans req.body
 
 // obligatoire pour éviter les problèmes de CORS et permettre à l'application d'accéder au serveur , il faut préciser les autorisations
 app.use((req, res, next) => {
@@ -29,13 +30,13 @@ app.use((req, res, next) => {
   res.setHeader(
     'Access-Control-Allow-Methods',
     'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-  ); // authorise les méthodes 
+  ); // authorise les méthodes
   next();
 });
 
 app.use(bodyParser.json());
 
-//app.use(helmet()) // action par défaut pour la sécurité 
+//app.use(helmet()) // action par défaut pour la sécurité
 
 /* app.use('/images',express.static(path.join(__dirname, 'images')))//  requêtes vers le dossier local  '/images' , on utilise static pour servir le dossier image, on définit la route avec path.join en indiquant le nom du dossier
   app.use('/api/auth',userRoutes);
