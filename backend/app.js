@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const saucesRoutes = require('./routes/sauces');*/
 require('dotenv').config(); // permet de cacher des variables
 
-mongoose.connect('mongodb+srv://LaStrad:comedia1991@groupomaniadb.ksguq0n.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MY_MONGO_DB_LINK, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   res.setHeader(
     'Access-Control-Allow-Methods',
     'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-  ); // authorise les méthodes
+  ); // authorise les méthodes 
   next();
 });
 
