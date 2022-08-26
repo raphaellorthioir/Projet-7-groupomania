@@ -15,7 +15,7 @@ const normalizePort = (val) => {
 };
 const port = normalizePort(process.env.PORT || '3000'); // définit le port à utiliser 3000 par défaut ou un autre si l'environnement en utilise un autre
 
-app.set('port', port); // indique à express quel port écouter jj
+app.set('port', port); // indique à express quel port écouter j
 
 const errorHandler = (error) => {
   // fonction qui gère les erreurs
@@ -48,4 +48,4 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
-server.listen(port); // écoute du port 3000 par défaut 
+server.listen(port); // écoute du port 3000 par défaut
