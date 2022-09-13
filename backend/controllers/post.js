@@ -1,3 +1,4 @@
+const { updateOne, findOne } = require('../models/post');
 const Post = require('../models/post');
 const { path, request } = require('../app');
 const fs = require('fs');
@@ -6,7 +7,7 @@ exports.createPost = (req, res, next) => {
   delete postObject._id;
   const post = new Post({
     ...postObject,
-    date: Date.now(),
+    date: new Date,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${
       req.file.filename
     }`,
@@ -40,7 +41,8 @@ exports.updatePost = (req, res, next) => {
 
 exports.getAllPosts = (req, res, next) => {
   Post.find()
-    .then((posts) => res.status(200).json(post))
+    .sort({ date: -1 })
+    .exec((posts) => res.status(200).json(post))
     .catch((error) => res.status(400).json({ error }));
 };
 
@@ -68,4 +70,42 @@ exports.deletePost = (req, res, next) => {
   Post.deleteOne({ _id: req.params.id })
     .then(() => res.status(200).json({ message: 'Post supprimé' }))
     .catch((error) => res.status(400).json({ error }));
+};
+
+exports.likePost = (req, res, next) => {
+  Post.findOne({ _id: req.params.id }).then((post) => {
+    if (req.body.like == 1) {
+      if (!post.usersLiked.includes(req.body.userId)) {
+        post.usersLiked.push(req.body.userId);
+      }
+
+      Sauce.updateOne({ _id: req.params.id }, post)
+        .then(() => res.status(200).json({ message: 'Post likée!' }))
+        .catch((error) => res.status(400).json({ error }));
+    }
+
+    if (req.body.like == 0) {
+      if (post.usersDisliked.includes(req.body.userId)) {
+        post.usersDisliked.splice(
+          sauce.usersDisliked.indexOf(req.body.userId),
+          1
+        );
+      }
+      if (post.usersLiked.includes(req.body.userId)) {
+        post.usersLiked.splice(post.usersLiked.indexOf(req.body.userId), 1);
+      }
+      Post.updateOne({ _id: req.params.id }, post)
+        .then(() => res.status(200).json({ message: 'Post neutre!' }))
+        .catch((error) => res.status(400).json({ error }));
+    }
+
+    if (req.body.like == -1) {
+      if (!post.usersDisliked.includes(req.body.userId)) {
+        post.usersDisliked.push(req.body.userId);
+      }
+      Post.updateOne({ _id: req.params.id }, post)
+        .then(() => res.status(200).json({ message: 'Post dislikée!' }))
+        .catch((error) => res.status(400).json({ error }));
+    }
+  });
 };
