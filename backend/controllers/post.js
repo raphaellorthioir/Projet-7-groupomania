@@ -3,15 +3,19 @@ const Post = require('../models/post');
 const { path, request } = require('../app');
 const fs = require('fs');
 exports.createPost = (req, res, next) => {
-  const postObject = JSON.parse(req.body.post);
+  const postObject = req.body;
   delete postObject._id;
   const post = new Post({
     ...postObject,
-    date: new Date,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`,
+    date: new Date(),
+    usersLiked: [],
+    usersDisliked: [],
   });
+  if (req.file) {
+    post.imageUrl = `${req.protocol}://${req.get('host')}/images/${
+      req.file.filename
+    }`;
+  }
   post
     .save()
     .then(() => res.status(201).json({ message: 'Post créé' }))
@@ -19,15 +23,15 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-  if (req.body.userId !== req.auth.userId || req.body.isAdmin !== false) {
-    res.status(400).json({
-      error: new Error('unauthorized request !'),
+  if (req.body.userId !== req.auth.userId && !req.auth.isAdmin) {
+    return res.status(400).json({
+      error: 'unauthorized request !',
     });
   }
 
   const postObject = req.file
     ? {
-        ...JSON.parse(req.body.post),
+        ...req.body,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${
           req.file.filename
         }`,
@@ -42,7 +46,7 @@ exports.updatePost = (req, res, next) => {
 exports.getAllPosts = (req, res, next) => {
   Post.find()
     .sort({ date: -1 })
-    .exec((posts) => res.status(200).json(post))
+    .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(400).json({ error }));
 };
 
@@ -53,12 +57,12 @@ exports.deletePost = (req, res, next) => {
         error: new Error('No such Thing!'),
       });
     }
-    if (post.userId !== req.auth.userId && req.body.isAdmin === false) {
+    if (post.userId !== req.auth.userId && !req.auth.isAdmin) {
       res.status(400).json({
         error: new Error('Unauthorized request!'),
       });
     }
-    const pathImg = sauce.imageUrl.slice(29);
+    const pathImg = post.imageUrl.slice(29);
 
     fs.unlink(`./images/${pathImg}`, (err) => {
       //file removed

@@ -8,7 +8,6 @@ router.post('/', auth, multer, postCtrl.createPost);
 router.put('/:id', auth, multer, postCtrl.updatePost);
 router.post('/:id/like', auth, postCtrl.likePost);
 router.get('/', auth, postCtrl.getAllPosts);
-router.put('/:id', auth, multer, postCtrl.updatePost);
 router.delete('/:id', auth, multer, postCtrl.deletePost);
 
 module.exports = router;

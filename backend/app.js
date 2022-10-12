@@ -9,13 +9,14 @@ const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 require('dotenv').config(); // permet de cacher des variables
 
+// Mongodb connection
 mongoose
   .connect(process.env.MY_MONGO_DB_LINK, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+  .then(() => console.log('Connected to MongDB !'))
+  .catch(() => console.log('Failed to connect to MongoDB !'));
 
 app.use(express.json()); //intercèpte les requêtes qui ont un content type json  et nous met à disposition le corps de la requête dans req.body
 
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// routes
 app.use(bodyParser.json());
 
 //app.use(helmet()) // action par défaut pour la sécurité
