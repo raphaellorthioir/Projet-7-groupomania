@@ -8,4 +8,5 @@ router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.get('/:id', userCtrl.userInfo);
 router.put('/:id', userCtrl.updateUser);
+router.delete('/:id',userCtrl.deleteUser),
 module.exports = router;

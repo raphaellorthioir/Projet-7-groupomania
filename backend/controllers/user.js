@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt'); // package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, les # sont comparés lorsque le user envoie son mdp
 const jwt = require('jsonwebtoken');
+const { restart } = require('nodemon');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 exports.signup = (req, res, next) => {
   console.log('création en cours');
@@ -80,7 +81,7 @@ exports.updateUser = (req, res) => {
       { _id: req.params.id },
       {
         $set: {
-          bio: req.body.bio, 
+          bio: req.body.bio,
         },
       },
       { new: true, upsert: true, setDefaultOnInsert: true },
@@ -92,4 +93,15 @@ exports.updateUser = (req, res) => {
   } catch (err) {
     return res.status(500).json({ message: err });
   }
+};
+
+exports.deleteUser = (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send('ID unknown :' + req.params.id);
+
+  User.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Successfully deleted' }))
+    .catch((error) =>
+      res.status(400).json({ error: 'unsuccessfully deleted' })
+    );
 };
