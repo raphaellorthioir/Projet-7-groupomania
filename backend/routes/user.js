@@ -6,5 +6,6 @@ const emailValidator = require('../middleware/emailValidator');
 
 router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.get('/:id',userCtrl.userInfo);
+router.get('/:id', userCtrl.userInfo);
+router.put('/:id', userCtrl.updateUser);
 module.exports = router;
