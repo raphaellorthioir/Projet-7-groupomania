@@ -20,6 +20,6 @@ module.exports = (req, res, next) => {
       next();
     }
   } catch (error) {
-    res.status(401).json({ error: new Error(' unauthorized request') });
+    res.status(401).json({ error: 'unauthorized request , token is missing' });
   }
 };

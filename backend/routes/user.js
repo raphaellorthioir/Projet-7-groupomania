@@ -9,7 +9,7 @@ router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
 
 router.get('/:id', auth, userCtrl.userInfo);
-router.put('/updateUserInfo/:id', auth, emailValidator, userCtrl.updateUser);
+router.put('/updateUserProfil/:id', auth, emailValidator, userCtrl.updateUser);
 router.put(
   '/changePassword/:id',
   auth,

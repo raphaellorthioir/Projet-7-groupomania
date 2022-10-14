@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { restart } = require('nodemon');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 exports.signup = (req, res, next) => {
-  console.log('création en cours');
   bcrypt
     .hash(
       req.body.password,
@@ -21,9 +20,11 @@ exports.signup = (req, res, next) => {
         .save() /* méthode pour enregistrer la requête dans la BD */
         /* toujours renvoyer un code de succés ou d'erreur pour faciliter le débugage */
         .then(() =>
-          res.status(201).json({ message: 'Utilisateur créé !' })
+          res.status(201).json({ message: 'User created !', user })
         ) /* code 201 = création de ressource réussie */
-        .catch((error) => res.status(400).json({ error }));
+        .catch((error) =>
+          res.status(400).json({ message: 'email already exists', error })
+        );
       /* code 400 erreur lors de la requête : syntaxe invalide*/
     })
     .catch((error) => res.status(500).json({ error }));
@@ -60,43 +61,42 @@ exports.login = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-exports.logout = (req, res, next) => {};
-exports.userInfo = (req, res) => {
-  console.log(req.params);
-
+exports.userInfo = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
 
   User.findById(req.params.id, (err, docs) => {
-    if (!err) res.send(docs);
+    if (!err) res.send({ message: "user's profil access granted ", docs });
     else console.log('ID unknown :' + err);
-  }).select('-password'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir
+  }).select(' -_id -password -email'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
 };
 
-exports.updateUser = (req, res) => {
+exports.updateUser = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
-
-  try {
-    User.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: {
-          email: req.body.email,
-          pseudo: req.body.pseudo,
-          bio: req.body.bio,
+  if (req.auth.userId === req.params.id) {
+    console.log(req.auth, req.params);
+    try {
+      User.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          $set: {
+            email: req.body.email,
+            pseudo: req.body.pseudo,
+            bio: req.body.bio,
+          },
         },
-      },
 
-      //console.log(req.body.password),
-      { new: true, upsert: true, setDefaultOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: 'erreur' });
-      }
-    );
-  } catch (err) {
-    return res.status(500).json({ message: 'erreur' });
+        //console.log(req.body.password),
+        { new: true, upsert: true, setDefaultOnInsert: true },
+        (err, docs) => {
+          if (!err) return res.send(docs);
+          if (err) return res.status(500).send({ message: 'erreur' });
+        }
+      );
+    } catch (err) {
+      return res.status(500).json({ message: 'erreur' });
+    }
   }
 };
 exports.updatePassword = (req, res, next) => {
@@ -133,12 +133,15 @@ exports.updatePassword = (req, res, next) => {
 exports.deleteUser = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
+  if (req.auth.userId === req.params.id || req.auth.isAdmin === true) {
+    
+    User.deleteOne({ _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'Successfully deleted' }))
 
-  User.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Successfully deleted' }))
-    .catch((error) =>
-      res.status(400).json({ error: 'unsuccessfully deleted' })
-    );
+      .catch((error) =>
+        res.status(400).json({ error: 'unsuccessfully deleted' })
+      );
+  }
 };
 
 // follow  and unfollow system
