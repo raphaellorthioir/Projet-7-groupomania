@@ -60,6 +60,7 @@ exports.login = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
+exports.logout = (req, res, next) => {};
 exports.userInfo = (req, res) => {
   console.log(req.params);
 
@@ -81,17 +82,51 @@ exports.updateUser = (req, res) => {
       { _id: req.params.id },
       {
         $set: {
+          email: req.body.email,
+          pseudo: req.body.pseudo,
           bio: req.body.bio,
         },
       },
+
+      //console.log(req.body.password),
       { new: true, upsert: true, setDefaultOnInsert: true },
       (err, docs) => {
         if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
+        if (err) return res.status(500).send({ message: 'erreur' });
       }
     );
   } catch (err) {
-    return res.status(500).json({ message: err });
+    return res.status(500).json({ message: 'erreur' });
+  }
+};
+exports.updatePassword = (req, res, next) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send('ID unknown :' + req.params.id);
+
+  try {
+    bcrypt.hash(req.body.password, 10).then((hash) => {
+      User.findOneAndUpdate(
+        { _id: req.params.id },
+
+        {
+          $set: {
+            password: hash,
+          },
+        },
+
+        //console.log(req.body.password),
+        { new: true, upsert: true, setDefaultOnInsert: true },
+
+        (err, docs) => {
+          if (!err) return res.send(docs);
+          if (err) return res.status(500).send({ message: 'erreur' });
+        }
+      );
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: 'le changement ne peut pas se lancer' });
   }
 };
 
