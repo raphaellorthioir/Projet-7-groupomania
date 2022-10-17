@@ -22,8 +22,12 @@ module.exports = (req, res, next) => {
   if (passwordSchema.validate(req.body.password)) {
     next();
   } else {
-    return res
-      .status(400)
-      .json(passwordSchema.validate(req.body.password, { details: true }));
+    return res.status(400).json({
+      globalMessage:
+        'Format du mot de passe incorrect. Veuillez suivre les indications',
+      passwordErrorList: passwordSchema.validate(req.body.password, {
+        details: true,
+      }),
+    });
   }
 };
