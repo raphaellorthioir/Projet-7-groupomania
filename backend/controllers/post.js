@@ -1,13 +1,14 @@
 const { updateOne, findOne } = require('../models/post');
 const Post = require('../models/post');
+const userModel = require('../models/user');
 const { path, request } = require('../app');
+const ObjectID = require('mongoose').Types.ObjectId;
 const fs = require('fs');
 exports.createPost = (req, res, next) => {
   const postObject = req.body;
   delete postObject._id;
   const post = new Post({
     ...postObject,
-    date: new Date(),
     usersLiked: [],
     usersDisliked: [],
   });
@@ -23,7 +24,10 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-  if (req.body.userId !== req.auth.userId && !req.auth.isAdmin) {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send('ID unknown :' + req.params.id);
+
+  if (req.body.userId !== req.auth.userId) {
     return res.status(400).json({
       error: 'unauthorized request !',
     });
@@ -51,6 +55,8 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send('ID unknown :' + req.params.id);
   Post.findOne({ _id: req.params.id }).then((post) => {
     if (!post) {
       res.status(404).json({
