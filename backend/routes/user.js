@@ -16,8 +16,8 @@ router.put(
   passwordValidator,
   userCtrl.updatePassword
 );
-router.delete('/:id', auth, userCtrl.deleteUser);
-router.patch('/follow/:id', userCtrl.follow);
-router.patch('/unfollow/:id', userCtrl.unfollow);
+router.delete('/deleteUserAccount/:id', auth, userCtrl.deleteUser);
+router.patch('/follow/:id', auth, userCtrl.follow);
+router.patch('/unfollow/:id', auth, userCtrl.unfollow);
 
 module.exports = router;

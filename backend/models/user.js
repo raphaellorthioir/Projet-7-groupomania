@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema(
       trim: true,
       unique: true,
     },
-    password: { type: String, required: true },
+    password: { type: String, required: true, minlength: 8, max: 30 },
     profilPicture: {
       type: String,
       default: './uploads/profil/random-user.png',

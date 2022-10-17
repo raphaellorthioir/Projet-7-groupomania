@@ -5,15 +5,15 @@ var passwordSchema = new passwordValidator();
 
 passwordSchema
   .is()
-  .min(8) // Minimum length 8
+  .min(8, 'Le mot de passe doit être composé de 8 caractères au minimum') // Minimum length 8
   .is()
-  .max(15) // Maximum length 100
+  .max(30) // Maximum length 30
   .has()
-  .uppercase(1) // Must have uppercase letters
+  .uppercase(1, 'Une majuscule obligatoire') // Must have uppercase letters
   .has()
   .lowercase() // Must have lowercase letters
   .has()
-  .digits(2) // Must have at least 2 digits
+  .digits(2, 'Doit contenir au moins deux chiffres') // Must have at least 2 digits
   .has()
   .not()
   .spaces(); // Should not have spaces
@@ -24,11 +24,6 @@ module.exports = (req, res, next) => {
   } else {
     return res
       .status(400)
-      .json({
-        error: `Le mot de passe n'est pas assez fort ${passwordSchema.validate(
-          'req.body.password',
-          { list: true }
-        )}`,
-      });
+      .json(passwordSchema.validate(req.body.password, { details: true }));
   }
 };

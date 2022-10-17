@@ -134,7 +134,6 @@ exports.deleteUser = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
   if (req.auth.userId === req.params.id || req.auth.isAdmin === true) {
-    
     User.deleteOne({ _id: req.params.id })
       .then(() => res.status(200).json({ message: 'Successfully deleted' }))
 
@@ -170,7 +169,7 @@ exports.follow = (req, res) => {
       { $addToSet: { followers: req.params.id } },
       { new: true, upsert: true },
       (err, docs) => {
-        //if (!err) res.status(201).json(docs);
+        // if (!err) res.send(docs);
         if (err) return res.status(400).json(err);
       }
     );

@@ -7,6 +7,7 @@ module.exports = app; // export de la constante pour y accéder depuis les autre
 const helmet = require('helmet');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
+const auth = require('./middleware/auth');
 require('dotenv').config(); // permet de cacher des variables
 
 // Mongodb connection
@@ -38,6 +39,10 @@ app.use((req, res, next) => {
 // routes
 app.use(bodyParser.json());
 
+// check jwt for all routes
+
+//app.get('*',auth)
+//app.get('/checkUserToken',userRoutes)
 //app.use(helmet()) // action par défaut pour la sécurité
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); //  requêtes vers le dossier local  '/images' , on utilise static pour servir le dossier image, on définit la route avec path.join en indiquant le nom du dossier
