@@ -4,6 +4,7 @@ const userModel = require('../models/user');
 const { path, request } = require('../app');
 const ObjectID = require('mongoose').Types.ObjectId;
 const fs = require('fs');
+const { isBuffer } = require('util');
 exports.createPost = (req, res, next) => {
   const postObject = req.body;
   delete postObject._id;
@@ -19,7 +20,7 @@ exports.createPost = (req, res, next) => {
   }
   post
     .save()
-    .then(() => res.status(201).json({ message: 'Post créé' }))
+    .then(() => res.status(201).json({ message: 'Post créé', post }))
     .catch((error) => res.status(400).json({ error }));
 };
 
@@ -57,30 +58,48 @@ exports.getAllPosts = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
+
   Post.findOne({ _id: req.params.id }).then((post) => {
     if (!post) {
       res.status(404).json({
-        error: new Error('No such Thing!'),
+        error: 'doesnt exist',
       });
     }
-    if (post.userId !== req.auth.userId && !req.auth.isAdmin) {
-      res.status(400).json({
-        error: new Error('Unauthorized request!'),
-      });
-    }
-    const pathImg = post.imageUrl.slice(29);
+    if (post.userdId === req.auth.userId || req.auth.isAdmin === true) {
+      Post.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Successfully deleted' }))
 
-    fs.unlink(`./images/${pathImg}`, (err) => {
-      //file removed
-      if (err) {
-        console.log('erreur');
-      }
-    });
+        .catch((error) =>
+          res.status(400).json({ error: 'unsuccessfully deleted' })
+        );
+      console.log(post);
+      console.log(req.auth);
+      console.log(req.auth.isAdmin);
+    } else {
+      res.status(400).json({
+        error: 'Unauthorized request!',
+      });
+      console.log(post);
+      console.log(req.auth);
+      console.log(req.auth.isAdmin);
+    }
   });
-  Post.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Post supprimé' }))
-    .catch((error) => res.status(400).json({ error }));
 };
+
+/*if (docs.imageUrl) {
+  const pathImg = docs.imageUrl.slice(29);
+
+  fs.unlink(`./images/${pathImg}`, (err) => {
+    //file removed
+    if (err) {
+      console.log('erreur');
+    }
+  });
+}*/
+
+/* Post.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Post supprimé' }))
+    .catch((error) => res.status(400).json({ error }));*/
 
 exports.likePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }).then((post) => {
