@@ -104,33 +104,46 @@ exports.deletePost = (req, res, next) => {
 exports.likePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }).then((post) => {
     if (req.body.like == 1) {
-      if (!post.usersLiked.includes(req.body.userId)) {
-        post.usersLiked.push(req.body.userId);
+      if (!post.usersLiked.includes(req.auth.userId)) {
+        post.usersLiked.push(req.auth.userId);
+        post.usersDisliked.splice(
+          post.usersDisliked.indexOf(req.auth.userId),
+          1
+        );
+      } else {
+        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
       }
 
-      Sauce.updateOne({ _id: req.params.id }, post)
+      Post.updateOne({ _id: req.params.id }, post)
         .then(() => res.status(200).json({ message: 'Post likée!' }))
         .catch((error) => res.status(400).json({ error }));
     }
 
+    /*
     if (req.body.like == 0) {
-      if (post.usersDisliked.includes(req.body.userId)) {
+      if (post.usersDisliked.includes(req.auth.userId)) {
         post.usersDisliked.splice(
-          sauce.usersDisliked.indexOf(req.body.userId),
+          post.usersDisliked.indexOf(req.auth.userId),
           1
         );
       }
-      if (post.usersLiked.includes(req.body.userId)) {
-        post.usersLiked.splice(post.usersLiked.indexOf(req.body.userId), 1);
+      if (post.usersLiked.includes(req.auth.userId)) {
+        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
       }
       Post.updateOne({ _id: req.params.id }, post)
         .then(() => res.status(200).json({ message: 'Post neutre!' }))
         .catch((error) => res.status(400).json({ error }));
-    }
+    }*/
 
     if (req.body.like == -1) {
-      if (!post.usersDisliked.includes(req.body.userId)) {
-        post.usersDisliked.push(req.body.userId);
+      if (!post.usersDisliked.includes(req.auth.userId)) {
+        post.usersDisliked.push(req.auth.userId);
+        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
+      } else {
+        post.usersDisliked.splice(
+          post.usersDisliked.indexOf(req.auth.userId),
+          1
+        );
       }
       Post.updateOne({ _id: req.params.id }, post)
         .then(() => res.status(200).json({ message: 'Post dislikée!' }))
