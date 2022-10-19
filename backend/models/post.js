@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-// comment Schema
-
 // Post schema
 const postSchema = mongoose.Schema(
   {

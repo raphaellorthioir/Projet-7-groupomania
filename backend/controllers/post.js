@@ -204,8 +204,6 @@ exports.commentPost = (req, res, next) => {
     .catch(() => {
       res.status(400).json({ message: 'erreur' });
     });
-
-  console.log(unPseudo);
 };
 
 exports.editComment = (req, res, next) => {};
