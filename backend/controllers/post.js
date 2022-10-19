@@ -6,6 +6,8 @@ const ObjectID = require('mongoose').Types.ObjectId;
 const fs = require('fs');
 const { isBuffer } = require('util');
 const { post } = require('../routes/user');
+const { timeStamp } = require('console');
+const user = require('../models/user');
 exports.createPost = (req, res, next) => {
   const postObject = req.body;
   delete postObject._id;
@@ -183,7 +185,28 @@ exports.likePost = (req, res, next) => {
 };
 
 // Comments
-exports.commentPost = (req, res, next) => {};
+exports.commentPost = (req, res, next) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send('ID unknown :' + req.params.id);
+
+  Post.findByIdAndUpdate(req.params.id, {
+    $push: {
+      comments: {
+        userId: req.auth.userId,
+        text: req.body.text,
+        timestamp: new Date().getTime(),
+      },
+    },
+  })
+    .then(() => {
+      res.status(200).json({ message: 'commentaire créé' });
+    })
+    .catch(() => {
+      res.status(400).json({ message: 'erreur' });
+    });
+
+  console.log(unPseudo);
+};
 
 exports.editComment = (req, res, next) => {};
 exports.deleteComment = (req, res, next) => {};

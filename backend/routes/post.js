@@ -13,6 +13,6 @@ router.delete('/:id', auth, multer, postCtrl.deletePost);
 // comments routes
 
 router.patch('/comment-post/:id', auth, postCtrl.commentPost);
-router.patch('/edit-comemnt/:id', postCtrl.editComment);
-router.patch('/delete-comment/:id', postCtrl.deleteComment);
+router.patch('/edit-comemnt/:id', auth, postCtrl.editComment);
+router.patch('/delete-comment/:id', auth, postCtrl.deleteComment);
 module.exports = router;
