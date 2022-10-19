@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+// comment Schema
+
+// Post schema
 const postSchema = mongoose.Schema(
   {
     userId: { type: String, required: true },
@@ -9,17 +12,15 @@ const postSchema = mongoose.Schema(
     video: { type: String },
     usersLiked: { type: Array, required: true, default: [] },
     usersDisliked: { type: Array, required: true, default: [] },
-    comments: {
-      type: [
-        {
-          commenterId: String,
-          commenterPseudo: String,
-          text: String,
-          timestamp: Number,
-        },
-      ],
-      required: true,
-    },
+    comments: [
+      {
+        userId: String,
+        userPseudo: String,
+        userImgProfil: String,
+        text: String,
+        timestamp: Number,
+      },
+    ],
   },
   {
     timestamps: true,
