@@ -1,15 +1,17 @@
-const { updateOne, findOne } = require('../models/post');
+const { updateOne, findOne, findById } = require('../models/post');
 const Post = require('../models/post');
 const userModel = require('../models/user');
 const { path, request } = require('../app');
 const ObjectID = require('mongoose').Types.ObjectId;
 const fs = require('fs');
 const { isBuffer } = require('util');
+const { post } = require('../routes/user');
 exports.createPost = (req, res, next) => {
   const postObject = req.body;
   delete postObject._id;
   const post = new Post({
     ...postObject,
+    userId: req.auth.userId,
     usersLiked: [],
     usersDisliked: [],
   });
@@ -115,7 +117,21 @@ exports.likePost = (req, res, next) => {
       }
 
       Post.updateOne({ _id: req.params.id }, post)
-        .then(() => res.status(200).json({ message: 'Post likée!' }))
+        .then(() => {
+          if (!post.usersLiked.includes(req.auth.userId)) {
+            return res.status(200).json({
+              message: 'Post like removed ',
+              usersLiked: post.usersLiked,
+              usersDislikes: post.usersDisliked,
+            });
+          } else {
+            return res.status(200).json({
+              message: 'Post liked ',
+              usersLiked: post.usersLiked,
+              usersDislikes: post.usersDisliked,
+            });
+          }
+        })
         .catch((error) => res.status(400).json({ error }));
     }
 
@@ -146,8 +162,28 @@ exports.likePost = (req, res, next) => {
         );
       }
       Post.updateOne({ _id: req.params.id }, post)
-        .then(() => res.status(200).json({ message: 'Post dislikée!' }))
+        .then(() => {
+          if (post.usersDisliked.includes(req.auth.userId)) {
+            return res.status(200).json({
+              message: 'undislike !',
+              usersLiked: post.usersLiked,
+              usersDislikes: post.usersDisliked,
+            });
+          } else {
+            return res.status(200).json({
+              message: 'undislike removed !',
+              usersLiked: post.usersLiked,
+              usersDislikes: post.usersDisliked,
+            });
+          }
+        })
         .catch((error) => res.status(400).json({ error }));
     }
   });
 };
+
+// Comments
+exports.commentPost = (req, res, next) => {};
+
+exports.editComment = (req, res, next) => {};
+exports.deleteComment = (req, res, next) => {};

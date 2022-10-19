@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const ObjectID = require('mongoose').Types.ObjectId;
 module.exports = (req, res, next) => {
   try {
     const token =
@@ -13,9 +13,10 @@ module.exports = (req, res, next) => {
     const userId = decodedToken.userId; /* vérifie l'userId encodé */
     const isAdmin = decodedToken.isAdmin;
     req.auth = { userId, isAdmin }; // crée un objet d'authentification contenant l'userId; = {userId} dans le cas où le nom du champ est le même que celui de la variable qu'on veut lui mettre
-    if (req.body.userId && req.body.userId !== userId) {
-      throw 'invalid user ID';
+    if (!ObjectID.isValid(req.auth.userId)) {
+      return res.status(400).send('ID unknown :' + req.params.id);
     }
+
     {
       next();
     }

@@ -146,27 +146,26 @@ exports.deleteUser = (req, res) => {
 // follow  and unfollow system
 exports.follow = (req, res) => {
   if (
-    !ObjectID.isValid(req.params.id) ||
-    !ObjectID.isValid(req.body.idToFollow)
+    !ObjectID.isValid(req.params.id,req.auth.userId) 
   )
     return res.status(400).send('ID unknown :' + req.params.id);
 
   try {
-    // add to the follower list
+    // add to following list
     User.findByIdAndUpdate(
-      req.params.id,
-      { $addToSet: { following: req.body.idToFollow } },
+      req.auth.userId,
+      { $addToSet: { following: req.params.id} },
       { new: true, upsert: true },
       (err, docs) => {
         if (!err) res.status(201).json(docs);
         else return res.status(400).json(err);
       }
     );
-    // add to following list
 
+    // add to the follower list
     User.findByIdAndUpdate(
-      req.body.idToFollow,
-      { $addToSet: { followers: req.params.id } },
+      req.params.id,
+      { $addToSet: { followers: req.auth.userId } },
       { new: true, upsert: true },
       (err, docs) => {
         // if (!err) res.send(docs);
@@ -180,15 +179,14 @@ exports.follow = (req, res) => {
 
 exports.unfollow = (req, res) => {
   if (
-    !ObjectID.isValid(req.params.id) ||
-    !ObjectID.isValid(req.body.idToUnfollow)
+    !ObjectID.isValid(req.params.id) 
   )
     return res.status(400).send('ID unknown :' + req.params.id);
 
   try {
     User.findByIdAndUpdate(
-      req.params.id,
-      { $pull: { following: req.body.idToUnfollow } },
+      req.auth.userId,
+      { $pull: { following: req.params.id } },
       { new: true, upsert: true },
 
       (err, docs) => {
@@ -198,8 +196,8 @@ exports.unfollow = (req, res) => {
     );
 
     User.findByIdAndUpdate(
-      req.body.idToUnfollow,
-      { $pull: { followers: req.params.id } },
+      req.params.id,
+      { $pull: { followers: req.auth.userId } },
       { new: true, upsert: true },
       (err, docs) => {
         //if (!err) res.status(201).json(docs);

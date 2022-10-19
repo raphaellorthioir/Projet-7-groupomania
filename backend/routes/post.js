@@ -10,4 +10,9 @@ router.post('/:id/like', auth, postCtrl.likePost);
 router.get('/', auth, postCtrl.getAllPosts);
 router.delete('/:id', auth, multer, postCtrl.deletePost);
 
+// comments routes
+
+router.patch('/comment-post/:id', auth, postCtrl.commentPost);
+router.patch('/edit-comemnt/:id', postCtrl.editComment);
+router.patch('/delete-comment/:id', postCtrl.deleteComment);
 module.exports = router;
