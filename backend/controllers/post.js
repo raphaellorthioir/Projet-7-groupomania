@@ -189,22 +189,97 @@ exports.commentPost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
 
-  Post.findByIdAndUpdate(req.params.id, {
-    $push: {
-      comments: {
-        userId: req.auth.userId,
-        text: req.body.text,
-        timestamp: new Date().getTime(),
+  userModel.findById(req.auth.userId, (err, user) => {
+    Post.findByIdAndUpdate(req.params.id, {
+      $push: {
+        comments: {
+          userId: req.auth.userId,
+          text: req.body.text,
+          userPseudo: user.pseudo,
+
+          timestamp: new Date().getTime(),
+        },
       },
-    },
-  })
-    .then(() => {
-      res.status(200).json({ message: 'commentaire créé' });
     })
-    .catch(() => {
-      res.status(400).json({ message: 'erreur' });
-    });
+      .then(() => {
+        res.status(200).json({ message: 'commentaire créé' });
+      })
+      .catch(() => {
+        res.status(400).json({ message: 'erreur' });
+      });
+  });
 };
 
-exports.editComment = (req, res, next) => {};
-exports.deleteComment = (req, res, next) => {};
+exports.editComment = (req, res, next) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send('ID unknown :' + req.params.id);
+
+  try {
+    Post.findById(req.params.id, (err, docs) => {
+      const theComment = docs.comments.find((comment) => {
+        if (req.auth.userId === comment.userId) {
+          return comment._id.equals(req.body.commentId);
+        }
+        res.status(401).json({ message: 'non authorized User', err });
+      });
+
+      if (!theComment) return res.status(404).send('comment not found');
+      theComment.text = req.body.text;
+
+      docs.save((err) => {
+        if (!err) return res.status(200).send(docs.comments);
+        return res.status(400).send(err);
+      });
+    });
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+};
+exports.deleteComment = (req, res, next) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send('ID unknown :' + req.params.id);
+  try {
+    Post.findById(
+      req.params.id,
+      /*  {
+        $pull: {
+          comments: { _id: req.body.commentId, userId: req.auth.userId },
+        },
+      },
+      { new: true },
+      (err, docs) => {
+        if (!err) return res.send({ message: 'comment deleted' });
+        else return res.status(400).send(err);
+      },*/
+      (err, docs) => {
+        /* if (
+            user.isAdmin === true ||
+            docs.comments.includes(`${req.auth.userId}`)
+          ) {
+            docs.comments.splice(
+              docs.comments.indexOf(`${req.body.commentId}`),
+              1
+            );
+          } else {
+            res.status(401).send({ message: ' non autorisé', err });
+          }*/
+        const theComment = docs.comments.find((comment) => {
+          if (req.auth.userId === comment.userId || req.auth.isAdmin) {
+            return comment._id.equals(req.body.commentId);
+          }
+          res.status(401).json({ message: 'non authorized User', err });
+        });
+        console.log(theComment);
+        if (!theComment) return res.status(404).send('comment not found');
+        docs.comments.splice(docs.comments.indexOf(theComment), 1);
+
+        docs.save((err) => {
+          if (!err) return res.status(200).send({ message: 'comment deleted' });
+          return res.status(400).send(err);
+        });
+      }
+    );
+  } catch (err) {
+    return res.status(400).send(error);
+  }
+};
