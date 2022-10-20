@@ -237,11 +237,11 @@ exports.editComment = (req, res, next) => {
   }
 };
 exports.deleteComment = (req, res, next) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown :' + req.params.id);
+  if (!ObjectID.isValid(req.params.postId))
+    return res.status(400).send({ message: `Post doesn't exist` });
   try {
     Post.findById(
-      req.params.id,
+      req.params.postId,
       /*  {
         $pull: {
           comments: { _id: req.body.commentId, userId: req.auth.userId },
@@ -266,11 +266,11 @@ exports.deleteComment = (req, res, next) => {
           }*/
         const theComment = docs.comments.find((comment) => {
           if (req.auth.userId === comment.userId || req.auth.isAdmin) {
-            return comment._id.equals(req.body.commentId);
+            return comment._id.equals(req.params.commentId);
           }
           res.status(401).json({ message: 'non authorized User', err });
         });
-        console.log(theComment);
+
         if (!theComment) return res.status(404).send('comment not found');
         docs.comments.splice(docs.comments.indexOf(theComment), 1);
 
