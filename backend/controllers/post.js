@@ -211,14 +211,15 @@ exports.commentPost = (req, res, next) => {
 };
 
 exports.editComment = (req, res, next) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown :' + req.params.id);
+  if (!ObjectID.isValid(req.params.postId))
+    return res.status(400).send({ message: `This Post doesn't exist` });
 
+  console.log(req.params.postId);
   try {
-    Post.findById(req.params.id, (err, docs) => {
+    Post.findById(req.params.postId, (err, docs) => {
       const theComment = docs.comments.find((comment) => {
         if (req.auth.userId === comment.userId) {
-          return comment._id.equals(req.body.commentId);
+          return comment._id.equals(req.params.commentId);
         }
         res.status(401).json({ message: 'non authorized User', err });
       });
