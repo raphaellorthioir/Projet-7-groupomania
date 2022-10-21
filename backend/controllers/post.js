@@ -29,14 +29,8 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown :' + req.params.id);
-
-  if (req.body.userId !== req.auth.userId) {
-    return res.status(400).json({
-      error: 'unauthorized request !',
-    });
-  }
+  if (!ObjectID.isValid(req.params.postId))
+    return res.status(400).send('ID unknown :' + req.params.postId);
 
   const postObject = req.file
     ? {
@@ -47,7 +41,10 @@ exports.updatePost = (req, res, next) => {
       }
     : { ...req.body };
 
-  Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id })
+  Post.updateOne(
+    { _id: req.params.postId },
+    { ...postObject, _id: req.params.postId }
+  )
     .then(() => res.status(200).json({ message: 'Post modifié !' }))
     .catch((error) => res.status(400).json({ error }));
 };
@@ -61,52 +58,31 @@ exports.getAllPosts = (req, res, next) => {
 
 exports.deletePost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown :' + req.params.id);
+    return res.status(400).send('ID unknown :' + req.params.postId);
 
-  Post.findOne({ _id: req.params.id }).then((post) => {
+  Post.findOne({ _id: req.params.postId }).then((post) => {
     if (!post) {
       res.status(404).json({
         error: 'doesnt exist',
       });
     }
     if (post.userdId === req.auth.userId || req.auth.isAdmin === true) {
-      Post.deleteOne({ _id: req.params.id })
+      Post.deleteOne({ _id: req.params.postId })
         .then(() => res.status(200).json({ message: 'Successfully deleted' }))
 
         .catch((error) =>
           res.status(400).json({ error: 'unsuccessfully deleted' })
         );
-      console.log(post);
-      console.log(req.auth);
-      console.log(req.auth.isAdmin);
     } else {
       res.status(400).json({
         error: 'Unauthorized request!',
       });
-      console.log(post);
-      console.log(req.auth);
-      console.log(req.auth.isAdmin);
     }
   });
 };
 
-/*if (docs.imageUrl) {
-  const pathImg = docs.imageUrl.slice(29);
-
-  fs.unlink(`./images/${pathImg}`, (err) => {
-    //file removed
-    if (err) {
-      console.log('erreur');
-    }
-  });
-}*/
-
-/* Post.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Post supprimé' }))
-    .catch((error) => res.status(400).json({ error }));*/
-
 exports.likePost = (req, res, next) => {
-  Post.findOne({ _id: req.params.id }).then((post) => {
+  Post.findOne({ _id: req.params.postId }).then((post) => {
     if (req.body.like == 1) {
       if (!post.usersLiked.includes(req.auth.userId)) {
         post.usersLiked.push(req.auth.userId);
@@ -118,7 +94,7 @@ exports.likePost = (req, res, next) => {
         post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
       }
 
-      Post.updateOne({ _id: req.params.id }, post)
+      Post.updateOne({ _id: req.params.postId }, post)
         .then(() => {
           if (!post.usersLiked.includes(req.auth.userId)) {
             return res.status(200).json({
@@ -137,22 +113,6 @@ exports.likePost = (req, res, next) => {
         .catch((error) => res.status(400).json({ error }));
     }
 
-    /*
-    if (req.body.like == 0) {
-      if (post.usersDisliked.includes(req.auth.userId)) {
-        post.usersDisliked.splice(
-          post.usersDisliked.indexOf(req.auth.userId),
-          1
-        );
-      }
-      if (post.usersLiked.includes(req.auth.userId)) {
-        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
-      }
-      Post.updateOne({ _id: req.params.id }, post)
-        .then(() => res.status(200).json({ message: 'Post neutre!' }))
-        .catch((error) => res.status(400).json({ error }));
-    }*/
-
     if (req.body.like == -1) {
       if (!post.usersDisliked.includes(req.auth.userId)) {
         post.usersDisliked.push(req.auth.userId);
@@ -163,7 +123,7 @@ exports.likePost = (req, res, next) => {
           1
         );
       }
-      Post.updateOne({ _id: req.params.id }, post)
+      Post.updateOne({ _id: req.params.postId }, post)
         .then(() => {
           if (post.usersDisliked.includes(req.auth.userId)) {
             return res.status(200).json({
@@ -186,11 +146,11 @@ exports.likePost = (req, res, next) => {
 
 // Comments
 exports.commentPost = (req, res, next) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown :' + req.params.id);
+  if (!ObjectID.isValid(req.params.postId))
+    return res.status(400).send(`This post doesn't exist anymore`);
 
   userModel.findById(req.auth.userId, (err, user) => {
-    Post.findByIdAndUpdate(req.params.id, {
+    Post.findByIdAndUpdate(req.params.postId, {
       $push: {
         comments: {
           userId: req.auth.userId,
@@ -205,7 +165,7 @@ exports.commentPost = (req, res, next) => {
         res.status(200).json({ message: 'commentaire créé' });
       })
       .catch(() => {
-        res.status(400).json({ message: 'erreur' });
+        res.status(400).json({ message: `Problems to send comment !` });
       });
   });
 };
@@ -242,28 +202,8 @@ exports.deleteComment = (req, res, next) => {
   try {
     Post.findById(
       req.params.postId,
-      /*  {
-        $pull: {
-          comments: { _id: req.body.commentId, userId: req.auth.userId },
-        },
-      },
-      { new: true },
+
       (err, docs) => {
-        if (!err) return res.send({ message: 'comment deleted' });
-        else return res.status(400).send(err);
-      },*/
-      (err, docs) => {
-        /* if (
-            user.isAdmin === true ||
-            docs.comments.includes(`${req.auth.userId}`)
-          ) {
-            docs.comments.splice(
-              docs.comments.indexOf(`${req.body.commentId}`),
-              1
-            );
-          } else {
-            res.status(401).send({ message: ' non autorisé', err });
-          }*/
         const theComment = docs.comments.find((comment) => {
           if (req.auth.userId === comment.userId || req.auth.isAdmin) {
             return comment._id.equals(req.params.commentId);
