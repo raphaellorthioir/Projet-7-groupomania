@@ -4,9 +4,9 @@ const userCtrl = require('../controllers/user'); /* associe les fonctions au rou
 const auth = require('../middleware/auth');
 const passwordValidator = require('../middleware/password-validator');
 const emailValidator = require('../middleware/emailValidator');
-const uploadController = require(`../controllers/upload.controller`)
-const multer = require(`multer`)
-const upload = multer()
+const uploadController = require(`../controllers/upload.controller`);
+const multer = require(`multer`);
+const upload = multer();
 
 // Signup and login routes
 router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
@@ -25,7 +25,12 @@ router.delete('/deleteUserAccount/:id', auth, userCtrl.deleteUser);
 
 // upload new image profil
 
-router.post('/upload',upload.single(`file`), uploadController.uploadProfil)
+router.post(
+  '/upload',
+  upload.single(`file`),
+  auth,
+  uploadController.uploadProfil
+);
 
 // follow and unfollow routes
 

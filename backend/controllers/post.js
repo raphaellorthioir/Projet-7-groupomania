@@ -31,22 +31,32 @@ exports.createPost = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.postId))
     return res.status(400).send('ID unknown :' + req.params.postId);
+  try {
+    const postObject = req.file
+      ? {
+          ...req.body,
+          imageUrl: `${req.protocol}://${req.get('host')}/images/${
+            req.file.filename
+          }`,
+        }
+      : { ...req.body };
 
-  const postObject = req.file
-    ? {
-        ...req.body,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
-
-  Post.updateOne(
-    { _id: req.params.postId },
-    { ...postObject, _id: req.params.postId }
-  )
-    .then(() => res.status(200).json({ message: 'Post modifié !' }))
-    .catch((error) => res.status(400).json({ error }));
+    Post.findOne({ _id: req.params.postId })
+      .then((post) => {
+        if (req.auth.userId) {
+          return Post.updateOne({ _id: req.params.postId }, postObject);
+        }
+        return res.status(401).json({ message: 'Bad user' });
+      })
+      .then(() => {
+        res.status(200).json({ message: 'post updated' });
+      })
+      .catch(() => {
+        res.status(400).json({ message: 'post not found' });
+      });
+  } catch {
+    return res.status(400).send({ message: 'erreur' });
+  }
 };
 
 exports.getAllPosts = (req, res, next) => {
