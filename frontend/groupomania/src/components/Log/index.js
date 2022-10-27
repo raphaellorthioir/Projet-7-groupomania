@@ -22,7 +22,7 @@ const Log = () => {
 
   return (
     <div className="connection-form">
-      <div className="form-container">
+      <div className="form-container flex row space-around">
         <ul>
           <li
             onClick={handleModals}
