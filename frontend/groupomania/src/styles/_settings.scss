@@ -24,6 +24,8 @@ $white: rgb(253, 253, 253);
 $shadow: rgb(219, 218, 218);
 
 
+
+
 /** {
   margin: 0;
   padding: 0;
@@ -85,6 +87,7 @@ i {
   }
 }
 body {
+  margin:0;
   font-family: $font-2;
   line-height: 1.4rem;
   background: $white;

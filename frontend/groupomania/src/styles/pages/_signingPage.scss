@@ -1,12 +1,17 @@
 .profil-page {
-  margin-top: 500px;
-  max-width: 800px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+ height: 100vh;
+  
+  
   .icons {
     top: 55px;
   }
 
  .log-container {
-    margin: 0 auto;
+   
+
    // display: grid;
     //grid-template-columns: 60% 40%;
 
@@ -20,34 +25,36 @@
     background: $color-4;
     min-width: 490px;
     width: 80%;
+    margin: auto;
     text-align: center;
-    margin: auto auto;
     padding: 20px;
     border-radius: 20px;
 
-    @media screen and(max-width: 550px) {
+  /*  @media screen and(max-width: 550px) {
       min-width: 200px;
-    }
+    }*/
 
     .form-container {
-      display: grid;
-      grid-template-columns: 30% 70%;
-
-      @media screen and(max-width: 550px) {
-        grid-template-columns: 1fr;
-      }
-
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      
+      
+      
       ul {
+        
         li {
           cursor: pointer;
           border-radius: 20px;
           padding: 10px 20px;
           transition: 0.2s;
+          list-style: none;
+          margin: 10px 0;
 
-          @media screen and(max-width: 550px) {
+         /* @media screen and(max-width: 550px) {
             width: 80%;
             margin: 0 auto;
-          }
+          }*/
         }
         .active-btn {
           background: $color-1;
@@ -62,6 +69,7 @@
           }
         }
         #login {
+          
           position: relative;
           @media screen and(max-width: 550px) {
             margin-bottom: 30px;

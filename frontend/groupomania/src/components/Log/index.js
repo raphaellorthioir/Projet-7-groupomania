@@ -42,9 +42,9 @@ const Log = () => {
         </ul>
         {/* 
           'rendu conditionnel { "si qqchose" && alors fait apparaître le composant }'*/}
-        {signUpModal && <SignUpForm />}{' '}
+        {signUpModal && <SignUpForm />}
         {/*'si signUpModal  = true alors affiche SignUpForm'*/}
-        {signInModal && <SignInForm />}{' '}
+        {signInModal && <SignInForm />}
         {/*'si signInModal  = true alors affiche SignInForm'*/}
       </div>
     </div>
