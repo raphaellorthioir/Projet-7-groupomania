@@ -34,14 +34,16 @@ exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) /* objet filter de comparaison */
     .then((user) => {
       if (!user) {
-         return res.status(401).json({error: 'Utilisateur non trouvé'});
+        return res.status(401).json({ emailError: `email inconnu` });
       }
       bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {
           /* nous renvoit un booléen */
           if (!valid) {
-            return res.status(401).json({ error: ' Mot de passe incorrect' });
+            return res
+              .status(401)
+              .json({ passwordError: ' Mot de passe incorrect' });
           }
           res.status(200).json({
             userId: user._id,

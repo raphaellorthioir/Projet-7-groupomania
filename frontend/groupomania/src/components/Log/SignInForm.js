@@ -23,15 +23,16 @@ const SignInForm = () => {
     })
       .then((res) => {
         if (res.data.error) {
-          emailError.innerHTML = res.data;
-          passwordError.innerHTML = res.data;
-          console.log(res.data.error);
+          //  console.log(res.data.error);
         } else {
-          window.location = '/';
+          console.log(res.data);
+          window.location = '/profil';
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((res) => {
+        console.log(res);
+        emailError.innerHTML = res.response.data.emailError ?? '';
+        passwordError.innerHTML = res.response.data.passwordError ?? '';
       });
   };
   return (
@@ -50,7 +51,7 @@ const SignInForm = () => {
         onChange={(e) => setEmail(e.target.value)}
         value={email}
       />
-      <p className="emailError"></p>
+      <div className="emailError"></div>
       <br />
       <label htmlFor="password">Mot de passe</label>
       <input
@@ -62,7 +63,7 @@ const SignInForm = () => {
       />
       <br />
       {/* quand on change ce qui a dans l'input , on stock la valeur de l'input dans email et pareil pour password*/}
-      <p className="passwordError"></p>
+      <div className="passwordError"></div>
       <input type="submit" value="Se connecter" />
     </form>
   );
