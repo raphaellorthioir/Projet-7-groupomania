@@ -35,7 +35,7 @@ const Log = () => {
           <li
             onClick={handleModals}
             id="login"
-            className={signInModal ? 'active-btn ' : null}
+            className={signInModal ? 'active-btn' : null}
           >
             Se connecter
           </li>
