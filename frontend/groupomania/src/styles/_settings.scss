@@ -49,6 +49,16 @@ $shadow: rgb(219, 218, 218);
 .cl{
   flex-direction: column;
 }
+
+
+.txt-al-j{
+  text-align: justify;
+}
+
+#passwordErrorsList li{
+  cursor:auto ;
+  transform: none;
+}
 /** {
   margin: 0;
   padding: 0;

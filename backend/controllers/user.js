@@ -20,9 +20,24 @@ exports.signup = (req, res, next) => {
       user
         .save() /* méthode pour enregistrer la requête dans la BD */
         /* toujours renvoyer un code de succés ou d'erreur pour faciliter le débugage */
-        .then(() =>
-          res.status(201).json({ message: 'User created !', user })
-        ) /* code 201 = création de ressource réussie */
+        .then(() => {
+          User.findOne({ email: req.body.email }).then((user) => {
+            res.status(200).json({
+              user,
+              token: jwt.sign(
+                {
+                  userId: user._id,
+                  isAdmin: user.isAdmin,
+                } /*vérifie l'id de l'utilisateur*/,
+                'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
+                { expiresIn: '24h' } /* le token expire au bout de 24h */
+              ),
+            });
+          });
+        })
+
+        // res.status(201).json({ message: 'User created !', user }) ) /* code 201 = création de ressource réussie */
+
         .catch((error) => res.status(400).json({ error }));
       /* code 400 erreur lors de la requête : syntaxe invalide*/
     })

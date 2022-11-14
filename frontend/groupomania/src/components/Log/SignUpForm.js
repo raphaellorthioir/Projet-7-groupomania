@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const SignUpForm = () => {
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [controlPassword, setControlPassword] = useState('');
+
+  const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -38,7 +41,16 @@ const SignUpForm = () => {
         },
       })
         .then((res) => {
-          console.log(res);
+          const userData = {
+            userId: res.data.user._id,
+            isAdmin: res.data.user.isAdmin,
+            token: res.data.token,
+          };
+
+          console.log(userData);
+
+          localStorage.setItem('userData', JSON.stringify(userData));
+          navigate('/');
         })
         .catch((res) => {
           console.log(res);
@@ -55,6 +67,7 @@ const SignUpForm = () => {
             let dataPassword = res.response.data.passwordErrorList;
             let ul = document.createElement('ul');
             ul.setAttribute('id', 'passwordErrorsList');
+            ul.setAttribute('class', 'txt-al-j');
             let li;
             passwordErrors.appendChild(ul);
 
@@ -62,7 +75,6 @@ const SignUpForm = () => {
               li = document.createElement('li');
               ul.appendChild(li);
               li.textContent = `${dataList.message}`;
-              console.log(dataList);
             });
           }
         });
