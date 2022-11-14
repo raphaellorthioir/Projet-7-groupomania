@@ -48,7 +48,7 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user._id,
-            isAdmin:user.isAdmin,
+            isAdmin: user.isAdmin,
             token: jwt.sign(
               {
                 userId: user._id,
@@ -57,8 +57,6 @@ exports.login = (req, res, next) => {
               'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             ),
-            message: 'Connexion réussie',
-            
           });
         })
         .catch((error) => res.status(500).json({ error }));
