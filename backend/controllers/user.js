@@ -2,6 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt'); // package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, les # sont comparés lorsque le user envoie son mdp
 const jwt = require('jsonwebtoken');
 const { restart } = require('nodemon');
+const user = require('../models/user');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 exports.signup = (req, res, next) => {
   bcrypt
@@ -47,6 +48,7 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user._id,
+            isAdmin:user.isAdmin,
             token: jwt.sign(
               {
                 userId: user._id,
@@ -56,6 +58,7 @@ exports.login = (req, res, next) => {
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             ),
             message: 'Connexion réussie',
+            
           });
         })
         .catch((error) => res.status(500).json({ error }));
@@ -63,6 +66,14 @@ exports.login = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
+// check userjwt
+
+exports.checkUser = (req, res, next) => {
+  User.findById(req.auth.userId, (user) => {
+    if (user.userId) res.status(200).json(user.userId);
+    res.status(401).json({ message: 'Utilisateur non autentifié' });
+  });
+};
 exports.userInfo = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);

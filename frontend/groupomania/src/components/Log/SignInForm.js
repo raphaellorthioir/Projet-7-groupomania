@@ -23,8 +23,12 @@ const SignInForm = () => {
         password,
       },
     })
-      .then(() => {
-        navigate('/');
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem('jwt', res.data.token);
+        localStorage.setItem('uID',res.data.userId);
+        localStorage.setItem('isAdmin',res.data.isAdmin)
+       navigate('/');
       })
       .catch((res) => {
         console.log(res);

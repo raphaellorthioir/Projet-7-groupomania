@@ -42,7 +42,7 @@ app.use(bodyParser.json());
 // check jwt for all routes
 
 //app.get('*',auth)
-//app.get('/checkUserToken',userRoutes)
+
 //app.use(helmet()) // action par défaut pour la sécurité
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); //  requêtes vers le dossier local  '/images' , on utilise static pour servir le dossier image, on définit la route avec path.join en indiquant le nom du dossier

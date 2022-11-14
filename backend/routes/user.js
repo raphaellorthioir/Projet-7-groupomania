@@ -8,6 +8,9 @@ const uploadController = require(`../controllers/upload.controller`);
 const multer = require(`multer`);
 const upload = multer();
 
+
+// check user
+router.get('/checkUser',auth,userCtrl.checkUser)
 // Signup and login routes
 router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
