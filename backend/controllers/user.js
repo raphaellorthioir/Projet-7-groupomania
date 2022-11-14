@@ -23,9 +23,7 @@ exports.signup = (req, res, next) => {
         .then(() =>
           res.status(201).json({ message: 'User created !', user })
         ) /* code 201 = création de ressource réussie */
-        .catch((error) =>
-          res.status(400).json({ message: 'email already exists', error })
-        );
+        .catch((error) => res.status(400).json({ error }));
       /* code 400 erreur lors de la requête : syntaxe invalide*/
     })
     .catch((error) => res.status(500).json({ error }));
