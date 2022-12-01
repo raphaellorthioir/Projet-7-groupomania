@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { UserContext } from '../components/AppContext';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
-  return <div>Hello depuis Home</div>;
+  const user = useContext(UserContext)
+  return(
+    <div>
+      {user ? <Navbar/> : <Navigate to="/signing"/>}
+      
+    </div>
+    
+  
+  );
 };
 
 export default Home;

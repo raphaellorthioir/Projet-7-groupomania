@@ -1,13 +1,14 @@
-import React from 'react';
-import Log from '../components/Log/index'
+import React, { useContext } from 'react';
+import Log from '../components/Log/index';
+import { UserContext } from '../components/AppContext';
+import { Navigate } from 'react-router-dom';
 const SignupLoginPage = () => {
-  return <div>
-    <div className="profil-page">
-        <div className="log-container">
-            <Log/>
-        </div>
+  const user = useContext(UserContext);
+  return (
+    <div className="profil-page flex ai-center ac-center">
+      {user ? <Navigate to="/" /> : <Log />}
     </div>
-  </div>;
+  );
 };
 
 export default SignupLoginPage;

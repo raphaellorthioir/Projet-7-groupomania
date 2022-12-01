@@ -92,7 +92,7 @@ exports.userInfo = (req, res, next) => {
   User.findById(req.params.id, (err, docs) => {
     if (!err) res.send({ message: "user's profil access granted ", docs });
     else console.log('ID unknown :' + err);
-  }).select(' -_id -password -email'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
+  }).select('  -password -email'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
 };
 
 exports.updateUser = (req, res, next) => {

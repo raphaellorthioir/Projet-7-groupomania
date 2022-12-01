@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // permet de gérer les fetch dans react
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 const SignInForm = () => {
   //création de const usestate pour faire transiter des données danss le composant
 
@@ -8,7 +8,8 @@ const SignInForm = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(``);
   const [passwordError, setPasswordError] = useState(``);
-  const navigate = useNavigate();
+
+  //const navigate = useNavigate();
 
   // Partie logique Login
 
@@ -24,11 +25,12 @@ const SignInForm = () => {
       },
     })
       .then((res) => {
-        console.log(res);
         localStorage.setItem('userData', JSON.stringify(res.data));
+
         //  localStorage.setItem('uID',res.data.userId);
         //localStorage.setItem('isAdmin',res.data.isAdmin)
-        navigate('/');
+        //navigate('/');
+        window.location = '/';
       })
       .catch((res) => {
         console.log(res);
@@ -38,36 +40,38 @@ const SignInForm = () => {
   };
 
   return (
-    <form
-      action=""
-      className="flex cl ai-center"
-      onSubmit={handleLogin}
-      id="sign-up-form"
-    >
-      <label htmlFor="email">Email</label>
-      <br />
-      <input
-        type="text"
-        name="email"
-        id="email"
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-      />
-      <div className="emailError">{emailError}</div>
-      <br />
-      <label htmlFor="password">Mot de passe</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-      />
-      <br />
-      {/* quand on change ce qui a dans l'input , on stock la valeur de l'input dans email et pareil pour password*/}
-      <div className="passwordError">{passwordError}</div>
-      <input type="submit" value="Se connecter" />
-    </form>
+    <div>
+      <form
+        action=""
+        className="flex cl ai-center"
+        onSubmit={handleLogin}
+        id="sign-up-form"
+      >
+        <label htmlFor="email">Email</label>
+        <br />
+        <input
+          type="text"
+          name="email"
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
+        <div className="emailError">{emailError}</div>
+        <br />
+        <label htmlFor="password">Mot de passe</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        />
+        <br />
+        {/* quand on change ce qui a dans l'input , on stock la valeur de l'input dans email et pareil pour password*/}
+        <div className="passwordError">{passwordError}</div>
+        <input type="submit" value="Se connecter" />
+      </form>
+    </div>
   );
 };
 
