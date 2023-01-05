@@ -5,40 +5,41 @@ import Routes from './components/Routes/index.js';
 
 const App = () => {
   // const [uID, setUID] = useState(null);
-  const [userId, setUserId] = useState(null);
+
   const [userData, setUserData] = useState(null);
 
   /* useEffect permet de créer une fonction qui s'éxécutera si la donnée présente en elle se modifie après chaque affichage du composant, ici App. */
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const storage = JSON.parse(localStorage.getItem('userData'));
-      const token = `${storage.token}`;
-      const id = storage.userId;
+    const storage = JSON.parse(localStorage.getItem('userData'));
+    const fetchData = async () => {
       await axios({
         method: 'get',
-        url: `${process.env.REACT_APP_API_URL}api/auth/${id}`,
+        url: `${process.env.REACT_APP_API_URL}api/auth/${storage.userId}`,
         headers: {
-          Authorization: `Basic ${token}`,
+          Authorization: `Basic ${storage.token}`,
         },
       })
         .then((res) => {
+          const data = res.data.docs;
           setUserData({
-            userId: res.data.docs._id,
-            isAdmin: res.data.docs.isAdmin,
-            token: token,
+            userId: data._id,
+            pseudo: data.pseudo,
+            followers: data.followers,
+            follwing: data.following,
+            profilPicture: data.profilPicture,
+            isAdmin: data.isAdmin,
+            token: storage.token,
           });
-          setUserId(res.data.docs._id);
         })
         .catch(() => {
-          setUserData(null);
+          localStorage.removeItem("userData")
+          setUserData(null)
           console.log('User not found');
         });
-        console.log(userId)
     };
-    fetchUserData();
-   
-  }, [userId]);
+    fetchData();
+  }, []);
 
   // A chaque fois que user évolue , ça relance la fonction useEffect
   return (

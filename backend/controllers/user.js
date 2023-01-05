@@ -2,7 +2,6 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt'); // package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, les # sont comparés lorsque le user envoie son mdp
 const jwt = require('jsonwebtoken');
 const { restart } = require('nodemon');
-const user = require('../models/user');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 exports.signup = (req, res, next) => {
   bcrypt
@@ -22,26 +21,25 @@ exports.signup = (req, res, next) => {
         /* toujours renvoyer un code de succés ou d'erreur pour faciliter le débugage */
         .then(() => {
           User.findOne({ email: req.body.email }).then((user) => {
-            res.status(200).json({
-              user,
-              token: jwt.sign(
-                {
-                  userId: user._id,
-                  isAdmin: user.isAdmin,
-                } /*vérifie l'id de l'utilisateur*/,
-                'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
-                { expiresIn: '24h' } /* le token expire au bout de 24h */
-              ),
-            });
+            token = jwt.sign(
+              {
+                userId: user._id,
+                isAdmin: user.isAdmin,
+              } /*vérifie l'id de l'utilisateur*/,
+              'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
+              { expiresIn: '24h' } /* le token expire au bout de 24h */
+            );
+            res.cookie('jwt', token, { httpOnly: true });
+            res.status(200).json({ user: user._id, token });
           });
         })
 
         // res.status(201).json({ message: 'User created !', user }) ) /* code 201 = création de ressource réussie */
 
-        .catch((error) => res.status(400).json({ error }));
+        .catch((error) => res.status(400).json('User alrerady exists'));
       /* code 400 erreur lors de la requête : syntaxe invalide*/
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((error) => res.status(500).json('Password error'));
 };
 
 exports.login = (req, res, next) => {
@@ -58,33 +56,24 @@ exports.login = (req, res, next) => {
             return res
               .status(401)
               .json({ passwordError: ' Mot de passe incorrect' });
-          }
-          res.status(200).json({
-            userId: user._id,
-            isAdmin: user.isAdmin,
-            token: jwt.sign(
+          } else {
+            token = jwt.sign(
               {
                 userId: user._id,
                 isAdmin: user.isAdmin,
               } /*vérifie l'id de l'utilisateur*/,
               'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
-            ),
-          });
+            );
+            res.cookie('jwt', token, { httpOnly: true });
+            res.status(200).json({ user: user._id, token });
+          }
         })
         .catch((error) => res.status(500).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
 };
 
-// check userjwt
-
-exports.checkUser = (req, res, next) => {
-  User.findById(req.auth.userId, (user) => {
-    if (user.userId) res.status(200).json(user.userId);
-    res.status(401).json({ message: 'Utilisateur non autentifié' });
-  });
-};
 exports.userInfo = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
@@ -98,58 +87,53 @@ exports.userInfo = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
-  if (req.auth.userId === req.params.id) {
-    console.log(req.auth, req.params);
-    try {
-      User.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $set: {
-            email: req.body.email,
-            pseudo: req.body.pseudo,
-            bio: req.body.bio,
-          },
-        },
 
-        //console.log(req.body.password),
-        { new: true, upsert: true, setDefaultOnInsert: true },
-        (err, docs) => {
-          if (!err) return res.send(docs);
-          if (err) return res.status(500).send({ message: 'erreur' });
-        }
-      );
-    } catch (err) {
-      return res.status(500).json({ message: 'erreur' });
-    }
+  try {
+    User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          email: req.body.email,
+          pseudo: req.body.pseudo,
+          bio: req.body.bio,
+        },
+      },
+      { new: true, upsert: true, setDefaultOnInsert: true },
+      (err, docs) => {
+        if (!err) return res.send(docs);
+        if (err) return res.status(500).send({ message: 'erreur' });
+      }
+    );
+  } catch (err) {
+    return res.status(500).json({ message: 'erreur' });
   }
 };
+
 exports.updatePassword = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
 
   try {
     User.findById(req.params.id, (err, user) => {
-      if (req.auth.userId === req.params.id) {
-        bcrypt.hash(req.body.password, 10).then((hash) => {
-          User.findOneAndUpdate(
-            { _id: req.params.id },
+      bcrypt.hash(req.body.password, 10).then((hash) => {
+        User.findOneAndUpdate(
+          { _id: req.params.id },
 
-            {
-              $set: {
-                password: hash,
-              },
+          {
+            $set: {
+              password: hash,
             },
+          },
 
-            //console.log(req.body.password),
-            { new: true, upsert: true, setDefaultOnInsert: true },
+          //console.log(req.body.password),
+          { new: true, upsert: true, setDefaultOnInsert: true },
 
-            (err, docs) => {
-              if (!err) return res.send({ docs, message: ' Password changed' });
-              if (err) return res.status(500).send({ message: 'erreur' });
-            }
-          );
-        });
-      }
+          (err, docs) => {
+            if (!err) return res.send({ docs, message: ' Password changed' });
+            if (err) return res.status(500).send({ message: 'erreur' });
+          }
+        );
+      });
     });
   } catch {
     return res
@@ -161,74 +145,16 @@ exports.updatePassword = (req, res, next) => {
 exports.deleteUser = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
-  if (req.auth.userId === req.params.id || req.auth.isAdmin === true) {
-    User.deleteOne({ _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Successfully deleted' }))
 
-      .catch((error) =>
-        res.status(400).json({ error: 'unsuccessfully deleted' })
-      );
-  }
+  User.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Successfully deleted' }))
+
+    .catch((error) =>
+      res.status(400).json({ error: 'unsuccessfully deleted' })
+    );
 };
 
-// follow  and unfollow system
-exports.follow = (req, res) => {
-  if (!ObjectID.isValid(req.params.id, req.auth.userId))
-    return res.status(400).send('ID unknown :' + req.params.id);
-
-  try {
-    // add to following list
-    User.findByIdAndUpdate(
-      req.auth.userId,
-      { $addToSet: { following: req.params.id } },
-      { new: true, upsert: true },
-      (err, docs) => {
-        if (!err) res.status(201).json(docs);
-        else return res.status(400).json(err);
-      }
-    );
-
-    // add to the follower list
-    User.findByIdAndUpdate(
-      req.params.id,
-      { $addToSet: { followers: req.auth.userId } },
-      { new: true, upsert: true },
-      (err, docs) => {
-        // if (!err) res.send(docs);
-        if (err) return res.status(400).json(err);
-      }
-    );
-  } catch (err) {
-    return res.status(500).json({ message: err });
-  }
-};
-
-exports.unfollow = (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown :' + req.params.id);
-
-  try {
-    User.findByIdAndUpdate(
-      req.auth.userId,
-      { $pull: { following: req.params.id } },
-      { new: true, upsert: true },
-
-      (err, docs) => {
-        if (!err) res.status(201).json(docs);
-        else return res.status(400).json(err);
-      }
-    );
-
-    User.findByIdAndUpdate(
-      req.params.id,
-      { $pull: { followers: req.auth.userId } },
-      { new: true, upsert: true },
-      (err, docs) => {
-        //if (!err) res.status(201).json(docs);
-        if (err) return res.status(400).json(err);
-      }
-    );
-  } catch (err) {
-    return res.status(500).json({ message: err });
-  }
+exports.logout = (req, res) => {
+  res.cookie('jwt', '', { maxAge: 1 });
+  res.json('cookie enlevé');
 };

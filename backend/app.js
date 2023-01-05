@@ -1,5 +1,6 @@
 const express = require('express'); // import du package express
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose'); // facilite les interactions entre express et mongoDB, permet la création de schémas de données
 const path = require('path'); // donne accés aux chemins du système de fichier local
 const app = express(); // création de l'application express qui sera lu par le serveur node
@@ -7,7 +8,8 @@ module.exports = app; // export de la constante pour y accéder depuis les autre
 const helmet = require('helmet');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
-const auth = require('./middleware/auth');
+//const authController = require("./middleware/auth")
+const { checkUser, requireAuth } = require('./middleware/auth');
 require('dotenv').config(); // permet de cacher des variables
 
 // Mongodb connection
@@ -36,14 +38,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// routes
+// routes générales
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended:true}));
 
-// check jwt for all routes
+app.get('*',checkUser);
+app.get('/jwt',requireAuth);
 
-//app.get('*',auth)
-
-//app.use(helmet()) // action par défaut pour la sécurité
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); //  requêtes vers le dossier local  '/images' , on utilise static pour servir le dossier image, on définit la route avec path.join en indiquant le nom du dossier
 app.use('/api/auth', userRoutes);
