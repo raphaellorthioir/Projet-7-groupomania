@@ -184,7 +184,7 @@ exports.editComment = (req, res, next) => {
       const theComment = docs.comments.find((comment) => {
         return comment._id.equals(req.body.commentId);
       });
-      console.log(theComment);
+
       if (!theComment) return res.status(404).send(err);
       theComment.text = req.body.text;
 

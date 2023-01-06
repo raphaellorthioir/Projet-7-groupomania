@@ -1,7 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt'); // package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, les # sont comparés lorsque le user envoie son mdp
 const jwt = require('jsonwebtoken');
-const { restart } = require('nodemon');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 exports.signup = (req, res, next) => {
   bcrypt
@@ -29,17 +28,18 @@ exports.signup = (req, res, next) => {
               'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             );
-            res.cookie('jwt', token, { httpOnly: true });
+
             res.status(200).json({ user: user._id, token });
           });
         })
 
         // res.status(201).json({ message: 'User created !', user }) ) /* code 201 = création de ressource réussie */
 
-        .catch((error) => res.status(400).json('User alrerady exists'));
+        .catch(() => res.status(400).json('User alrerady exists'));
       /* code 400 erreur lors de la requête : syntaxe invalide*/
+      res.cookie('jwt', token, { httpOnly: true, maxAge });
     })
-    .catch((error) => res.status(500).json('Password error'));
+    .catch(() => res.status(500).json('Password error'));
 };
 
 exports.login = (req, res, next) => {
@@ -52,6 +52,7 @@ exports.login = (req, res, next) => {
         .compare(req.body.password, user.password)
         .then((valid) => {
           /* nous renvoit un booléen */
+
           if (!valid) {
             return res
               .status(401)
@@ -65,11 +66,11 @@ exports.login = (req, res, next) => {
               'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             );
-            res.cookie('jwt', token, { httpOnly: true });
-            res.status(200).json({ user: user._id, token });
           }
+          res.cookie('jwt', token, { httpOnly: true });
+          res.status(200).json({  token });
         })
-        .catch((error) => res.status(500).json({ error }));
+        .catch(() => res.status(500).json('erreur'));
     })
     .catch((error) => res.status(500).json({ error }));
 };

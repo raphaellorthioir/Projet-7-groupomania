@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // permet de gérer les fetch dans react
 //import { useNavigate } from 'react-router-dom';
+
 const SignInForm = () => {
   //création de const usestate pour faire transiter des données danss le composant
 
@@ -8,7 +9,7 @@ const SignInForm = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(``);
   const [passwordError, setPasswordError] = useState(``);
-
+  
   //const navigate = useNavigate();
 
   // Partie logique Login
@@ -25,12 +26,8 @@ const SignInForm = () => {
       },
     })
       .then((res) => {
-        localStorage.setItem('userData', JSON.stringify(res.data));
-
-        //  localStorage.setItem('uID',res.data.userId);
-        //localStorage.setItem('isAdmin',res.data.isAdmin)
-        //navigate('/');
-        window.location = '/';
+        console.log(res)
+        //window.location = '/';
       })
       .catch((res) => {
         console.log(res);

@@ -39,7 +39,7 @@ module.exports.checkUser = (req, res, next) => {
       } else {
         UserModel.findById(decodedToken.userId, (err, user) => {
           console.log('user checked');
-          //res.status(200).json(user);
+          res.status(200).json(user);
           if (err) {
             res.status(400).json({ message: 'User not found' });
           }
@@ -62,9 +62,10 @@ module.exports.requireAuth = (req, res, next) => {
         console.log(err);
         res.send(200).json('no token');
       } else {
+        console.log(res)
         res
           .status(200)
-          .send({ userId: decodedToken.userId, isAdmin: decodedToken.isAdmin });
+          .json({ userId: decodedToken.userId, isAdmin: decodedToken.isAdmin });
         next();
       }
     });

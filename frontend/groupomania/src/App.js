@@ -11,30 +11,21 @@ const App = () => {
   /* useEffect permet de créer une fonction qui s'éxécutera si la donnée présente en elle se modifie après chaque affichage du composant, ici App. */
 
   useEffect(() => {
-    const storage = JSON.parse(localStorage.getItem('userData'));
     const fetchData = async () => {
       await axios({
         method: 'get',
-        url: `${process.env.REACT_APP_API_URL}api/auth/${storage.userId}`,
-        headers: {
-          Authorization: `Basic ${storage.token}`,
-        },
+        url: `${process.env.REACT_APP_API_URL}jwt`,
       })
         .then((res) => {
+          console.log(res)
           const data = res.data.docs;
           setUserData({
             userId: data._id,
-            pseudo: data.pseudo,
-            followers: data.followers,
-            follwing: data.following,
-            profilPicture: data.profilPicture,
             isAdmin: data.isAdmin,
-            token: storage.token,
           });
         })
         .catch(() => {
-          localStorage.removeItem("userData")
-          setUserData(null)
+          setUserData(null);
           console.log('User not found');
         });
     };
