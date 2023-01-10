@@ -11,25 +11,24 @@ const App = () => {
   /* useEffect permet de créer une fonction qui s'éxécutera si la donnée présente en elle se modifie après chaque affichage du composant, ici App. */
 
   useEffect(() => {
-    const fetchData = async () => {
-      await axios({
-        method: 'get',
-        url: `${process.env.REACT_APP_API_URL}jwt`,
-      })
-        .then((res) => {
-          console.log(res)
-          const data = res.data.docs;
-          setUserData({
-            userId: data._id,
-            isAdmin: data.isAdmin,
-          });
-        })
-        .catch(() => {
-          setUserData(null);
-          console.log('User not found');
+    /* useEffect se déclenche à chaque rerendu , si la dépandence change lors d'un re-rendu alors useEffect exécutera  */
+
+    axios({
+      method: 'get',
+      url: `${process.env.REACT_APP_API_URL}jwt`,
+      withCredentials: true,
+    })
+      .then((res) => {
+        setUserData({
+          userId: res.data.userId,
+          isAdmin: res.data.isAdmin,
         });
-    };
-    fetchData();
+      })
+      .catch((err) => {
+        setUserData(null);
+        console.log(err);
+      });
+    console.log('re rendu');
   }, []);
 
   // A chaque fois que user évolue , ça relance la fonction useEffect

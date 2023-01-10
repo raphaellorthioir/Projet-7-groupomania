@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt'); // package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, les # sont comparés lorsque le user envoie son mdp
 const jwt = require('jsonwebtoken');
+const { path } = require('../app');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 exports.signup = (req, res, next) => {
   bcrypt
@@ -28,8 +29,8 @@ exports.signup = (req, res, next) => {
               'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             );
-
-            res.status(200).json({ user: user._id, token });
+            res.cookie('jwt', token);
+            res.status(200).json({ user });
           });
         })
 
@@ -37,7 +38,6 @@ exports.signup = (req, res, next) => {
 
         .catch(() => res.status(400).json('User alrerady exists'));
       /* code 400 erreur lors de la requête : syntaxe invalide*/
-      res.cookie('jwt', token, { httpOnly: true, maxAge });
     })
     .catch(() => res.status(500).json('Password error'));
 };
@@ -68,13 +68,16 @@ exports.login = (req, res, next) => {
             );
           }
           res.cookie('jwt', token, { httpOnly: true });
-          res.status(200).json({  token });
+          res.status(200).json({ token });
         })
         .catch(() => res.status(500).json('erreur'));
     })
     .catch((error) => res.status(500).json({ error }));
 };
 
+exports.logout = (req, res) => {
+  res.clearCookie('jwt');
+};
 exports.userInfo = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);

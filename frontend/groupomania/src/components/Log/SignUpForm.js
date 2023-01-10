@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 const SignUpForm = () => {
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [controlPassword, setControlPassword] = useState('');
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -34,6 +34,7 @@ const SignUpForm = () => {
       axios({
         method: 'post',
         url: `${process.env.REACT_APP_API_URL}api/auth/signup`,
+        withCredentials:true,
         data: {
           pseudo,
           email,
@@ -41,16 +42,9 @@ const SignUpForm = () => {
         },
       })
         .then((res) => {
-          const userData = {
-            userId: res.data.user._id,
-            isAdmin: res.data.user.isAdmin,
-            token: res.data.token,
-          };
+          console.log(res);
 
-          console.log(userData);
-
-          localStorage.setItem('userData', JSON.stringify(userData));
-          navigate('/');
+          window.location='/'
         })
         .catch((res) => {
           console.log(res);

@@ -26,7 +26,11 @@ app.use(express.json()); //intercèpte les requêtes qui ont un content type jso
 // obligatoire pour éviter les problèmes de CORS et permettre à l'application d'accéder au serveur , il faut préciser les autorisations
 app.use((req, res, next) => {
   // permet d'attribuer un middleware à une route, ici toutes les routes
-  res.setHeader('Access-Control-Allow-Origin', '*'); // * donne l'accés à tout le monde
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    process.env.API_URL
+  ); /* donne l'accés à partir d'un nom de domaine détermine la route d'origine sur laquelle les requêtes seront autorisées.
+   Lors de l'utilisation de credntials (identifiants par cookie ou en-tête d'autorisation , il est obligatoire de préciser la route , l'utilisation de * avec credentials entraîne une erreur du serveur  */
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
@@ -35,6 +39,7 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Methods',
     'GET, POST, PUT, DELETE, PATCH, OPTIONS'
   ); // authorise les méthodes
+  res.setHeader('Access-Control-Allow-Credentials', true); // indique aux navigateur s'il faut exposer la réponse au code js frontend lors d'une demande d'authentification
   next();
 });
 
@@ -43,7 +48,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//app.get('*',checkUser);
+app.get('*', checkUser);
 app.get('/jwt', requireAuth);
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); //  requêtes vers le dossier local  '/images' , on utilise static pour servir le dossier image, on définit la route avec path.join en indiquant le nom du dossier

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userCtrl = require('../controllers/user'); /* associe les fonctions au router */
-const {requireAuth}= require('../middleware/auth');
+//const {requireAuth}= require('../middleware/auth');
 const passwordValidator = require('../middleware/password-validator');
 const emailValidator = require('../middleware/emailValidator');
 const uploadController = require(`../controllers/upload.controller`);
@@ -13,7 +13,7 @@ const upload = multer();
 // Signup,login and logout routes
 router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
-//router.get('/logout', userCtrl.logout);
+router.get('/logout', userCtrl.logout);
 
 // Get user object + update User object + update password
 //router.get('/:id', userCtrl.userInfo);

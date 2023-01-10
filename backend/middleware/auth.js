@@ -29,19 +29,19 @@ const UserModel = require('../models/user');
 
 module.exports.checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
-
   if (token) {
     jwt.verify(token, 'RANDOM_TOKEN_SECRET', (err, decodedToken) => {
       if (err) {
-        res.clearCookie('jwt');
+        console.log('cookie non trouvé');
+        res.clearCookie('jwt', '', { maxAge: 1 });
         res.send(' Decode Token error ');
         next();
       } else {
         UserModel.findById(decodedToken.userId, (err, user) => {
-          console.log('user checked');
-          res.status(200).json(user);
           if (err) {
-            res.status(400).json({ message: 'User not found' });
+            res
+              .status(400)
+              .json({ message: 'User not found, erreur checkUser' });
           }
         });
         next();
@@ -55,14 +55,12 @@ module.exports.checkUser = (req, res, next) => {
 
 module.exports.requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
-
   if (token) {
-    jwt.verify(token, 'RANDOM_TOKEN_SECRET', async (err, decodedToken) => {
+    jwt.verify(token, 'RANDOM_TOKEN_SECRET', (err, decodedToken) => {
       if (err) {
-        console.log(err);
+        console.log('erreur requireAuth');
         res.send(200).json('no token');
       } else {
-        console.log(res)
         res
           .status(200)
           .json({ userId: decodedToken.userId, isAdmin: decodedToken.isAdmin });

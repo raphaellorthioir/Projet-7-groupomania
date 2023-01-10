@@ -20,14 +20,17 @@ const SignInForm = () => {
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}api/auth/login`,
+      withCredentials:true, /*boolén qui indique si une requête entre deux sites (domaines , ex: front et back) devrait être réalisée avec des infos d'authentification(credentials) comme les cookies 
+      c'est obligatoire pour définir le cookies entre deux domaines différents*/ 
       data: {
         email,
         password,
       },
     })
       .then((res) => {
+        console.log("envoi réussi du formulaire")
         console.log(res)
-        //window.location = '/';
+        window.location = '/';
       })
       .catch((res) => {
         console.log(res);
