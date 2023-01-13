@@ -4,8 +4,6 @@ import { UserContext } from './components/AppContext.js';
 import Routes from './components/Routes/index.js';
 
 const App = () => {
-  // const [uID, setUID] = useState(null);
-
   const [userData, setUserData] = useState(null);
 
   /* useEffect permet de créer une fonction qui s'éxécutera si la donnée présente en elle se modifie après chaque affichage du composant, ici App. */

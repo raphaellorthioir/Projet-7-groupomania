@@ -48,7 +48,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('*', checkUser);
 app.get('/jwt', requireAuth);
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); //  requêtes vers le dossier local  '/images' , on utilise static pour servir le dossier image, on définit la route avec path.join en indiquant le nom du dossier

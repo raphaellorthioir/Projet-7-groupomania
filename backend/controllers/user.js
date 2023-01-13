@@ -26,7 +26,8 @@ exports.signup = (req, res, next) => {
                 userId: user._id,
                 isAdmin: user.isAdmin,
               } /*vérifie l'id de l'utilisateur*/,
-              'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
+              process.env
+                .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             );
             res.cookie('jwt', token);
@@ -36,7 +37,7 @@ exports.signup = (req, res, next) => {
 
         // res.status(201).json({ message: 'User created !', user }) ) /* code 201 = création de ressource réussie */
 
-        .catch(() => res.status(400).json('User alrerady exists'));
+        .catch((err) => res.status(400).json(err));
       /* code 400 erreur lors de la requête : syntaxe invalide*/
     })
     .catch(() => res.status(500).json('Password error'));
@@ -63,7 +64,8 @@ exports.login = (req, res, next) => {
                 userId: user._id,
                 isAdmin: user.isAdmin,
               } /*vérifie l'id de l'utilisateur*/,
-              'RANDOM_TOKEN_SECRET' /* chaîne de caractère qui permet l'encodage*/,
+              process.env
+                .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             );
           }
@@ -76,23 +78,29 @@ exports.login = (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
+  console.log(req.auth);
   res.clearCookie('jwt');
 };
-exports.userInfo = (req, res, next) => {
+exports.userProfil = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
 
-  User.findById(req.params.id, (err, docs) => {
-    if (!err) res.send({ message: "user's profil access granted ", docs });
-    else console.log('ID unknown :' + err);
-  }).select('  -password -email'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
+  if (req.params.id === req.auth.userId || req.auth.isAdmin) {
+    User.findById(req.params.id, (err, docs) => {
+      if (!err) res.send({ message: "user's profil access granted ", docs });
+      else console.log('ID unknown :' + err);
+    }).select('  -password -email'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
+  } else {
+    res.clearCookie('jwt', '', { maxAge: 1 });
+    res.status(401).json('Unauthorized request');
+  }
 };
 
 exports.updateUser = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
 
-  try {
+  if (req.params.id === req.auth.userId || req.auth.isAdmin) {
     User.findOneAndUpdate(
       { _id: req.params.id },
       {
@@ -108,8 +116,9 @@ exports.updateUser = (req, res, next) => {
         if (err) return res.status(500).send({ message: 'erreur' });
       }
     );
-  } catch (err) {
-    return res.status(500).json({ message: 'erreur' });
+  } else {
+    res.clearCookie('jwt', '', { maxAge: 1 });
+    res.status(401).json('Unauthorized request');
   }
 };
 
@@ -117,7 +126,7 @@ exports.updatePassword = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
 
-  try {
+  if (req.params.id === req.auth.userId) {
     User.findById(req.params.id, (err, user) => {
       bcrypt.hash(req.body.password, 10).then((hash) => {
         User.findOneAndUpdate(
@@ -139,10 +148,9 @@ exports.updatePassword = (req, res, next) => {
         );
       });
     });
-  } catch {
-    return res
-      .status(500)
-      .json({ message: 'le changement ne peut pas se lancer' });
+  } else {
+    res.clearCookie('jwt', '', { maxAge: 1 });
+    res.status(401).json('Unauthorized request');
   }
 };
 

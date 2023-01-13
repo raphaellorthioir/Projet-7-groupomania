@@ -30,7 +30,7 @@ const UserModel = require('../models/user');
 module.exports.checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, 'RANDOM_TOKEN_SECRET', (err, decodedToken) => {
+    jwt.verify(token, process.env.SECRET_TOKEN, (err, decodedToken) => {
       if (err) {
         console.log('cookie non trouvé');
         res.clearCookie('jwt', '', { maxAge: 1 });
@@ -39,12 +39,11 @@ module.exports.checkUser = (req, res, next) => {
       } else {
         UserModel.findById(decodedToken.userId, (err, user) => {
           if (err) {
-            res
-              .status(400)
-              .json({ message: 'User not found, erreur checkUser' });
+            res.status(400).json({ message: 'User not found' });
           }
+          req.auth = { userId: user.id, isAdmin: user.isAdmin };
+          next();
         });
-        next();
       }
     });
   } else {
@@ -56,7 +55,7 @@ module.exports.checkUser = (req, res, next) => {
 module.exports.requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, 'RANDOM_TOKEN_SECRET', (err, decodedToken) => {
+    jwt.verify(token, process.env.SECRET_TOKEN, (err, decodedToken) => {
       if (err) {
         console.log('erreur requireAuth');
         res.send(200).json('no token');

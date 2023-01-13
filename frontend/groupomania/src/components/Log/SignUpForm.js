@@ -48,11 +48,11 @@ const SignUpForm = () => {
         })
         .catch((res) => {
           console.log(res);
-          if (res.response.data.error) {
-            if (res.response.data.error.errors.pseudo) {
+          if (res.response.data.errors) {
+            if (res.response.data.errors.pseudo) {
               pseudoError.innerHTML = 'Ce pseudo est déjà pris';
             }
-            if (res.response.data.error.errors.email) {
+            if (res.response.data.errors.email) {
               emailError.innerHTML = 'Cet email est déjà utilisé';
             }
           }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userCtrl = require('../controllers/user'); /* associe les fonctions au router */
-//const {requireAuth}= require('../middleware/auth');
+const { checkUser } = require('../middleware/auth');
 const passwordValidator = require('../middleware/password-validator');
 const emailValidator = require('../middleware/emailValidator');
 const uploadController = require(`../controllers/upload.controller`);
@@ -13,13 +13,23 @@ const upload = multer();
 // Signup,login and logout routes
 router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.get('/logout', userCtrl.logout);
+router.get('/logout', checkUser, userCtrl.logout);
 
 // Get user object + update User object + update password
-//router.get('/:id', userCtrl.userInfo);
-router.put('/updateUserProfil/:id', emailValidator, userCtrl.updateUser);
-router.put('/changePassword/:id', passwordValidator, userCtrl.updatePassword);
-router.delete('/deleteUserAccount/:id', userCtrl.deleteUser);
+router.get('/:id', checkUser, userCtrl.userProfil);
+router.put(
+  '/updateUserProfil/:id',
+  checkUser,
+  emailValidator,
+  userCtrl.updateUser
+);
+router.put(
+  '/changePassword/:id',
+  checkUser,
+  passwordValidator,
+  userCtrl.updatePassword
+);
+router.delete('/deleteUserAccount/:id', checkUser, userCtrl.deleteUser);
 
 // upload new image profil
 
