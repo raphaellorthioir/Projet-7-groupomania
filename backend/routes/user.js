@@ -13,7 +13,7 @@ const upload = multer();
 // Signup,login and logout routes
 router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.get('/logout', checkUser, userCtrl.logout);
+router.get('/logout/:id', checkUser, userCtrl.logout);
 
 // Get user object + update User object + update password
 router.get('/:id', checkUser, userCtrl.userProfil);

@@ -2,6 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt'); // package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, les # sont comparés lorsque le user envoie son mdp
 const jwt = require('jsonwebtoken');
 const { path } = require('../app');
+const { reset } = require('nodemon');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 exports.signup = (req, res, next) => {
   bcrypt
@@ -30,8 +31,8 @@ exports.signup = (req, res, next) => {
                 .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,
               { expiresIn: '24h' } /* le token expire au bout de 24h */
             );
-            res.cookie('jwt', token);
-            res.status(200).json({ user });
+            res.cookie('jwt', token, { httpOnly: true });
+            res.status(200).json('User account created');
           });
         })
 
@@ -70,16 +71,16 @@ exports.login = (req, res, next) => {
             );
           }
           res.cookie('jwt', token, { httpOnly: true });
-          res.status(200).json({ token });
+          res.status(200).json('Login succeeded');
         })
-        .catch(() => res.status(500).json('erreur'));
+        .catch((err) => res.status(500).json('Wrong password', err));
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((err) => res.status(500).json('User not found', err));
 };
 
 exports.logout = (req, res) => {
-  console.log(req.auth);
   res.clearCookie('jwt');
+  res.status(200).json('Logout succeeded');
 };
 exports.userProfil = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
@@ -91,7 +92,7 @@ exports.userProfil = (req, res, next) => {
       else console.log('ID unknown :' + err);
     }).select('  -password -email'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
   } else {
-    res.clearCookie('jwt', '', { maxAge: 1 });
+    res.clearCookie('jwt');
     res.status(401).json('Unauthorized request');
   }
 };
@@ -115,9 +116,9 @@ exports.updateUser = (req, res, next) => {
         if (!err) return res.send(docs);
         if (err) return res.status(500).send({ message: 'erreur' });
       }
-    );
+    ).select('-password -email -_id -isAdmin');
   } else {
-    res.clearCookie('jwt', '', { maxAge: 1 });
+    res.clearCookie('jwt');
     res.status(401).json('Unauthorized request');
   }
 };
@@ -142,14 +143,14 @@ exports.updatePassword = (req, res, next) => {
           { new: true, upsert: true, setDefaultOnInsert: true },
 
           (err, docs) => {
-            if (!err) return res.send({ docs, message: ' Password changed' });
-            if (err) return res.status(500).send({ message: 'erreur' });
+            if (!err) return res.send(' Password changed');
+            if (err) return res.status(500).send('User not found');
           }
         );
       });
     });
   } else {
-    res.clearCookie('jwt', '', { maxAge: 1 });
+    res.clearCookie('jwt');
     res.status(401).json('Unauthorized request');
   }
 };
@@ -157,16 +158,34 @@ exports.updatePassword = (req, res, next) => {
 exports.deleteUser = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
+  if (req.params.id === req.auth.userId || req.auth.isAdmin) {
+    User.deleteOne({ _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'Successfully deleted' }))
 
-  User.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Successfully deleted' }))
+      .catch((error) => res.status(500).json('User not found', error));
+    if (!req.auth.isAdmin) {
+      res.clearCookie('jwt');
 
-    .catch((error) =>
-      res.status(400).json({ error: 'unsuccessfully deleted' })
-    );
+    }
+  } else {
+    res.status(401).json('Unauthorized request');
+    res.clearCookie('jwt');
+  }
 };
 
 exports.logout = (req, res) => {
-  res.cookie('jwt', '', { maxAge: 1 });
-  res.json('cookie enlevé');
+  if (!ObjectID.isValid(req.params.id))
+  return res.status(400).send('ID unknown :' + req.params.id);
+  if (req.params.id === req.auth.userId) {
+    User.findById(req.params.id, (err, user) => {
+      if (!err) {
+        res.clearCookie('jwt');
+        return res.status(200).json('Logout succeeded');
+      }
+      if (err) return res.status(500).json('User not found',err);
+    });
+  }else{
+    res.clearCookie('jwt')
+    res.status(401).json("Unauthorized request")
+  }
 };
