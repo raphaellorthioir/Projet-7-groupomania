@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 //const authController = require("./middleware/auth")
-const { checkUser, requireAuth } = require('./middleware/auth');
+const { requireAuth } = require('./middleware/auth');
 require('dotenv').config(); // permet de cacher des variables
 
 // Mongodb connection

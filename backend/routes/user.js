@@ -5,8 +5,7 @@ const { checkUser } = require('../middleware/auth');
 const passwordValidator = require('../middleware/password-validator');
 const emailValidator = require('../middleware/emailValidator');
 const uploadController = require(`../controllers/upload.controller`);
-const multer = require(`multer`);
-const upload = multer();
+const multer = require('../middleware/multer-config');
 
 // authentification
 
@@ -33,7 +32,7 @@ router.delete('/deleteUserAccount/:id', checkUser, userCtrl.deleteUser);
 
 // upload new image profil
 
-router.post('/upload', upload.single(`file`), uploadController.uploadProfil);
+router.put('/uploadImgProfil/:id',checkUser, multer, userCtrl.updateUser);
 
 // follow and unfollow routes
 
