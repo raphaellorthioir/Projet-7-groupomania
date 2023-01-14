@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt'); /*package de hashage de mot de passe, une BD d
 const jwt = require('jsonwebtoken');
 const { path } = require('../app');
 const { reset } = require('nodemon');
+const fs = require('fs');
+const { log } = require('console');
+const user = require('../../../../../P6/backend/models/user');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 
 //  SIGNUP
@@ -123,24 +126,52 @@ exports.updateUser = (req, res, next) => {
     return res.status(400).send('ID unknown :' + req.params.id);
 
   if (req.params.id === req.auth.userId || req.auth.isAdmin) {
-    User.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: {
-          email: req.body.email,
-          pseudo: req.body.pseudo,
-          bio: req.body.bio,
-          profilPicture: `${req.protocol}://${req.get('host')}/images/${
-            req.file.filename
-          }`,
-        },
-      },
-      { new: true, upsert: true, setDefaultOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: 'erreur' });
+    User.findById(req.params.id, (err, docs) => {
+      const pathImg = docs.profilPicture.substring(50);
+      if (req.file && pathImg !== 'random-user.png') {
+        fs.unlink(`./uploads/client/profil_image/${pathImg}`, (err) => {
+          if (err) console.log('error cancel img profil');
+        });
+        User.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $set: {
+              email: req.body.email,
+              pseudo: req.body.pseudo,
+              bio: req.body.bio,
+              profilPicture: `${req.protocol}://${req.get(
+                'host'
+              )}/uploads/client/profil_image/${req.file.filename}`,
+            },
+          },
+          { new: true, upsert: true, setDefaultOnInsert: true },
+          (err, docs) => {
+            if (!err) {
+              return res.status(200).json(docs);
+            }
+            if (err) return res.status(500).send({ message: 'erreur' });
+          }
+        ).select('-password -email -_id -isAdmin -createdAt -updatedAt -__v ');
+      } else {
+        User.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $set: {
+              email: req.body.email,
+              pseudo: req.body.pseudo,
+              bio: req.body.bio,
+            },
+          },
+          { new: true, upsert: true, setDefaultOnInsert: true },
+          (err, docs) => {
+            if (!err) {
+              return res.status(200).json(docs);
+            }
+            if (err) return res.status(500).send({ message: 'erreur' });
+          }
+        ).select('-password -email -_id -isAdmin -createdAt -updatedAt -__v ');
       }
-    ).select('-password -email -_id -isAdmin -createdAt -updatedAt -__v ');
+    });
   } else {
     res.clearCookie('jwt');
     res.status(401).json('Unauthorized request');
