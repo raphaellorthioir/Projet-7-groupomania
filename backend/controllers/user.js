@@ -50,7 +50,7 @@ exports.signup = (req, res, next) => {
     .catch((err) => res.status(500).json('Password error', err));
 };
 
-//LOGIN
+//SignIn
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) /* objet filter de comparaison */
     .then((user) => {
@@ -65,7 +65,7 @@ exports.login = (req, res, next) => {
           if (!valid) {
             return res
               .status(401)
-              .json({ passwordError: ' Mot de passe incorrect' });
+              .json({ passwordError: ' Mot de passe incorrect.' });
           } else {
             token = jwt.sign(
               {
@@ -113,7 +113,7 @@ exports.userProfil = (req, res, next) => {
     User.findById(req.params.id, (err, docs) => {
       if (!err) res.send({ message: "user's profil access granted ", docs });
       else console.log('ID unknown :' + err);
-    }).select('  -password -email'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
+    }).select('  -password -email -isAdmin'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
   } else {
     res.clearCookie('jwt');
     res.status(401).json('Unauthorized request');
@@ -130,7 +130,8 @@ exports.updateUser = (req, res, next) => {
       const pathImg = docs.profilPicture.substring(50);
       if (req.file && pathImg !== 'random-user.png') {
         fs.unlink(`./uploads/client/profil_image/${pathImg}`, (err) => {
-          if (err) console.log('error cancel img profil');
+          if (err) console.log('error delete img profil from local folder');
+          else console.log(' img profil deleted from folder');
         });
         User.findOneAndUpdate(
           { _id: req.params.id },
@@ -144,7 +145,7 @@ exports.updateUser = (req, res, next) => {
               )}/uploads/client/profil_image/${req.file.filename}`,
             },
           },
-          { new: true, upsert: true, setDefaultOnInsert: true },
+          { new: true, upsert: true, setDefaultOnInsert: true ,runValidators:true},
           (err, docs) => {
             if (!err) {
               return res.status(200).json(docs);
@@ -162,12 +163,17 @@ exports.updateUser = (req, res, next) => {
               bio: req.body.bio,
             },
           },
-          { new: true, upsert: true, setDefaultOnInsert: true },
+          {
+            new: true,
+            upsert: true,
+            setDefaultOnInsert: true,
+            runValidators: true,
+          },
           (err, docs) => {
             if (!err) {
               return res.status(200).json(docs);
             }
-            if (err) return res.status(500).send({ message: 'erreur' });
+            if (err) return res.status(500).send(err);
           }
         ).select('-password -email -_id -isAdmin -createdAt -updatedAt -__v ');
       }
@@ -196,7 +202,7 @@ exports.updatePassword = (req, res, next) => {
           },
 
           //console.log(req.body.password),
-          { new: true, upsert: true, setDefaultOnInsert: true },
+          { new: true, upsert: true, setDefaultOnInsert: true,runValidators:true },
 
           (err, docs) => {
             if (!err) return res.send(' Password changed');

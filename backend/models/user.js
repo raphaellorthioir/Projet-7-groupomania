@@ -8,10 +8,10 @@ const userSchema = mongoose.Schema(
     pseudo: {
       type: String,
       required: true,
-      minLength: 3,
-      maxLength: 20,
       unique: true,
       trimp: true,
+      minlength: 5,
+      maxlength: 20,
     },
     email: {
       type: String,
@@ -21,14 +21,14 @@ const userSchema = mongoose.Schema(
       trim: true,
       unique: true,
     },
-    password: { type: String, required: true, minlength: 8, max: 30 },
+    password: { type: String, required: true, minlength: 8 },
     profilPicture: {
       type: String,
       default: './uploads/profil/random-user.png',
     },
     bio: {
       type: String,
-      max: 1000,
+      maxlength: 1000,
     },
 
     isAdmin: { type: Boolean, default: false },

@@ -7,7 +7,7 @@ passwordSchema
   .is()
   .min(8, 'Le mot de passe doit être composé de 8 caractères au minimum') // Minimum length 8
   .is()
-  .max(30) // Maximum length 30
+  .max(30,'Le mot de passe ne doit pas dépasser les 30 caractères') // Maximum length 30
   .has()
   .uppercase(1, 'Une majuscule obligatoire') // Must have uppercase letters
   .has()
@@ -24,7 +24,7 @@ module.exports = (req, res, next) => {
   } else {
     return res.status(400).json({
       globalMessage:
-        'Format du mot de passe incorrect. Veuillez suivre les indications',
+        'Format du mot de passe incorrect. Veuillez suivre les indications:',
       passwordErrorList: passwordSchema.validate(req.body.password, {
         details: true,
       }),
