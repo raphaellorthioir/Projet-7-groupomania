@@ -145,7 +145,12 @@ exports.updateUser = (req, res, next) => {
               )}/uploads/client/profil_image/${req.file.filename}`,
             },
           },
-          { new: true, upsert: true, setDefaultOnInsert: true ,runValidators:true},
+          {
+            new: true,
+            upsert: true,
+            setDefaultOnInsert: true,
+            runValidators: true,
+          },
           (err, docs) => {
             if (!err) {
               return res.status(200).json(docs);
@@ -202,7 +207,12 @@ exports.updatePassword = (req, res, next) => {
           },
 
           //console.log(req.body.password),
-          { new: true, upsert: true, setDefaultOnInsert: true,runValidators:true },
+          {
+            new: true,
+            upsert: true,
+            setDefaultOnInsert: true,
+            runValidators: true,
+          },
 
           (err, docs) => {
             if (!err) return res.send(' Password changed');
@@ -228,10 +238,8 @@ exports.deleteUser = (req, res) => {
       )
 
       .catch((error) => {
-        if (!req.auth.isAdmin) {
-          res.clearCookie('jwt');
-          res.status(500).json('User not found', error);
-        }
+        res.clearCookie('jwt');
+        res.status(500).json('User not found', error);
       });
   } else {
     res.status(401).json('Unauthorized request');

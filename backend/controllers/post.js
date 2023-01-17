@@ -9,23 +9,32 @@ const { post } = require('../routes/user');
 const { timeStamp, log } = require('console');
 const user = require('../models/user');
 exports.createPost = (req, res, next) => {
-  const postObject = req.body;
-  delete postObject._id;
-  const post = new Post({
-    ...postObject,
-    userId: req.body.posterId,
-    usersLiked: [],
-    usersDisliked: [],
-  });
-  if (req.file) {
-    post.imageUrl = `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`;
+  try {
+    if (req.params.id === req.auth.userId) {
+      const postObject = req.body;
+      delete postObject._id;
+      const post = new Post({
+        ...postObject,
+        userId: req.params.id,
+        usersLiked: [],
+        usersDisliked: [],
+      });
+      if (req.file) {
+        post.imageUrl = `${req.protocol}://${req.get('host')}/uploads/client/posts/${
+          req.file.filename
+        }`;
+      }
+      post
+        .save()
+        .then(() => res.status(201).json({ message: 'Post créé', post }))
+        .catch((error) => res.status(400).json({ error }));
+    } else {
+      res.clearCookie('jwt');
+    }
+  } catch {
+    res.clearCookie('jwt');
+    res.status(500).json(err);
   }
-  post
-    .save()
-    .then(() => res.status(201).json({ message: 'Post créé', post }))
-    .catch((error) => res.status(400).json({ error }));
 };
 
 exports.updatePost = (req, res, next) => {

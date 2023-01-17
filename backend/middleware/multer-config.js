@@ -11,6 +11,7 @@ const storage = multer.diskStorage({
   // enregistrement sur le disque
   destination: (req, file, callback) => {
     // objet de config a besoin de 2 éléments : la destination, fct° qui va indiquer à multer où enregistrer les fichiers
+
     callback(null, 'uploads/client/profil_image');
   },
   filename: (req, file, callback) => {
