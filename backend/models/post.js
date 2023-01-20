@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const postSchema = mongoose.Schema(
   {
     userId: { type: String, required: true },
-    textPost: { type: String, maxlength: 500 },
+    pseudo: { type: String },
+    text: { type: String, maxlength: 500 },
     date: { type: Date },
     imageUrl: { type: String },
     video: { type: String },
@@ -13,7 +14,7 @@ const postSchema = mongoose.Schema(
     comments: [
       {
         userId: String,
-        userPseudo: String,
+        pseudo: String,
         userImgProfil: String,
         text: String,
         timestamp: Number,

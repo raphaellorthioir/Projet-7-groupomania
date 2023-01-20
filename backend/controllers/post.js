@@ -1,6 +1,6 @@
 const { updateOne, findOne, findById } = require('../models/post');
 const Post = require('../models/post');
-const userModel = require('../models/user');
+const use = require('../models/user');
 const { path, request } = require('../app');
 const ObjectID = require('mongoose').Types.ObjectId;
 const fs = require('fs');
@@ -13,16 +13,18 @@ exports.createPost = (req, res, next) => {
     if (req.params.id === req.auth.userId) {
       const postObject = req.body;
       delete postObject._id;
+
       const post = new Post({
         ...postObject,
-        userId: req.params.id,
+        userId: req.auth.userId,
+        pseudo: req.auth.pseudo,
         usersLiked: [],
         usersDisliked: [],
       });
       if (req.file) {
-        post.imageUrl = `${req.protocol}://${req.get('host')}/uploads/client/posts/${
-          req.file.filename
-        }`;
+        post.imageUrl = `${req.protocol}://${req.get(
+          'host'
+        )}/uploads/client/images/${req.file.filename}`;
       }
       post
         .save()
@@ -33,7 +35,7 @@ exports.createPost = (req, res, next) => {
     }
   } catch {
     res.clearCookie('jwt');
-    res.status(500).json(err);
+    res.status(500).json('erreur');
   }
 };
 

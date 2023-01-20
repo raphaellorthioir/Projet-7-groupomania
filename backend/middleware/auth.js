@@ -41,7 +41,11 @@ module.exports.checkUser = (req, res, next) => {
           if (err) {
             res.status(400).json({ message: 'User not found' });
           }
-          req.auth = { userId: user.id, isAdmin: user.isAdmin };
+          req.auth = {
+            userId: user.id,
+            isAdmin: user.isAdmin,
+            pseudo: user.pseudo,
+          };
           next();
         });
       }

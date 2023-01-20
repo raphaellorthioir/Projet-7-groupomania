@@ -6,7 +6,6 @@ const { path } = require('../app');
 const { reset } = require('nodemon');
 const fs = require('fs');
 const { log } = require('console');
-const user = require('../../../../../P6/backend/models/user');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 
 //  SIGNUP
@@ -127,9 +126,11 @@ exports.updateUser = (req, res, next) => {
 
   if (req.params.id === req.auth.userId || req.auth.isAdmin) {
     User.findById(req.params.id, (err, docs) => {
-      const pathImg = docs.profilPicture.substring(50);
+      const pathImg = docs.profilPicture.substring(44);
+      console.log(pathImg);
+      console.log(req.file);
       if (req.file && pathImg !== 'random-user.png') {
-        fs.unlink(`./uploads/client/profil_image/${pathImg}`, (err) => {
+        fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
           if (err) console.log('error delete img profil from local folder');
           else console.log(' img profil deleted from folder');
         });
@@ -142,7 +143,7 @@ exports.updateUser = (req, res, next) => {
               bio: req.body.bio,
               profilPicture: `${req.protocol}://${req.get(
                 'host'
-              )}/uploads/client/profil_image/${req.file.filename}`,
+              )}/uploads/client/images/${req.file.filename}`,
             },
           },
           {
