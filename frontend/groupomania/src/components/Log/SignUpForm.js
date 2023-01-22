@@ -1,76 +1,75 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
-//import { useNavigate } from 'react-router-dom';
-const SignUpForm = () => {
-  const [pseudo, setPseudo] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [controlPassword, setControlPassword] = useState('');
 
-  //const navigate = useNavigate();
+const SignUpForm = () => {
+  const pseudo = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const confirmPsw = useRef(null);
+
+  const [errorPswMatch, setErrorPswMatch] = useState(null);
+  const [errorsPsw, setErrorsPsw] = useState(null);
+  const [errorEmail, setErrorEmail] = useState(null);
 
   const handleRegister = (e) => {
     e.preventDefault();
+    if (errorsPsw) setErrorsPsw(null);
+    if (errorPswMatch) setErrorPswMatch(null);
+    if (errorEmail) setErrorEmail(null);
 
-    const pseudoError = document.querySelector('.errorPseudo');
-    const emailError = document.querySelector('.errorEmail');
-    const passwordErrors = document.querySelector('.passwordErrors');
-    const passwordConfirmError = document.querySelector(
-      '.passwordConfirmError'
-    );
-    const ulPasswordErrors = document.querySelector('#passwordErrorsList');
+    const focusedPseudo = pseudo.current.value;
+    const focusedEmail = email.current.value;
+    const focusedPassword = password.current.value;
+    const focusConfirmedPsw = confirmPsw.current.value;
 
-    pseudoError.innerHTML = '';
-    emailError.innerHTML = '';
-    passwordConfirmError.innerHTML = '';
-
-    if (ulPasswordErrors) {
-      ulPasswordErrors.remove();
-    }
-
-    if (password !== controlPassword) {
-      passwordConfirmError.innerHTML = 'Les mots de passe ne correspondent pas';
+    if (focusedPassword !== focusConfirmedPsw) {
+      setErrorPswMatch('Les mots de passe ne correspondent pas');
     } else {
       axios({
         method: 'post',
         url: `${process.env.REACT_APP_API_URL}api/auth/signup`,
-        withCredentials:true,
+        withCredentials: true,
         data: {
-          pseudo,
-          email,
-          password,
+          pseudo: focusedPseudo,
+          email: focusedEmail,
+          password: focusedPassword,
         },
       })
         .then((res) => {
+          console.log('réponse reçu');
           console.log(res);
-
-          window.location='/'
+          window.location = '/';
         })
         .catch((res) => {
           console.log(res);
-          if (res.response.data.errors) {
-            if (res.response.data.errors.pseudo) {
-              pseudoError.innerHTML = 'Ce pseudo est déjà pris';
-            }
-            if (res.response.data.errors.email) {
-              emailError.innerHTML = 'Cet email est déjà utilisé';
-            }
-          }
-
           if (res.response.data.passwordErrorList) {
-            let dataPassword = res.response.data.passwordErrorList;
-            let ul = document.createElement('ul');
-            ul.setAttribute('id', 'passwordErrorsList');
-            ul.setAttribute('class', 'txt-al-j');
-            let li;
-            passwordErrors.appendChild(ul);
-
-            dataPassword.forEach((dataList) => {
-              li = document.createElement('li');
-              ul.appendChild(li);
-              li.textContent = `${dataList.message}`;
-            });
+            setErrorsPsw(res.response.data.passwordErrorList);
           }
+          if (res.response.data.errors.email)
+            setErrorEmail('Cette adresse est déjà liée à un compte existant');
+          /* if (res.response.data.errors) {
+              if (res.response.data.errors.pseudo) {
+                pseudoError.innerHTML = 'Ce pseudo est déjà pris';
+              }
+              if (res.response.data.errors.email) {
+                emailError.innerHTML = 'Cet email est déjà utilisé';
+              }
+            }
+  
+            if (res.response.data.passwordErrorList) {
+              let dataPassword = res.response.data.passwordErrorList;
+              let ul = document.createElement('ul');
+              ul.setAttribute('id', 'passwordErrorsList');
+              ul.setAttribute('class', 'txt-al-j');
+              let li;
+              passwordErrors.appendChild(ul);
+  
+              dataPassword.forEach((dataList) => {
+                li = document.createElement('li');
+                ul.appendChild(li);
+                li.textContent = `${dataList.message}`;
+              });
+            }*/
         });
     }
   };
@@ -83,40 +82,40 @@ const SignUpForm = () => {
         type="text"
         name="pseudo"
         id="pseudo"
-        onChange={(e) => setPseudo(e.target.value)}
-        value={pseudo}
+        ref={pseudo}
+        placeholder="Votre Pseudo"
+        required
       />
       <div className=" error errorPseudo"></div>
       <label htmlFor="email">Email</label>
       <br />
-      <input
-        type="email"
-        name="email"
-        id="email"
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-      />
-      <div className=" error errorEmail"></div>
+      <input type="email" name="email" id="email" ref={email} />
+      {errorEmail && <div className=" error errorEmail"> {errorEmail}</div>}
+
       <label htmlFor="password">Mot de passe</label>
       <br />
-      <input
-        type="password"
-        name="password"
-        id="password"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-      />
-      <div className=" error passwordErrors"></div>
+
+      <input type="password" name="password" id="password" ref={password} />
+      {errorsPsw &&
+        errorsPsw.map((item) => (
+          <div className=" error passwordErrors"> {item.message}</div>
+        ))}
+
+      <br />
       <label htmlFor="password-conf">Confirmer mot de passe</label>
       <br />
       <input
         type="password"
         name="password-conf"
         id="password-conf"
-        onChange={(e) => setControlPassword(e.target.value)}
-        value={controlPassword}
+        ref={confirmPsw}
       />
-      <div className="error passwordConfirmError"></div>
+      {errorPswMatch && (
+        <div className="error passwordConfirmError">
+          Les mot de passe ne correspondent pas
+        </div>
+      )}
+
       <br />
       <input
         type="submit"

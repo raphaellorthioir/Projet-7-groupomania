@@ -1,13 +1,13 @@
-const { updateOne, findOne, findById } = require('../models/post');
+//const { updateOne, findOne, findById } = require('../models/post');
 const Post = require('../models/post');
-const use = require('../models/user');
 const { path, request } = require('../app');
 const ObjectID = require('mongoose').Types.ObjectId;
 const fs = require('fs');
-const { isBuffer } = require('util');
+/*const { isBuffer } = require('util');
 const { post } = require('../routes/user');
-const { timeStamp, log } = require('console');
-const user = require('../models/user');
+const { timeStamp, log } = require('console');*/
+const User = require('../models/user');
+const { log } = require('console');
 exports.createPost = (req, res, next) => {
   try {
     if (req.params.id === req.auth.userId) {
@@ -42,32 +42,62 @@ exports.createPost = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.postId))
     return res.status(400).send('ID unknown :' + req.params.postId);
-  try {
-    const postObject = req.file
-      ? {
-          ...req.body,
-          imageUrl: `${req.protocol}://${req.get('host')}/images/${
-            req.file.filename
-          }`,
-        }
-      : { ...req.body };
 
-    Post.findOne({ _id: req.params.postId })
-      .then((post) => {
-        if (post) {
-          return Post.updateOne({ _id: req.params.postId }, postObject);
-        }
-        return res.status(401).json({ message: 'Bad user' });
-      })
-      .then(() => {
-        res.status(200).json({ message: 'post updated' });
-      })
-      .catch(() => {
-        res.status(400).json({ message: 'post not found' });
-      });
-  } catch {
-    return res.status(400).send({ message: 'erreur' });
-  }
+  const postObject = req.file
+    ? {
+        ...req.body,
+        imageUrl: `${req.protocol}://${req.get('host')}/uploads/client/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+
+  Post.findById(req.params.postId, (err, post) => {
+    if (post.userId === req.auth.userId) {
+      const pathImg = post.imageUrl.substring(44);
+
+      if (req.file) {
+        fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
+          if (err) console.log('error delete img profil from local folder');
+        });
+        Post.findOneAndUpdate(
+          { _id: req.params.postId },
+
+          postObject,
+          {
+            new: true,
+            upsert: true,
+            setDefaultOnInsert: true,
+            runValidators: true,
+          },
+          (err, docs) => {
+            if (!err) {
+              return res.status(200).json(docs);
+            }
+            if (err) return res.status(500).send({ message: 'erreur' });
+          }
+        );
+      } else {
+        Post.findOneAndUpdate(
+          { _id: req.params.postId },
+
+          postObject,
+          {
+            new: true,
+            upsert: true,
+            setDefaultOnInsert: true,
+            runValidators: true,
+          },
+          (err, docs) => {
+            if (!err) {
+              return res.status(200).json(docs);
+            }
+            if (err) return res.status(500).send({ message: 'erreur' });
+          }
+        );
+      }
+    }
+  });
 };
 
 exports.getAllPosts = (req, res, next) => {
@@ -86,13 +116,14 @@ exports.deletePost = (req, res, next) => {
       res.status(404).json({
         error: 'post doesnt exist',
       });
-    }
-    Post.deleteOne({ _id: req.params.postId })
-      .then(() => res.status(200).json({ message: 'Successfully deleted' }))
+    } else if (post.userId === req.auth.userId || req.auth.isAdmin) {
+      Post.deleteOne({ _id: req.params.postId })
+        .then(() => res.status(200).json({ message: 'Successfully deleted' }))
 
-      .catch((error) =>
-        res.status(400).json({ error: 'unsuccessfully deleted' })
-      );
+        .catch((error) =>
+          res.status(400).json({ error: 'unsuccessfully deleted' })
+        );
+    }
   });
 };
 
@@ -164,7 +195,7 @@ exports.commentPost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.postId))
     return res.status(400).send(`This post doesn't exist anymore`);
 
-  userModel.findById(req.body.userId, (err, user) => {
+  User.findById(req.body.userId, (err, user) => {
     Post.findByIdAndUpdate(req.params.postId, {
       $push: {
         comments: {
@@ -189,7 +220,6 @@ exports.editComment = (req, res, next) => {
   if (!ObjectID.isValid(req.params.postId))
     return res.status(400).send({ message: `This Post doesn't exist` });
 
-  console.log(req.params.postId);
   try {
     return Post.findById(req.params.postId, (err, docs) => {
       const theComment = docs.comments.find((comment) => {
@@ -197,12 +227,16 @@ exports.editComment = (req, res, next) => {
       });
 
       if (!theComment) return res.status(404).send(err);
-      theComment.text = req.body.text;
-
-      return docs.save((err) => {
-        if (!err) return res.status(200).send(docs.comments);
-        return res.status(400).send(err);
-      });
+      else {
+        if (theComment.userId === req.auth.userId) {
+          theComment.text = req.body.text;
+          return docs.save((err) => {
+            if (!err) return res.status(200).send(docs.comments);
+            return res.status(400).send(err);
+          });
+        }
+        res.status(401).json('Unauthorized request');
+      }
     });
   } catch (err) {
     return res.status(400).send(err);
@@ -219,17 +253,36 @@ exports.deleteComment = (req, res, next) => {
         const theComment = docs.comments.find((comment) => {
           return comment._id.equals(req.body.commentId);
         });
-
         if (!theComment) return res.status(404).send('comment not found');
-        docs.comments.splice(docs.comments.indexOf(theComment), 1);
-
-        docs.save((err) => {
-          if (!err) return res.status(200).send({ message: 'comment deleted' });
-          return res.status(400).send(err);
-        });
+        else {
+          if (docs.userId === req.auth.userId || req.auth.isAdmin) {
+            docs.comments.splice(docs.comments.indexOf(theComment), 1);
+            docs.save((err) => {
+              if (!err)
+                return res.status(200).send({ message: 'comment deleted ' });
+              return res.status(400).send(err);
+            });
+          } else if (
+            theComment.userId === req.auth.userId ||
+            req.auth.isAdmin
+          ) {
+            docs.comments.splice(docs.comments.indexOf(theComment), 1);
+            docs.save((err) => {
+              if (!err)
+                return res
+                  .status(200)
+                  .send(
+                    req.auth.isAdmin
+                      ? { message: 'comment deleted by Admin' }
+                      : { message: 'comment deleted by commenter' }
+                  );
+              return res.status(400).send(err);
+            });
+          }
+        }
       }
     );
   } catch (err) {
-    return res.status(400).send(error);
+    return res.status(400).send(err);
   }
 };

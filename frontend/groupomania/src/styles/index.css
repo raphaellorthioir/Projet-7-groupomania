@@ -10,6 +10,47 @@
   font-family: "font-3";
   src: url(./assets/fonts/JosefinSans-Bold.ttf);
 }
+#root {
+  height: 100vh;
+}
+
+.flex {
+  display: flex;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.sb {
+  justify-content: space-between;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.ac-center {
+  align-content: center;
+}
+
+.cl {
+  flex-direction: column;
+}
+
+.txt-al-j {
+  text-align: justify;
+}
+
+#passwordErrorsList li {
+  cursor: auto;
+  transform: none;
+}
+
 /** {
   margin: 0;
   padding: 0;
@@ -52,7 +93,7 @@ input[type=submit] {
   padding: 10px 20px;
   cursor: pointer;
   font-size: 1.1rem;
-  border-radius: 20px 6px 20px 20px;
+  border-radius: 20px 20px 20px 20px;
 }
 button:hover,
 input[type=submit]:hover {
@@ -74,6 +115,7 @@ i:hover {
 }
 
 body {
+  margin: 0;
   font-family: "font-2", serif;
   line-height: 1.4rem;
   background: rgb(253, 253, 253);
@@ -171,16 +213,21 @@ body {
 nav {
   position: fixed;
   width: 100%;
-  height: 45px;
+  height: auto;
   border-radius: 6px;
   box-shadow: 18px 1px 0px #ff7b77, 22px 4px 0px 0px rgb(219, 218, 218);
   z-index: 10;
   top: 0;
+  margin: auto;
+  padding: 0 10px;
 }
 @media screen and (max-width: 1251px) {
   nav {
     padding: 0 20px;
   }
+}
+nav .logo-profil {
+  font-size: 2em;
 }
 nav::after {
   content: "";
@@ -194,14 +241,17 @@ nav::after {
   background: rgba(255, 255, 255, 0.86);
   z-index: -8;
 }
+nav .profil-container {
+  width: 300px;
+}
+nav .icon-logout {
+  font-size: 30px;
+  cursor: pointer;
+}
 nav .nav-container {
   display: flex;
   width: 100%;
-  max-width: 1190px;
   margin: 0 auto;
-  justify-content: space-between;
-  height: 45px;
-  align-items: center;
 }
 nav .nav-container .logo {
   display: flex;
@@ -675,14 +725,10 @@ nav .nav-container ul li img {
 }
 
 .profil-page {
-  margin-top: 500px;
-  max-width: 800px;
+  height: 100vh;
 }
 .profil-page .icons {
   top: 55px;
-}
-.profil-page .log-container {
-  margin: 0 auto;
 }
 @media screen and (max-width: 885px) {
   .profil-page .log-container {
@@ -694,36 +740,25 @@ nav .nav-container ul li img {
   background: #fdeeee;
   min-width: 490px;
   width: 80%;
+  margin: auto;
   text-align: center;
-  margin: auto auto;
   padding: 20px;
   border-radius: 20px;
-}
-@media screen and (max-width: 550px) {
-  .profil-page .connection-form {
-    min-width: 200px;
-  }
-}
-.profil-page .connection-form .form-container {
-  display: grid;
-  grid-template-columns: 30% 70%;
-}
-@media screen and (max-width: 550px) {
-  .profil-page .connection-form .form-container {
-    grid-template-columns: 1fr;
-  }
+  /*  @media screen and(max-width: 550px) {
+      min-width: 200px;
+    }*/
 }
 .profil-page .connection-form .form-container ul li {
   cursor: pointer;
   border-radius: 20px;
   padding: 10px 20px;
   transition: 0.2s;
-}
-@media screen and (max-width: 550px) {
-  .profil-page .connection-form .form-container ul li {
-    width: 80%;
-    margin: 0 auto;
-  }
+  list-style: none;
+  margin: 10px 0;
+  /* @media screen and(max-width: 550px) {
+     width: 80%;
+     margin: 0 auto;
+   }*/
 }
 .profil-page .connection-form .form-container ul .active-btn {
   background: #ff7b77;
@@ -1435,4 +1470,21 @@ nav .nav-container ul li img {
   .trending-page .right-side .right-side-container {
     width: 404px;
   }
+}
+
+.upload-pic {
+  cursor: pointer;
+  border: 1px;
+  border-radius: 20px 20px 20px 20px;
+  background-color: rgb(102, 147, 238);
+  width: auto;
+  text-align: center;
+  padding-top: 10px;
+}
+.upload-pic label {
+  cursor: pointer;
+  margin: 0 5px;
+}
+.upload-pic .hide-input {
+  display: none;
 }/*# sourceMappingURL=index.css.map */

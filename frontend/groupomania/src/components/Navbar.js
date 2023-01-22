@@ -1,13 +1,9 @@
-
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { UserContext } from './AppContext';
 import Logout from './Log/Logout';
 const Navbar = () => {
   const user = useContext(UserContext);
-  
-
-  
 
   return (
     <nav>
@@ -21,11 +17,14 @@ const Navbar = () => {
           </NavLink>
         </div>
         <div className=" profil-container flex space-around ai-center ac-center">
-          <NavLink to="/profil">
-            <div className="flex sb ai-center ac-center">
-              <img src={user.profilPicture} alt="profil" />
-              <div>{user.pseudo}</div>
-            </div>
+          <NavLink
+            to={{
+              pathname: '/profil',
+              search:`?user=${user.userId}`
+            }}
+            
+          >
+            <i class="fa-regular fa-user logo-profil"></i>
           </NavLink>
 
           <Logout></Logout>
