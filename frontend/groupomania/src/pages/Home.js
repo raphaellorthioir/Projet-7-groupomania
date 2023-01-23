@@ -7,8 +7,7 @@ import axios from 'axios';
 
 const Home = () => {
   const user = useContext(UserContext)
-  const [posts,setPosts]=useState()
-  
+  const [posts,setPosts]=useState([])
   useEffect(()=>{
 
     const fetchPosts = async()=>{
@@ -17,7 +16,6 @@ const Home = () => {
       })
       .then((res)=>{
         setPosts(res.data)
-        
       })
       .catch((res)=>{
         console.log(res)
@@ -25,6 +23,8 @@ const Home = () => {
     }
     fetchPosts()
   },[])
+ 
+    
  
   return(
     <div>

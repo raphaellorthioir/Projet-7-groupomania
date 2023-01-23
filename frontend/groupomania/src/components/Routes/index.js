@@ -20,7 +20,7 @@ const index = () => {
         {/* Permet d'y insérer toutes les Route d'affichage des components */}
         <Route path="/signing" element={<SignupLoginPage />} />
 
-        <Route path="/" element={<Home />} />
+        <Route exact   path="/" element={<Home />} />
         <Route path="/profil" element={<Profil />} />
 
         <Route path="/error-page" element={<ErrorPage />} />

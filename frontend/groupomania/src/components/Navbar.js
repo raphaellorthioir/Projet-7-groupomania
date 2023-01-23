@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext} from 'react';
 import { NavLink } from 'react-router-dom';
 import { UserContext } from './AppContext';
 import Logout from './Log/Logout';
 const Navbar = () => {
   const user = useContext(UserContext);
-
+ 
   return (
     <nav>
       <div className=" nav-container flex sb">
@@ -20,7 +20,7 @@ const Navbar = () => {
           <NavLink
             to={{
               pathname: '/profil',
-              search:`?user=${user.userId}`
+              search:`?user=${user?.userId}`,
             }}
             
           >
