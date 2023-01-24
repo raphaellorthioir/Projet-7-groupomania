@@ -4,6 +4,7 @@ import { UserContext } from '../components/AppContext';
 import Navbar from '../components/Navbar';
 import Post from '../components/Posts/Post'
 import axios from 'axios';
+import CreatePost from '../components/Posts/CreatePost';
 
 const Home = () => {
   const user = useContext(UserContext)
@@ -32,8 +33,9 @@ const Home = () => {
      (
       <div className='profil-page flex cl space-around'>
         <Navbar/>
+        <CreatePost/>
         {posts && posts.map((item,index)=>
-          <Post post={item} key={index}/>
+          <Post post={item} key={item._id}/>
         )
         }
         

@@ -14,6 +14,11 @@
   height: 100vh;
 }
 
+.fullHeight {
+  height: 100%;
+  margin: 0;
+}
+
 .flex {
   display: flex;
 }
@@ -208,6 +213,10 @@ body {
 }
 .home .right-side .right-side-container {
   position: fixed;
+}
+
+.post-container {
+  margin: auto;
 }
 
 nav {
@@ -1053,190 +1062,201 @@ nav .nav-container ul li img {
   transform: translateX(2px);
 }
 
-.post-container {
-  margin: 0 auto 0;
-  padding: 16px 40px;
-  border-radius: 20px;
+.textArea {
   position: relative;
-  background: #fdeeee;
+  margin: auto;
 }
-.post-container i {
-  font-size: 1.5rem;
-  margin: 20px 0;
-  color: rgb(0, 22, 44);
-}
-.post-container .data {
-  position: absolute;
-  right: 42px;
-  text-align: right;
-}
-@media screen and (max-width: 420px) {
-  .post-container .data {
-    right: 10px;
-  }
-}
-@media screen and (max-width: 380px) {
-  .post-container .data {
-    display: none;
-  }
-}
-.post-container .data span {
-  font-weight: bold;
-}
-.post-container .user-info {
-  margin-bottom: 10px;
-}
-.post-container .user-info img {
-  border-radius: 20px;
-  height: 60px;
-  width: 60px;
-  box-shadow: 2px 2px 2px rgba(51, 51, 51, 0.16);
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-.post-container .user-info h3 {
-  color: rgb(40, 40, 40);
-}
-.post-container .post-form {
-  position: relative;
-  margin: 0 auto 0;
-}
-.post-container .post-form textarea {
+.textArea textarea {
   height: 62px;
-  width: 100%;
   font-size: 1.4rem;
   padding: 12px 15px;
-  border-radius: 20px 20px 6px 20px;
-}
-.post-container .post-form .card-container {
-  background: rgb(253, 253, 253);
-  border-radius: 20px 20px 6px 20px;
-}
-.post-container .post-form .card-container .card-left {
-  text-align: left;
-}
-@media screen and (max-width: 590px) {
-  .post-container .post-form .card-container .card-left img {
-    margin-left: 0;
-  }
-}
-@media screen and (max-width: 590px) {
-  .post-container .post-form .card-container .card-right {
-    margin-left: 0;
-  }
-}
-@media screen and (max-width: 632px) {
-  .post-container .post-form .card-container .card-right .card-header {
-    flex-direction: column;
-  }
-}
-@media screen and (max-width: 590px) {
-  .post-container .post-form .card-container .card-right .card-header {
-    margin: 0;
-  }
-}
-@media screen and (max-width: 440px) {
-  .post-container .post-form .card-container .card-right .card-header .pseudo {
-    transform: translateY(-8px);
-  }
-}
-@media screen and (max-width: 632px) {
-  .post-container .post-form .card-container .card-right .card-header span {
-    position: absolute;
-    top: 40px;
-  }
-}
-@media screen and (max-width: 590px) {
-  .post-container .post-form .card-container .card-right .card-header span {
-    left: 68px;
-  }
-}
-@media screen and (max-width: 440px) {
-  .post-container .post-form .card-container .card-right .card-header span {
-    left: 14px;
-    top: 60px;
-  }
-}
-.post-container .post-form .card-container .card-right .content {
-  padding: 6px 0;
-}
-.post-container .post-form .card-container .card-right .content p {
-  text-align: left;
-  margin: 2px 0 6px;
-  font-size: 1.1rem;
-}
-.post-container .post-form .card-container .card-right .content img {
-  width: 100%;
-  border-radius: 6px;
-  margin-top: 12px;
-}
-@media screen and (max-width: 632px) {
-  .post-container .post-form .card-container .card-right .content {
-    margin-top: 20px;
-  }
-}
-.post-container .post-form .footer-form {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  width: 100%;
-}
-.post-container .post-form .footer-form .icon {
-  position: relative;
-  cursor: pointer;
-  width: 30px;
-  height: 20px;
-}
-.post-container .post-form .footer-form .icon img {
-  position: absolute;
-  height: 24px;
-  width: 24px;
-  transform: translate(-18px, -1px);
-}
-.post-container .post-form .footer-form .icon button {
-  width: 190px;
-  padding: 10px 20px;
-  background: rgb(253, 253, 253);
-  transition: 0.2s;
-}
-.post-container .post-form .footer-form .icon button:hover {
-  background: rgb(0, 22, 44);
-}
-.post-container .post-form .footer-form .icon input {
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  transform: translate(-16px, -3px);
-  opacity: 0;
-  cursor: pointer;
-}
-.post-container .post-form .footer-form .icon input::-webkit-file-upload-button {
-  cursor: pointer;
-}
-.post-container .post-form .footer-form p {
-  font-family: "font-3", serif;
-  margin-top: 4px;
-  color: red;
-}
-.post-container .post-form .footer-form .btn-send .cancel {
-  border-radius: 20px;
-  margin-right: 8px;
-  background: rgb(253, 253, 253);
-}
-.post-container .post-form .footer-form .btn-send .cancel:hover {
-  color: #fdeeee;
-  background: rgb(0, 22, 44);
-}
-.post-container .post-form .footer-form .btn-send .send:hover {
-  letter-spacing: 2px;
-}
-@media screen and (max-width: 460px) {
-  .post-container .post-form .footer-form .btn-send button {
-    font-size: 0.8rem;
-    padding: 8px;
-  }
+  border-radius: 10px 10px 10px 10px;
 }
 
+/*.post-container {
+  margin: auto auto 0;
+  border: 1px solid black;
+  position: relative;
+  background: rgba(231, 229, 229, 0.727);
+  width: 400px;
+  min-height: 400px;
+
+
+  .data {
+    position: absolute;
+    right: 42px;
+    text-align: right;
+
+    @media screen and(max-width: 420px) {
+      right: 10px;
+    }
+    @media screen and(max-width: 380px) {
+      display: none;
+    }
+
+    span {
+      font-weight: bold;
+    }
+  }
+
+  .user-info {
+    margin-bottom: 10px;
+    img {
+      border-radius: 20px;
+      height: 60px;
+      width: 60px;
+      box-shadow: 2px 2px 2px rgba(51, 51, 51, 0.16);
+      object-fit: cover;
+    }
+    h3 {
+      color: $black;
+    }
+  }
+  .post-form {
+    position: relative;
+    margin: 0 auto 0;
+
+    textarea {
+      height: 62px;
+      width: 100%;
+      font-size: 1.4rem;
+      padding: 12px 15px;
+      border-radius: 20px 20px 6px 20px;
+    }
+    .card-container {
+      background: $white;
+      border-radius: 20px 20px 6px 20px;
+
+      .card-left {
+        text-align: left;
+        img {
+          @media screen and(max-width: 590px) {
+            margin-left: 0;
+          }
+        }
+      }
+      .card-right {
+        @media screen and(max-width: 590px) {
+          margin-left: 0;
+        }
+        .card-header {
+          @media screen and(max-width: 632px) {
+            flex-direction: column;
+          }
+          @media screen and(max-width: 590px) {
+            margin: 0;
+          }
+          .pseudo {
+            @media screen and(max-width: 440px) {
+              transform: translateY(-8px);
+            }
+          }
+          span {
+            @media screen and(max-width: 632px) {
+              position: absolute;
+              top: 40px;
+            }
+            @media screen and(max-width: 590px) {
+              left: 68px;
+            }
+            @media screen and(max-width: 440px) {
+              left: 14px;
+              top: 60px;
+            }
+          }
+        }
+        .content {
+          padding: 6px 0;
+          p {
+            text-align: left;
+            margin: 2px 0 6px;
+            font-size: 1.1rem;
+          }
+          img {
+            width: 100%;
+            border-radius: 6px;
+            margin-top: 12px;
+          }
+          @media screen and(max-width: 632px) {
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+    .footer-form {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 auto;
+      width: 100%;
+
+      .icon {
+        position: relative;
+        cursor: pointer;
+        width: 30px;
+        height: 20px;
+
+        img {
+          position: absolute;
+          height: 24px;
+          width: 24px;
+          transform: translate(-18px, -1px);
+        }
+
+        button {
+          width: 190px;
+          padding: 10px 20px;
+          background: $white;
+          transition: 0.2s;
+
+          &:hover {
+            background: $color-3;
+          }
+        }
+
+        input {
+          width: 25px;
+          height: 25px;
+          position: absolute;
+          transform: translate(-16px, -3px);
+          opacity: 0;
+          cursor: pointer;
+
+          &::-webkit-file-upload-button {
+            cursor: pointer;
+          }
+        }
+      }
+      p {
+        font-family: $font-3;
+        margin-top: 4px;
+        color: red;
+      }
+      .btn-send {
+        .cancel {
+          border-radius: 20px;
+          margin-right: 8px;
+          background: $white;
+
+          &:hover {
+            color: $color-4;
+            background: $color-3;
+          }
+        }
+        .send {
+          &:hover {
+            letter-spacing: 2px;
+          }
+        }
+        button {
+          @media screen and(max-width: 460px) {
+            font-size: 0.8rem;
+            padding: 8px;
+          }
+        }
+      }
+    }
+  }
+}*/
 .get-friends-container {
   width: 356px;
   background: linear-gradient(145deg, #ffd0c4 30%, #ffe1d9 100%);
@@ -1352,90 +1372,6 @@ nav .nav-container ul li img {
   bottom: -11px;
 }
 
-.left-nav-container {
-  position: relative;
-}
-.left-nav-container .icons {
-  position: fixed;
-  z-index: 10;
-}
-@media screen and (max-width: 590px) {
-  .left-nav-container .icons {
-    margin: 2px 0 0 -9px;
-  }
-}
-.left-nav-container .icons .icons-bis {
-  position: absolute;
-  left: 10px;
-}
-.left-nav-container .icons .icons-bis a {
-  transition: 0.1s;
-  display: inline-block;
-}
-.left-nav-container .icons .icons-bis a:before {
-  transition: 0.15s ease;
-  transform: scale(0);
-  transform-origin: center;
-  z-index: -10;
-  content: "";
-  height: 45px;
-  width: 45px;
-  position: absolute;
-  background: #fdeeee;
-  border-radius: 50px;
-}
-.left-nav-container .icons .icons-bis a:hover {
-  transform: scale(1.02);
-}
-.left-nav-container .icons .icons-bis a:hover::before {
-  transform: scale(1);
-}
-@media screen and (max-width: 590px) {
-  .left-nav-container .icons .icons-bis a:hover::before {
-    background: #ff7b77;
-    height: 34px;
-    width: 34px;
-  }
-}
-@media screen and (max-width: 590px) {
-  .left-nav-container .icons .icons-bis a img {
-    height: 34px;
-    width: 34px;
-  }
-}
-.left-nav-container .icons .icons-bis .active-left-nav {
-  position: relative;
-}
-.left-nav-container .icons .icons-bis .active-left-nav::after {
-  content: "";
-  height: 40px;
-  width: 5px;
-  position: absolute;
-  background: #ff7b77;
-  left: -7px;
-  bottom: 8px;
-  border-radius: 40px;
-  transform: scaleY(0);
-  -webkit-animation: scale 1.5s ease forwards;
-          animation: scale 1.5s ease forwards;
-}
-@-webkit-keyframes scale {
-  to {
-    transform: scaleY(1);
-  }
-}
-@keyframes scale {
-  to {
-    transform: scaleY(1);
-  }
-}
-@media screen and (max-width: 590px) {
-  .left-nav-container .icons .icons-bis .active-left-nav::after {
-    height: 33px;
-    left: -8px;
-  }
-}
-
 .trending-page {
   max-width: 1200px;
   margin: 62px auto 0;
@@ -1480,11 +1416,21 @@ nav .nav-container ul li img {
   width: auto;
   text-align: center;
   padding-top: 10px;
+  /* .hide-input{
+       display: none;
+   }*/
 }
 .upload-pic label {
   cursor: pointer;
   margin: 0 5px;
 }
-.upload-pic .hide-input {
-  display: none;
+
+.likes-container i {
+  font-size: 1.5rem;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.container {
+  width: auto;
 }/*# sourceMappingURL=index.css.map */

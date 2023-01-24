@@ -128,31 +128,32 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.likePost = (req, res, next) => {
+  console;
   Post.findOne({ _id: req.params.postId }).then((post) => {
     if (req.body.like == 1) {
-      if (!post.usersLiked.includes(req.body.userId)) {
-        post.usersLiked.push(req.body.userId);
+      if (!post.usersLiked.includes(req.auth.userId)) {
+        post.usersLiked.push(req.auth.userId);
         post.usersDisliked.splice(
-          post.usersDisliked.indexOf(req.body.userId),
+          post.usersDisliked.indexOf(req.auth.userId),
           1
         );
       } else {
-        post.usersLiked.splice(post.usersLiked.indexOf(req.body.userId), 1);
+        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
       }
 
       Post.updateOne({ _id: req.params.postId }, post)
         .then(() => {
-          if (!post.usersLiked.includes(req.body.userId)) {
+          if (!post.usersLiked.includes(req.auth.userId)) {
             return res.status(200).json({
-              message: 'Post like removed ',
-              usersLiked: post.usersLiked,
-              usersDislikes: post.usersDisliked,
+              
+              usersLikes: post.usersLiked.length,
+              usersDislikes: post.usersDisliked.length,
             });
           } else {
             return res.status(200).json({
-              message: 'Post liked ',
-              usersLiked: post.usersLiked,
-              usersDislikes: post.usersDisliked,
+              
+              usersLikes: post.usersLiked.length,
+              usersDislikes: post.usersDisliked.length,
             });
           }
         })
@@ -160,28 +161,28 @@ exports.likePost = (req, res, next) => {
     }
 
     if (req.body.like == -1) {
-      if (!post.usersDisliked.includes(req.body.userId)) {
-        post.usersDisliked.push(req.body.userId);
-        post.usersLiked.splice(post.usersLiked.indexOf(req.body.userId), 1);
+      if (!post.usersDisliked.includes(req.auth.userId)) {
+        post.usersDisliked.push(req.auth.userId);
+        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
       } else {
         post.usersDisliked.splice(
-          post.usersDisliked.indexOf(req.body.userId),
+          post.usersDisliked.indexOf(req.auth.userId),
           1
         );
       }
       Post.updateOne({ _id: req.params.postId }, post)
         .then(() => {
-          if (post.usersDisliked.includes(req.body.userId)) {
+          if (post.usersDisliked.includes(req.auth.userId)) {
             return res.status(200).json({
-              message: 'undislike !',
-              usersLiked: post.usersLiked,
-              usersDislikes: post.usersDisliked,
+              
+              
+              usersLikes: post.usersLiked.length,
+              usersDislikes: post.usersDisliked.length,
             });
           } else {
             return res.status(200).json({
-              message: 'undislike removed !',
-              usersLiked: post.usersLiked,
-              usersDislikes: post.usersDisliked,
+              usersLikes: post.usersLiked.length,
+              usersDislikes: post.usersDisliked.length,
             });
           }
         })
