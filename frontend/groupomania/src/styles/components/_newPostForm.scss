@@ -1,15 +1,32 @@
-
-.textArea{
-  position: relative;
+.newPostContainer{
   margin: auto;
-  textarea{
-    height: 62px;
-  font-size: 1.4rem;
-  padding: 12px 15px;
-  border-radius: 10px 10px 10px 10px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.152);
+  width: 50vw;
+  input{
+    border-radius: 5px 5px 5px 5px;
   }
-  
+  form{
+    input.title{
+      width: auto;
+      height: 30px;
+      margin-bottom: 10px;
+    }
+  }
+ 
+  textArea{
+    position: relative;
+    margin: 0;
+    textarea{
+      height: 62px;
+    font-size: 1.4rem;
+    padding: 12px 15px;
+    border-radius: 10px 10px 10px 10px;
+    }
+    
+  }
 }
+
 
 
 /*.post-container {

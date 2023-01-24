@@ -40,12 +40,14 @@ module.exports.checkUser = (req, res, next) => {
         UserModel.findById(decodedToken.userId, (err, user) => {
           if (err) {
             res.status(400).json({ message: 'User not found' });
+          } else {
+            console.log(user);
+            req.auth = {
+              userId: user.id,
+              isAdmin: user.isAdmin,
+            };
           }
-          req.auth = {
-            userId: user.id,
-            isAdmin: user.isAdmin,
-            pseudo: user.pseudo,
-          };
+
           next();
         });
       }
@@ -66,7 +68,12 @@ module.exports.requireAuth = (req, res, next) => {
       } else {
         res
           .status(200)
-          .json({ userId: decodedToken.userId, isAdmin: decodedToken.isAdmin });
+          .json({
+            userId: decodedToken.userId,
+            isAdmin: decodedToken.isAdmin,
+            pseudo: decodedToken.pseudo,
+            profilPicture: decodedToken.profilPicture,
+          });
         next();
       }
     });

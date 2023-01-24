@@ -3,11 +3,15 @@ nav {
   width: 100%;
   height: auto;
   border-radius: 6px;
-  box-shadow: 18px 1px 0px $color-1, 22px 4px 0px 0px $shadow;
+  border-bottom: 1px black ;
   z-index: 10;
   top: 0;
   margin: auto;
   padding: 0 10px;
+
+  .logo img {
+    width: 100px;
+  }
 
   @media screen and(max-width: 1251px) {
     padding: 0 20px;
@@ -37,7 +41,9 @@ nav {
   .nav-container {
     display: flex;
     width: 100%;
-    margin: 0 auto;
+    height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.298);
+    
     
     
     .logo {
@@ -50,8 +56,8 @@ nav {
         font-family: $font-3;
       }
       img {
-        height: 26px;
-        width: 26px;
+        height: 150px;
+        width: 150px;
       }
     }
     

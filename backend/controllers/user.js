@@ -31,6 +31,8 @@ exports.signup = (req, res, next) => {
               {
                 userId: user._id,
                 isAdmin: user.isAdmin,
+                pseudo: user.pseudo,
+                profilPicture: user.profilPicture,
               } /*vérifie l'id de l'utilisateur*/,
               process.env
                 .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,
@@ -53,6 +55,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) /* objet filter de comparaison */
     .then((user) => {
+      console.log(user)
       if (!user) {
         return res.status(401).json({ emailError: `email inconnu` });
       }
@@ -70,6 +73,8 @@ exports.login = (req, res, next) => {
               {
                 userId: user._id,
                 isAdmin: user.isAdmin,
+                pseudo: user.pseudo,
+                profilPicture: user.profilPicture,
               } /*vérifie l'id de l'utilisateur*/,
               process.env
                 .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,

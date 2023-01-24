@@ -16,9 +16,12 @@ const App = () => {
         withCredentials: true,
       })
         .then((res) => {
+          console.log(res)
           setUserData({
             userId: res.data.userId,
             isAdmin: res.data.isAdmin,
+            pseudo:res.data.pseudo,
+            profilPicture:res.data.profilPicture
           });
           setId(res.data.userId);
         })

@@ -1,3 +1,9 @@
+
+.home-container{
+  margin: auto;
+  width: 50vw;
+}
+
 .home {
   display: grid;
   max-width: 1200px;
@@ -6,6 +12,7 @@
   margin: 58px auto 50px;
   position: relative;
 
+  
   @media screen and(max-width: 990px) {
     grid-template-columns: 60px 1fr;
     margin: 58px 20px 50px
@@ -87,6 +94,3 @@
   }
 }
 
-.post-container{
-  margin:auto,
-}
