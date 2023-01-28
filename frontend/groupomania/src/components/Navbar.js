@@ -25,7 +25,7 @@ const Navbar = () => {
               search: `?user=${user?.userId}`,
             }}
           >
-            <i class="fa-regular fa-user logo-profil"></i>
+            <i className="fa-regular fa-user logo-profil"></i>
           </NavLink>
 
           <Logout></Logout>

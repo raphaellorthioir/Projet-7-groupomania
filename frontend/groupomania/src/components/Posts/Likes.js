@@ -33,17 +33,17 @@ const Likes = (props) => {
           onClick={() => {
             handleLike(1);
           }}
-          class="fa-regular fa-thumbs-up"
+          className="fa-regular fa-thumbs-up"
         ></i>
         {like}
       </div>
       <div>
+        <div></div>
         <i
-          i
           onClick={() => {
             handleLike(-1);
           }}
-          class="fa-regular fa-thumbs-down"
+          className="fa-regular fa-thumbs-down"
         ></i>
         {disLike}
       </div>

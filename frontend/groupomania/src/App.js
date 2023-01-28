@@ -16,12 +16,11 @@ const App = () => {
         withCredentials: true,
       })
         .then((res) => {
-          console.log(res)
           setUserData({
             userId: res.data.userId,
             isAdmin: res.data.isAdmin,
-            pseudo:res.data.pseudo,
-            profilPicture:res.data.profilPicture
+            pseudo: res.data.pseudo,
+            profilPicture: res.data.profilPicture,
           });
           setId(res.data.userId);
         })
@@ -29,16 +28,16 @@ const App = () => {
           setUserData(null);
           console.log(err);
         });
-      console.log('re rendu');
     };
 
     fetch();
   }, [id]);
-  
+
   // A chaque fois que user évolue , ça relance la fonction useEffect
   return (
     <UserContext.Provider value={userData}>
       {/*Garde en mémoire 'hook' les données du user , ces données seront transmissibles à tout les components enfants , ici Routes */}
+
       <Routes />
     </UserContext.Provider>
   );

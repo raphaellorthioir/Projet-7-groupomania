@@ -55,7 +55,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) /* objet filter de comparaison */
     .then((user) => {
-      console.log(user)
+      console.log(user);
       if (!user) {
         return res.status(401).json({ emailError: `email inconnu` });
       }
@@ -134,7 +134,7 @@ exports.updateUser = (req, res, next) => {
       const pathImg = docs.profilPicture.substring(44);
       console.log(pathImg);
       console.log(req.file);
-      if (req.file && pathImg !== 'random-user.png') {
+      if (req.file && req.file.originalname !== 'random-user.png') {
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
           if (err) console.log('error delete img profil from local folder');
           else console.log(' img profil deleted from folder');

@@ -2,13 +2,14 @@ import axios from 'axios';
 import React, { useState } from 'react';
 
 const UploadImage = (props) => {
-  const [file, setFile] = useState();
-
+  const [file, setFile] = useState(props.profilPicture);
+  console.log(props.profilPicture);
+console.log(file);
   const handlePicture = (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append('image', file);
-
+    
     axios
       .put(
         `${process.env.REACT_APP_API_URL}api/auth/uploadImgProfil/${props._id}`,
@@ -18,6 +19,7 @@ const UploadImage = (props) => {
         }
       )
       .then((res) => {
+        setFile(res.data.profilPicture)
         console.log(res);
       })
       .catch((err) => {

@@ -10,12 +10,14 @@ const User = require('../models/user');
 const { log } = require('console');
 exports.createPost = (req, res, next) => {
   try {
+    console.log(req.file);
     if (req.params.id === req.auth.userId) {
       const postObject = req.body;
       delete postObject._id;
 
       const post = new Post({
         ...postObject,
+        title: req.body.title,
         userId: req.auth.userId,
         pseudo: req.auth.pseudo,
         usersLiked: [],
@@ -101,8 +103,8 @@ exports.updatePost = (req, res, next) => {
 };
 
 exports.getAllPosts = (req, res, next) => {
-  Post.find()
-    .sort({ date: -1 })
+  Post.find({})
+    .sort({ createdAt:-1}).exec()
     .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(400).json({ error }));
 };
@@ -145,13 +147,11 @@ exports.likePost = (req, res, next) => {
         .then(() => {
           if (!post.usersLiked.includes(req.auth.userId)) {
             return res.status(200).json({
-              
               usersLikes: post.usersLiked.length,
               usersDislikes: post.usersDisliked.length,
             });
           } else {
             return res.status(200).json({
-              
               usersLikes: post.usersLiked.length,
               usersDislikes: post.usersDisliked.length,
             });
@@ -174,8 +174,6 @@ exports.likePost = (req, res, next) => {
         .then(() => {
           if (post.usersDisliked.includes(req.auth.userId)) {
             return res.status(200).json({
-              
-              
               usersLikes: post.usersLiked.length,
               usersDislikes: post.usersDisliked.length,
             });

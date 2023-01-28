@@ -13,16 +13,16 @@ import Profil from '../../pages/Profil';
 import ErrorPage from '../../pages/ErrorPage';
 import SignupLoginPage from '../../pages/SignupLoginPage';
 
+
 const index = () => {
   return (
     <Router>
+      
       <Routes>
         {/* Permet d'y insérer toutes les Route d'affichage des components */}
         <Route path="/signing" element={<SignupLoginPage />} />
-
-        <Route exact   path="/" element={<Home />} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/profil" element={<Profil />} />
-
         <Route path="/error-page" element={<ErrorPage />} />
         <Route path="/redirect" element={<Navigate to="/error-page" />} />
         {/*Permet de rediriger vers une autre page si toutes les autres ont échoué  */}

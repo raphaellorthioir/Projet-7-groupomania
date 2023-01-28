@@ -45,6 +45,7 @@ module.exports.checkUser = (req, res, next) => {
             req.auth = {
               userId: user.id,
               isAdmin: user.isAdmin,
+              pseudo:user.pseudo
             };
           }
 

@@ -16,6 +16,7 @@ const Home = () => {
           withCredentials: true,
         })
         .then((res) => {
+          console.log(res.data);
           setPosts(res.data);
         })
         .catch((res) => {
@@ -27,25 +28,26 @@ const Home = () => {
 
   return (
     <>
-        {user ? (
-        <div className="flex cl space-around">
-          <div>
+      {user ? (
+        <div className='flex cl sb'>
+            
             <Navbar />
-          </div>
-          <div className='newPostContainer'>
+          
+          <div className="newPostContainer flex cl">
             <CreatePost />
           </div>
-          <div className="post-container">
-            {posts &&
-              posts.map((item, index) => <Post post={item} key={item._id} />)}
+          
+            <div className="post-container cl space-around ai-center ac-center ">
+              {posts &&
+                posts.map((item) => <Post post={item} key={item._id} />)}
           </div>
         </div>
+        
+        
       ) : (
         <Navigate to="/signing" />
       )}
     </>
-    
-    
   );
 };
 
