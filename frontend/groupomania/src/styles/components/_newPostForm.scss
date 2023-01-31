@@ -1,9 +1,9 @@
 .newPostContainer{
   margin: auto auto;
   margin-top: 100px;
-  width: 50vw;
-  padding: 30px;
-
+  width: 30vw;
+  padding: 15px;
+  border-radius: 35px;
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
   //box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   
@@ -15,16 +15,71 @@
       margin-bottom: 15px;
       border-left: 1px solid rgba(0, 0, 0, 0.4);
       padding-left: 10px;
+      background-color: white;
+      cursor: text;
+      transition: background-color ease 0.1s;
+      &:hover{
+        background-color: rgba(0, 0, 0, 0.100);
+      }
+    }
+    .imgInput{
+      text-align: center;
+
+    }
+    .labelImg{
+      width: 100%;
+    .imgInput{
+      display: none;
+    }
+    label{
+      width: 50px;
+      height: 50px;
+      margin-left: 10px;
+      background-color: #0077ff;
+      border-radius: 50%;
+      text-align: center;
+      cursor: pointer;
     }
     
+      
+      
+      i{
+        
+        font-size: 2em;
+        color: white;
+        margin-top: 8px;
+      }
+    
+    }
+  
    .postImg{
-    margin: auto auto;
-    max-width: 500px;
-    max-height: 900px;
-    padding-top: 20px;
+    margin: auto ;
+   // max-width: 1000px;
+   // max-height: 900px;
+   // padding-top: 20px;
+    position: relative;
     img{
+      display: block;
+      width: 100%;
       max-width: 500px;
       max-height: 900px;
+      z-index: 1;
+    }
+    i{
+      cursor: pointer;
+      margin-top: 5px;
+      margin-right: 5px;
+      border-radius: 50%;
+      width: 1em;
+      height: 1em;
+      font-size: 1em;
+      text-align: center;
+      color: black;
+      background-color: white;
+      position: absolute;
+      right: 0;
+      top: 0;
+     
     }
    }
   .test{
@@ -33,12 +88,18 @@
 
   }
    .textEditable{
-    height:auto; 
+    height:100px; 
     outline: none;
     padding-left: 10px;
+    cursor: text;
     border-left: 1px solid rgba(0, 0, 0, 0.5);
-    
-   
+    transition: background-color ease 0.1s ;
+   &:hover{
+    background-color: rgba(0, 0, 0, 0.100);
+   }
+   &:focus{
+    background-color: white;
+   }
    }
    .textEditable[placeholder]:empty:before{
     content: attr(placeholder);

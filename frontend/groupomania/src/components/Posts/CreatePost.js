@@ -8,7 +8,7 @@ const CreatePost = () => {
   const title = useRef();
   const text = useRef();
   const image = useRef();
-  const [file, setShowImage] = useState();
+  const [file, setFile] = useState();
   const [error, setError] = useState();
 
   const handleNewPost = (e) => {
@@ -38,13 +38,18 @@ const CreatePost = () => {
     }
   };
 
-  const checkImage = (e) => {
-    const file = image.current.files[0];
-    const url = URL.createObjectURL(file);
-    console.log(url);
-    console.log(image);
-    setShowImage(url);
+  const checkImage = () => {
+    const files = image.current.files[0];
+    console.log(files);
+      const newImg = URL.createObjectURL(files);
+      setFile(newImg);
+    
   };
+
+const removeImage = ()=>{
+  URL.revokeObjectURL(file)
+  setFile(null)
+}
   return (
     <>
       <div className="flex row fs ai-center">
@@ -68,7 +73,7 @@ const CreatePost = () => {
           type="text"
           name="Titre"
           id="Titre"
-          placeholder="Titre du Post"
+          placeholder="Titre"
           maxLength={50}
           ref={title}
           autoFocus
@@ -98,28 +103,34 @@ const CreatePost = () => {
             {error && <p className="error">{error}</p>}
           </div>
         </div>
-        {image && (
+        {file && (
           <div className="postImg">
-            <img src={file} alt="" />
+            <i class="fa-solid fa-xmark"onClick={removeImage}></i>
+            <img  src={file} alt="" />
           </div>
         )}
 
         <br />
-        <div className="flex row ai-center ac-center">
-          <label htmlFor="file"></label>
-          <input
-            type="file"
-            name="file"
-            id="file"
-            title=""
-            accept="image/jpeg, image/png image/jpg"
-            style={{ color: 'transparent' }}
-            ref={image}
-            onChange={checkImage}
-          />
+        <div className="flex row space-around">
+          <div className=" labelImg flex row ai-center ">
+            <div>Joindre une image</div>
+            <label htmlFor="file">
+              <i className="fa-regular fa-file-image"></i>
+            </label>
+            <input
+              type="file"
+              name="file"
+              id="file"
+              title=""
+              accept="image/jpeg, image/png image/jpg"
+              style={{ color: 'transparent' }}
+              onChange={checkImage}
+              className="imgInput"
+              ref={image}
+            />
+          </div>
+          <input type="submit" value="Envoyer" />
         </div>
-        <br />
-        <input type="submit" value="post" />
       </form>
     </>
   );
