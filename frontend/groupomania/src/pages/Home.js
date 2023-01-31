@@ -29,11 +29,11 @@ const Home = () => {
   return (
     <>
       {user ? (
-        <div className='flex cl sb'>
+        <div className='flex cl '>
             
             <Navbar />
           
-          <div className="newPostContainer flex cl">
+          <div >
             <CreatePost />
           </div>
           

@@ -9,7 +9,6 @@ const CreatePost = () => {
   const text = useRef();
   const image = useRef();
   const [file, setFile] = useState();
-  const [data, setData] = useState();
   const [error, setError] = useState();
 
   const handleNewPost = (e) => {
@@ -27,6 +26,7 @@ const CreatePost = () => {
         })
         .then((res) => {
           console.log(res);
+          window.location.reload();
         })
         .catch((err) => {
           console.log(err);
@@ -51,7 +51,7 @@ const CreatePost = () => {
     setFile(null);
   };
   return (
-    <>
+    <div className="newPostContainer flex cl">
       <div className="flex row fs ai-center">
         <img
           className="profilPicture"
@@ -74,7 +74,7 @@ const CreatePost = () => {
           name="Titre"
           id="Titre"
           placeholder="Titre"
-          maxLength={50}
+          maxLength={45}
           ref={title}
           autoFocus
           required
@@ -105,7 +105,7 @@ const CreatePost = () => {
         </div>
         {file && (
           <div className="postImg">
-            <i class="fa-solid fa-xmark" onClick={removeImage}></i>
+            <i className="fa-solid fa-xmark" onClick={removeImage}></i>
             <img src={file} alt="" />
           </div>
         )}
@@ -132,7 +132,7 @@ const CreatePost = () => {
           <input type="submit" value="Envoyer" />
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
