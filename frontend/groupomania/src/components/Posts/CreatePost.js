@@ -14,8 +14,9 @@ const CreatePost = () => {
   const handleNewPost = (e) => {
     e.preventDefault();
     setError(null);
-    if (file || text) {
+    if (file || text.current.innerText) {
       const data = new FormData();
+      data.append('profilPicture',user.profilPicture)
       data.append('title', title.current.value);
       data.append('image', image.current.files[0]);
       data.append('text', text.current.innerText);
@@ -35,7 +36,7 @@ const CreatePost = () => {
           }
         });
     } else {
-      setError('Veuillez écrire un texte ou choisir une image ');
+      setError('*Veuillez écrire un texte ou choisir une image ');
     }
   };
 

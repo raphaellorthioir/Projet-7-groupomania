@@ -4,9 +4,10 @@ const mongoose = require('mongoose');
 const postSchema = mongoose.Schema(
   {
     userId: { type: String, required: true },
-    title:{type:String, required:true,maxlength:50},
+    profilPicture: { type: String },
+    title: { type: String, required: true, maxlength: 50 },
     pseudo: { type: String },
-    text: { type: String, maxlength:250 },
+    text: { type: String, maxlength: 250 },
     date: { type: Date },
     imageUrl: { type: String },
     video: { type: String },

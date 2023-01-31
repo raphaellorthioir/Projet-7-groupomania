@@ -17,6 +17,7 @@ exports.createPost = (req, res, next) => {
 
       const post = new Post({
         ...postObject,
+        profilPicture:req.body.profilPicture,
         title: req.body.title,
         userId: req.auth.userId,
         pseudo: req.auth.pseudo,
