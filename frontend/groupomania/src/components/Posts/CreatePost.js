@@ -9,6 +9,7 @@ const CreatePost = () => {
   const text = useRef();
   const image = useRef();
   const [file, setFile] = useState();
+  const [data, setData] = useState();
   const [error, setError] = useState();
 
   const handleNewPost = (e) => {
@@ -41,15 +42,14 @@ const CreatePost = () => {
   const checkImage = () => {
     const files = image.current.files[0];
     console.log(files);
-      const newImg = URL.createObjectURL(files);
-      setFile(newImg);
-    
+    const newImg = URL.createObjectURL(files);
+    setFile(newImg);
   };
 
-const removeImage = ()=>{
-  URL.revokeObjectURL(file)
-  setFile(null)
-}
+  const removeImage = () => {
+    URL.revokeObjectURL(file);
+    setFile(null);
+  };
   return (
     <>
       <div className="flex row fs ai-center">
@@ -105,8 +105,8 @@ const removeImage = ()=>{
         </div>
         {file && (
           <div className="postImg">
-            <i class="fa-solid fa-xmark"onClick={removeImage}></i>
-            <img  src={file} alt="" />
+            <i class="fa-solid fa-xmark" onClick={removeImage}></i>
+            <img src={file} alt="" />
           </div>
         )}
 
