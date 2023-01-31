@@ -13,7 +13,7 @@ const Post = (props) => {
     return new Date(dateString).toLocaleDateString(undefined, options)
   }
   const date=formatDate(dateString)
-  
+
   return (
     <div className="flex cl space-around post ">
       <div  className='flex row sb'>
@@ -35,8 +35,8 @@ const Post = (props) => {
           </div>
         </NavLink>
         {user.userId === props.post.userId && (
-          <div>
-            <i class="fa-solid fa-pen-to-square"></i>
+          <div className='edit-icon'>
+            <i className="fa-solid fa-pen-to-square"></i>
           </div>
         )}
       </div>
@@ -44,14 +44,15 @@ const Post = (props) => {
       <div className="title">{props.post.title}</div>
       <div className="text">{props.post.text}</div>
 
-      <div>
+      <div className='postImg'>
         <br />
         {props.post.imageUrl && (
           <img src={props.post.imageUrl} loading="lazy" alt="Post"></img>
         )}
       </div>
-      <div className="flex row sb container">
+      <div className="flex row stretch ai-center container">
         <Likes {...props} />
+        <div className='comment-icon'><i className="fa-regular fa-comment-dots"></i></div>
       </div>
     </div>
   );
