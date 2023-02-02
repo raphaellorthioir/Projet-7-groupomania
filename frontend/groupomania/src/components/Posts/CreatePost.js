@@ -23,11 +23,12 @@ const CreatePost = (post) => {
         .post(`${process.env.REACT_APP_API_URL}api/post/${user.userId}`, data, {
           withCredentials: true,
         })
-        .then((res) => {
-          post.post.push(res.data.post)
-          
+        .then(() => {
           post.updatePosts()
-          //window.location.reload();
+          title.current.value=""
+          console.log(image.current.files);
+          text.current.innerText=""
+          setFile(null)
         })
         .catch((err) => {
           console.log(err);

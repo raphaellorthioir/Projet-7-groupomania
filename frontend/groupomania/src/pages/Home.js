@@ -10,36 +10,23 @@ const Home = () => {
   const user = useContext(UserContext);
   const [posts, setPosts] = useState();
 
+  const fetchPosts = async () => {
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}api/post`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setPosts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const updatePosts = () => {
-    const fetchPosts = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_API_URL}api/post`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          setPosts(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
     fetchPosts();
   };
 
   useEffect(() => {
-    console.log('useEffect active');
-    const fetchPosts = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_API_URL}api/post`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          setPosts(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
     fetchPosts();
   }, []);
 
@@ -52,7 +39,7 @@ const Home = () => {
           </header>
 
           <div>
-            <CreatePost post={posts} updatePosts={updatePosts} />
+            <CreatePost updatePosts={updatePosts} />
           </div>
 
           <div className="post-container cl space-around ai-center ac-center ">
