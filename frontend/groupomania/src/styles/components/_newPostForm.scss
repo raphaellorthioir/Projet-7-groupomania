@@ -60,7 +60,33 @@
    // max-width: 1000px;
    // max-height: 900px;
    // padding-top: 20px;
-    position: relative;
+   position: relative;
+   
+    .delete-img-btn{
+      
+      margin-right: 5px;
+      margin-top: 5px;
+      font-size: 1rem;
+      position: absolute;
+      right: 0;
+        top: 0;
+        text-align: center;
+       
+      i{
+        display: block;
+        width:16px;
+        height: 16px;
+        cursor: pointer;
+       
+        color: black;
+        border-radius: 50%;
+        background-color: white;
+       
+        
+        
+       
+      }
+    }
     img{
       margin: auto;
       display: block;
@@ -68,22 +94,7 @@
       height: auto;
 
     }
-    i{
-      cursor: pointer;
-      margin-top: 5px;
-      margin-right: 5px;
-      border-radius: 50%;
-      width: 1em;
-      height: 1em;
-      font-size: 1em;
-      text-align: center;
-      color: black;
-      background-color: white;
-      position: absolute;
-      right: 0;
-      top: 0;
-     
-    }
+    
    }
   .test{
     max-height: 200px;

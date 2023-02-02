@@ -32,6 +32,7 @@ exports.createPost = (req, res, next) => {
       post
         .save()
         .then(() => res.status(201).json({ message: 'Post créé', post }))
+        .then(()=> console.log(post))
         .catch((error) => res.status(400).json({ error }));
     } else {
       res.clearCookie('jwt');
@@ -57,9 +58,9 @@ exports.updatePost = (req, res, next) => {
 
   Post.findById(req.params.postId, (err, post) => {
     if (post.userId === req.auth.userId) {
-      const pathImg = post.imageUrl.substring(44);
-
+      
       if (req.file) {
+        const pathImg = post.imageUrl.substring(44);
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
           if (err) console.log('error delete img profil from local folder');
         });
