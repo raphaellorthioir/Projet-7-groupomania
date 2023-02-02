@@ -37,8 +37,7 @@ const Likes = (props) => {
         ></i>
         {like}
       </div>
-      <div>
-        <div></div>
+      <div className='like-icon'>
         <i
           onClick={() => {
             handleLike(-1);

@@ -23,6 +23,7 @@ const App = () => {
             profilPicture: res.data.profilPicture,
           });
           setId(res.data.userId);
+         
         })
         .catch((err) => {
           setUserData(null);

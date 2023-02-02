@@ -3,20 +3,58 @@
     margin-right:auto;
     margin-left:auto;
     width: 35vw;
-    padding: 15px;
+    padding: 10px;
     .post{
         
-         box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+         box-shadow: rgba(6, 24, 44, 0.26) 0px 0px 0px 2px, rgba(6, 24, 44, 0.403) 0px 4px 6px -1px, rgba(255, 255, 255, 0.095) 0px 1px 0px inset;
         min-height: 200px;
         margin-bottom: 100px;
         padding: 15px;
-
+        background-color: whitesmoke;
         a:link{
             text-decoration: none;
-            width: fit-content;
         }
-        .edit-icon{
-            font-size: 1.3em;
+        .edit-box{
+                position: relative;
+                width: 100px;
+                text-align: end;
+                .icon-box{
+                        
+                         i{
+                            cursor: pointer;
+                         }
+                    }
+                       
+                       
+                    
+                
+                .list-box{
+                    position: absolute;
+                    z-index: 1;
+                    width: 100px;
+                    display: none;
+                    list-style:none;
+                    background-color: white;
+                    margin-top: 5px;
+                    margin-block-start: 0;
+                    margin-block-end: 0;
+                    padding-inline-start: 10px;
+                    
+                        
+                        li{
+                            text-align: center;
+                            border: 1px solid rgba(0, 0, 0, 0.23);
+                            font-size: 1em;
+                            padding: 5px;
+                            cursor: pointer;
+                            
+                            &:hover{
+                                background-color: rgba(0, 0, 0, 0.142);
+                            }
+                        }
+                    
+                }
+           
         }
         .date{
             font-size: 0.9em;
@@ -28,27 +66,31 @@
         }
         .title{
             font-weight: bold;
-            font-size: 1em;
+            font-size: 18px;
             margin: 10px 0;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            margin-top: 20px;
             border-left: 1px solid rgba(0, 0, 0, 0.4);
             padding-left: 10px;
         }
+        
         .text{
             text-align: justify;
             height: auto;
             width: auto;
             white-space: pre;
             padding-left: 10px;
-            border-left: 1px solid rgba(0, 0, 0, 0.4);
+            
            }
-            .postImg{
-                margin: auto;
-                img{
-                    height: 100%;
-                    max-width: 30vw;
-                }
+           .postImg{
+            width: fit-content;
+            height: auto;
+            margin: auto;
+            img{
+                height:auto;
+                width: 100%;
             }
+           }
             .likes-container{
                 cursor: pointer;
                 .like-icon{
@@ -72,7 +114,9 @@
                     font-size: 1.5em;
                 }
             }
+           
     }
+   
    
   }
   

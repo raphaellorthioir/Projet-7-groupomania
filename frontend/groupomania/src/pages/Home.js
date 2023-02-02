@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../components/AppContext';
 import Navbar from '../components/Navbar';
@@ -7,9 +7,29 @@ import axios from 'axios';
 import CreatePost from '../components/Posts/CreatePost';
 
 const Home = () => {
+
+  
   const user = useContext(UserContext);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState();
+  const updatePosts = (newPost) => {
+    setPosts(newPost);
+    
+  };
+  const result= useMemo(()=>{
+    return posts
+  },[posts])
+
+  console.log(posts);
+  
+
+ 
+
+  console.log(result);
   useEffect(() => {
+
+    console.log('useEffect active');
+
+    
     const fetchPosts = async () => {
       await axios
         .get(`${process.env.REACT_APP_API_URL}api/post`, {
@@ -17,22 +37,27 @@ const Home = () => {
         })
         .then((res) => {
           setPosts(res.data);
+           
         })
-        .catch((res) => {
-          console.log(res);
+        .catch((err) => {
+          console.log(err);
         });
     };
     fetchPosts();
   }, []);
 
+  // creation function to set the post array into child
+
   return (
     <>
-      {user ? (
+      {user  ? (
         <div className="flex cl ">
-          <Navbar />
+          <header>
+            <Navbar />
+          </header>
 
           <div>
-            <CreatePost />
+            <CreatePost post={posts} updatePosts={updatePosts} />
           </div>
 
           <div className="post-container cl space-around ai-center ac-center ">

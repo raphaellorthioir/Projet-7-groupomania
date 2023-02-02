@@ -2,15 +2,13 @@ import axios from 'axios';
 import React, { useContext, useRef, useState } from 'react';
 import { UserContext } from '../AppContext';
 
-const CreatePost = () => {
+const CreatePost = (post) => {
   const user = useContext(UserContext);
-
   const title = useRef();
   const text = useRef();
   const image = useRef();
   const [file, setFile] = useState();
   const [error, setError] = useState();
-
   const handleNewPost = (e) => {
     e.preventDefault();
     setError(null);
@@ -26,8 +24,11 @@ const CreatePost = () => {
           withCredentials: true,
         })
         .then((res) => {
-          console.log(res);
-          window.location.reload();
+          post.post.push(res.data.post)
+          let newPost=post.post
+          console.log(newPost);
+          post.updatePosts(newPost)
+          //window.location.reload();
         })
         .catch((err) => {
           console.log(err);
@@ -113,11 +114,15 @@ const CreatePost = () => {
 
         <br />
         <div className="flex row space-around">
-          <div className=" labelImg flex row ai-center ">
+          <div className=" labelImg flex row space-around ai-center ">
+            <div className='flex row ai-center'>
             <div>Joindre une image</div>
             <label htmlFor="file">
+            
               <i className="fa-regular fa-file-image"></i>
             </label>
+            </div>
+         
             <input
               type="file"
               name="file"
@@ -129,8 +134,9 @@ const CreatePost = () => {
               className="imgInput"
               ref={image}
             />
+            <input type="submit" value="Envoyer" />
           </div>
-          <input type="submit" value="Envoyer" />
+          
         </div>
       </form>
     </div>
