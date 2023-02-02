@@ -25,9 +25,8 @@ const CreatePost = (post) => {
         })
         .then((res) => {
           post.post.push(res.data.post)
-          let newPost=post.post
-          console.log(newPost);
-          post.updatePosts(newPost)
+          
+          post.updatePosts()
           //window.location.reload();
         })
         .catch((err) => {
