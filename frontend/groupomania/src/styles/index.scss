@@ -1,12 +1,9 @@
 @import './settings'; // toujours appeler en premier car il détient les variables pour les autres pages scss
 @import './pages/home';
 @import './components/navbar.scss';
-@import './components/card.scss';
 @import './components/connectionForm.scss';
 @import './pages/signingPage';
 @import './components/newPostForm.scss';
-@import './components/friendsHint.scss';
-@import './components/trends.scss';
-@import './pages/trending.scss';
 @import './pages/profil';
 @import './components/post.scss';
+@import './components/editPost.scss'

@@ -4,6 +4,35 @@
     margin-left:auto;
     width: 35vw;
     padding: 10px;
+   
+    .success-icon{
+       text-align: center;
+       width:fit-content;
+       animation: 10s ease forwards anim-icon;
+       margin-right: 0;
+       i{
+        color: green;
+        transform: none;
+        font-size: 1.6em;
+        margin-left: 10px;
+        
+       }
+       
+    }
+   @keyframes anim-icon {
+    from{
+        margin-right: 50px;
+        opacity: 0;
+    }
+    5%{  margin-right: 0;
+        opacity: 1;
+     }
+    
+    100%{
+        visibility: hidden;
+
+    }
+   }
     .post{
         
          box-shadow: rgba(6, 24, 44, 0.26) 0px 0px 0px 2px, rgba(6, 24, 44, 0.403) 0px 4px 6px -1px, rgba(255, 255, 255, 0.095) 0px 1px 0px inset;
@@ -19,15 +48,15 @@
                 width: 100px;
                 text-align: end;
                 .icon-box{
-                        
+                       
                          i{
+                            width:20px;
                             cursor: pointer;
+                            font-size: 1.3em;
                          }
                     }
                        
                        
-                    
-                
                 .list-box{
                     position: absolute;
                     z-index: 1;
@@ -58,13 +87,13 @@
         }
         .date{
             font-size: 0.9em;
+            cursor: default;
             i{
                 transform: none;
             }
         }
         .profilPicture{
-            width: 40px;
-            height: 40px;
+         
             margin-right: 10px;
         }
         .title{
@@ -75,42 +104,10 @@
             margin-top: 20px;
             border-left: 1px solid rgba(0, 0, 0, 0.4);
             padding-left: 10px;
+            cursor: default;
         }
-        .editTitle{
-            
-                width: auto;
-                height: 30px;
-                margin-bottom: 15px;
-                border-left: 1px solid rgba(0, 0, 0, 0.4);
-                font-weight: bold;
-                font-size: 1em;
-                padding-left: 10px;
-                background-color: white;
-                cursor: text;
-                transition: background-color ease 0.1s;
-                &:hover{
-                  background-color: rgba(0, 0, 0, 0.100);
-                }
-        }
-        .textEditable{
-            height:100px; 
-            outline: none;
-            padding-left: 10px;
-            overflow-y: scroll;
-            cursor: text;
-            border-left: 1px solid rgba(0, 0, 0, 0.5);
-            transition: background-color ease 0.1s ;
-           &:hover{
-            background-color: rgba(0, 0, 0, 0.100);
-           }
-           &:focus{
-            background-color: white;
-           }
-           }
-           .textEditable[placeholder]:empty:before{
-            content: attr(placeholder);
-            color: rgba(0, 0, 0, 0.5);
-          }
+        
+       
         .text{
             text-align: justify;
             height: auto;
@@ -118,12 +115,13 @@
             white-space: pre;
             padding-left: 10px;
             margin-bottom: 20px;
-            
+            cursor: default;
            }
            .postImg{
             width: fit-content;
             height: auto;
-            margin: auto;
+            margin: 20px auto;
+            
             img{
                 height:auto;
                 width: 100%;
