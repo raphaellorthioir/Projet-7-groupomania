@@ -3,7 +3,6 @@ import React, { useContext, useRef, useState } from 'react';
 import { UserContext } from '../AppContext';
 
 const CreatePost = (post) => {
-  
   const user = useContext(UserContext);
   const title = useRef();
   const text = useRef();
@@ -12,8 +11,7 @@ const CreatePost = (post) => {
   const [error, setError] = useState();
 
   // When is Editing
-    
-  
+
   const handleNewPost = (e) => {
     e.preventDefault();
     setError(null);
@@ -42,7 +40,7 @@ const CreatePost = (post) => {
           }
         });
     } else {
-      setError('*Veuillez écrire un texte ou choisir une image ');
+      setError('*Veuillez écrire un texte ou télécharger une image ');
     }
   };
 
@@ -56,7 +54,7 @@ const CreatePost = (post) => {
     URL.revokeObjectURL(file);
     setFile(null);
   };
- 
+
   return (
     <div className="newPostContainer flex cl">
       <div className="flex row fs ai-center">
@@ -69,7 +67,6 @@ const CreatePost = (post) => {
       </div>
       <form
         className="flex cl space-around"
-        action=""
         id="post"
         name="postSubmit"
         onSubmit={handleNewPost}
@@ -100,7 +97,7 @@ const CreatePost = (post) => {
             ref={text}
             placeholder="Mon nouveau Post"
           ></textarea>*/}
-          <div className="test">
+          <div className="scrolltop">
             <div
               className="textEditable"
               contentEditable="true"

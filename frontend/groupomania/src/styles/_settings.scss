@@ -23,20 +23,32 @@ $black: rgb(40, 40, 40);
 $white: rgb(253, 253, 253);
 $shadow: rgb(219, 218, 218);
 
-body > #root  {
-  height: 100vh;
+section{
+  margin-bottom: 50px;
+  
 }
 
-/*.fullHeight{
-  height: 100%;
-  margin: 0;
-}*/
-// flex
+
+.create-container{
+  width: 100%;
+  .createSwitch{
+    border: solid black 1px;
+    border-radius: 30px;
+    padding: 5px;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30vw;
+    max-width: 40vw;
+    cursor: pointer;
+    &:hover{
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+}
 
 .flex{
   display: flex;
-  
-
 }
 
 .row{
@@ -117,6 +129,7 @@ input::file-selector-button{
    transform: scale(1.01);
   }
 }
+
 a,
 a:visited {
   color: $color-3;
@@ -155,11 +168,7 @@ input[type="submit"] {
     color: $color-2;
   }
 }
-input[type="checkbox"] {
-  box-shadow: none;
-  width: 20px;
-  margin: 10px 0;
-}
+
 i {
   transition: 0.15s;
 

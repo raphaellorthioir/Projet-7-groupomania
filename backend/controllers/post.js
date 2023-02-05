@@ -17,7 +17,7 @@ exports.createPost = (req, res, next) => {
 
       const post = new Post({
         ...postObject,
-        profilPicture:req.body.profilPicture,
+        profilPicture: req.body.profilPicture,
         title: req.body.title,
         userId: req.auth.userId,
         pseudo: req.auth.pseudo,
@@ -32,7 +32,7 @@ exports.createPost = (req, res, next) => {
       post
         .save()
         .then(() => res.status(201).json({ message: 'Post créé', post }))
-        .then(()=> console.log(post))
+        .then(() => console.log(post))
         .catch((error) => res.status(400).json({ error }));
     } else {
       res.clearCookie('jwt');
@@ -58,7 +58,6 @@ exports.updatePost = (req, res, next) => {
 
   Post.findById(req.params.postId, (err, post) => {
     if (post.userId === req.auth.userId) {
-      
       if (req.file) {
         const pathImg = post.imageUrl.substring(44);
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
@@ -106,7 +105,8 @@ exports.updatePost = (req, res, next) => {
 
 exports.getAllPosts = (req, res, next) => {
   Post.find({})
-    .sort({ createdAt:-1}).exec()
+    .sort({ updatedAt: -1 })
+    .exec()
     .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(400).json({ error }));
 };
@@ -195,25 +195,25 @@ exports.likePost = (req, res, next) => {
 exports.commentPost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.postId))
     return res.status(400).send(`This post doesn't exist anymore`);
-
-  User.findById(req.body.userId, (err, user) => {
-    Post.findByIdAndUpdate(req.params.postId, {
-      $push: {
-        comments: {
-          userId: req.body.userId,
-          text: req.body.text,
-          userPseudo: user.pseudo,
-
-          timestamp: new Date().getTime(),
+  User.findById(req.auth.userId, (err, user) => {
+    if (user) {
+      Post.findByIdAndUpdate(
+        req.params.postId,
+        {
+          $push: {
+            comments: {
+              userId: req.body.userId,
+              text: req.body.text,
+              timestamp: new Date().getTime(),
+            },
+          },
         },
-      },
-    })
-      .then(() => {
-        res.status(200).json({ message: 'commentaire créé' });
-      })
-      .catch(() => {
-        res.status(400).json({ message: `Problems to send comment !` });
-      });
+        (err, post) => {
+          if (!err) res.status(200).json(post.comments);
+          else if (err) res.status(400).json(err);
+        }
+      );
+    }
   });
 };
 

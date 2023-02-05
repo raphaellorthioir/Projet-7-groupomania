@@ -9,7 +9,7 @@ import CreatePost from '../components/Posts/CreatePost';
 const Home = () => {
   const user = useContext(UserContext);
   const [posts, setPosts] = useState();
-
+  const [wantCreatePost, setWantCreatePost] = useState(false);
   const fetchPosts = async () => {
     await axios
       .get(`${process.env.REACT_APP_API_URL}api/post`, {
@@ -30,22 +30,34 @@ const Home = () => {
     fetchPosts();
   }, []);
 
+  const switchCreatePost = () => {
+    setWantCreatePost(true);
+  };
   return (
     <>
       {user ? (
-        <div className="flex cl ">
+        <>
           <header>
             <Navbar />
           </header>
 
-          <div>
+          {wantCreatePost ? (
             <CreatePost updatePosts={updatePosts} />
-          </div>
+          ) : (
+            <div className='flex ac-center create-container'>
+              <div className="createSwitch" onClick={switchCreatePost}>
+                Quelque chose à dire ?
+              </div>
+            </div>
+          )}
 
           <div className="post-container cl space-around ai-center ac-center ">
-            {posts && posts.map((item) => <Post post={item} key={item._id} />)}
+            {posts &&
+              posts.map((item) => (
+                <Post post={item} updatePosts={updatePosts} key={item._id} />
+              ))}
           </div>
-        </div>
+        </>
       ) : (
         <Navigate to="/signing" />
       )}

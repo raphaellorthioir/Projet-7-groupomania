@@ -4,9 +4,10 @@ import axios from 'axios';
 const EditPost = (props) => {
   const user = useContext(UserContext);
 
+  console.log(props)
+
   // PROPS VALUES \\
   const postToEdit = props.postToEdit.post;
-  console.log(props);
 
   // PROPS FUNC \\
   
@@ -29,7 +30,10 @@ const EditPost = (props) => {
   const updatedImage = useRef();
 
   // States \\
-  const [files, setFiles] = useState(postToEdit.imageUrl);
+  const [files, setFiles] = useState(props.isUpdated ? props.updatedData.image :postToEdit.imageUrl);
+
+  
+   
   const [error, setError] = useState();
 
   // When is Editing
@@ -66,6 +70,9 @@ const EditPost = (props) => {
       setError('*Veuillez écrire un texte ou choisir une image ');
     }
   };
+
+
+ 
 
   const setImage = () => {
     const files = updatedImage.current.files[0];
@@ -110,7 +117,7 @@ const EditPost = (props) => {
           placeholder="Titre"
           maxLength={45}
           ref={updatedTitle}
-          defaultValue={postToEdit.title}
+          defaultValue={ props.isUpdated ? props.updatedData.title : postToEdit.title}
           autoFocus
           required
         />
@@ -135,7 +142,8 @@ const EditPost = (props) => {
               placeholder="Contenu du post"
               ref={updatedText}
             >
-              {postToEdit.text}
+              {props.isUpdated ? props.updatedData.text : postToEdit.text}
+              
             </div>
             {error && <p className="error">{error}</p>}
           </div>

@@ -12,6 +12,7 @@ import Home from '../../pages/Home';
 import Profil from '../../pages/Profil';
 import ErrorPage from '../../pages/ErrorPage';
 import SignupLoginPage from '../../pages/SignupLoginPage';
+import Post from '../../pages/Post';
 
 
 const index = () => {
@@ -23,6 +24,7 @@ const index = () => {
         <Route path="/signing" element={<SignupLoginPage />} />
         <Route exact path="/" element={<Home />} />
         <Route path="/profil" element={<Profil />} />
+        <Route path='/post' element={<Post/>}/>
         <Route path="/error-page" element={<ErrorPage />} />
         <Route path="/redirect" element={<Navigate to="/error-page" />} />
         {/*Permet de rediriger vers une autre page si toutes les autres ont échoué  */}

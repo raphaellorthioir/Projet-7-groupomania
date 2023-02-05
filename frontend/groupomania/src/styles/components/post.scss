@@ -2,9 +2,14 @@
     margin-top:100px;
     margin-right:auto;
     margin-left:auto;
-    width: 35vw;
-    padding: 10px;
+    width: 30vw;
+    height: auto;
+    
    
+
+  span{
+    cursor: default;
+  }
     .success-icon{
        text-align: center;
        width:fit-content;
@@ -27,19 +32,29 @@
     5%{  margin-right: 0;
         opacity: 1;
      }
-    
+    99%{
+        opacity: 1;
+    }
     100%{
-        visibility: hidden;
-
+        opacity: 0;
     }
    }
     .post{
         
          box-shadow: rgba(6, 24, 44, 0.26) 0px 0px 0px 2px, rgba(6, 24, 44, 0.403) 0px 4px 6px -1px, rgba(255, 255, 255, 0.095) 0px 1px 0px inset;
-        min-height: 200px;
-        margin-bottom: 100px;
-        padding: 15px;
+        padding: 5px;
         background-color: whitesmoke;
+        animation: 1s ease forwards post-display;
+        @keyframes post-display {
+            from{
+                opacity: 0;
+                margin-top: 100px;
+            }
+            to{
+                opacity: 1;
+                margin-top: 0;
+            }
+           }
         a:link{
             text-decoration: none;
         }

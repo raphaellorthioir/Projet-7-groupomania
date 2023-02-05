@@ -1,0 +1,53 @@
+.comments-container{
+    width: 100%;
+    height: auto;
+   
+
+    .create-comment-container{
+        background-color: whitesmoke;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.22);
+        border-left:1px solid rgba(0, 0, 0, 0.22);
+        border-right: 1px solid rgba(0, 0, 0, 0.22); ;
+        img{
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .pseudo-container{
+            padding-top: 5px;
+            padding-left: 5px;
+            height: 30px;
+            .pseudo{
+                font-size: 1em;
+            }
+        }
+       
+    }
+   .form-container{
+    margin: 10px 0;
+    
+    
+         .comment-textarea{
+            width: 85%;
+            margin: auto;
+                textarea{
+                    font-size: 1em;
+                   padding-left:8px;
+                   padding-top: 8px;
+                    width: 100%;
+                    margin: auto;
+                    height: 100%;
+                    border-radius: 18px;
+                    overflow: hidden;
+                    border: none;
+                    resize: none;
+                    outline: 2px solid #00162c89;
+                    &:hover{
+                        background-color: rgb(236, 236, 236);
+                    }
+                }
+            }
+         
+        }
+    }

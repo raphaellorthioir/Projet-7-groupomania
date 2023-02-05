@@ -39,16 +39,14 @@ module.exports.checkUser = (req, res, next) => {
       } else {
         UserModel.findById(decodedToken.userId, (err, user) => {
           if (err) {
-            res.status(400).json({ message: 'User not found' });
+            res.status(401).json(err);
           } else {
-            console.log(user);
             req.auth = {
               userId: user.id,
               isAdmin: user.isAdmin,
-              pseudo:user.pseudo
+              pseudo: user.pseudo,
             };
           }
-
           next();
         });
       }
@@ -67,14 +65,12 @@ module.exports.requireAuth = (req, res, next) => {
         console.log('erreur requireAuth');
         res.send(200).json('no token');
       } else {
-        res
-          .status(200)
-          .json({
-            userId: decodedToken.userId,
-            isAdmin: decodedToken.isAdmin,
-            pseudo: decodedToken.pseudo,
-            profilPicture: decodedToken.profilPicture,
-          });
+        res.status(200).json({
+          userId: decodedToken.userId,
+          isAdmin: decodedToken.isAdmin,
+          pseudo: decodedToken.pseudo,
+          profilPicture: decodedToken.profilPicture,
+        });
         next();
       }
     });

@@ -96,33 +96,33 @@
     }
     
    }
-  .test{
-    max-height: 200px;
-    overflow-y:auto;
+ 
+   
+    
+    .textEditable{
+      height: 50px;
+      margin: auto;
+      outline: none;
+      padding-left: 10px;
+      overflow-y: scroll;
+      cursor: text;
+      border-left: 1px solid rgba(0, 0, 0, 0.5);
+      transition: background-color ease 0.1s ;
+     &:hover{
+      background-color: rgba(0, 0, 0, 0.100);
+     }
+     &:focus{
+      background-color: white;
+     }
+     }
+     .textEditable[placeholder]:empty:before{
+      content: attr(placeholder);
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+  
+  }
 
-  }
-   .textEditable{
-    height:100px; 
-    outline: none;
-    padding-left: 10px;
-    overflow-y: scroll;
-    cursor: text;
-    border-left: 1px solid rgba(0, 0, 0, 0.5);
-    transition: background-color ease 0.1s ;
-   &:hover{
-    background-color: rgba(0, 0, 0, 0.100);
-   }
-   &:focus{
-    background-color: white;
-   }
-   }
-   .textEditable[placeholder]:empty:before{
-    content: attr(placeholder);
-    color: rgba(0, 0, 0, 0.5);
-  }
-  }
-
-}
 
 
 
