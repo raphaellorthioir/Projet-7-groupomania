@@ -23,7 +23,6 @@ const App = () => {
             profilPicture: res.data.profilPicture,
           });
           setId(res.data.userId);
-         
         })
         .catch((err) => {
           setUserData(null);
@@ -36,17 +35,11 @@ const App = () => {
 
   // A chaque fois que user évolue , ça relance la fonction useEffect
   return (
-   <div id='app'>
-      <UserContext.Provider value={userData} >
+    <UserContext.Provider value={userData}>
       {/*Garde en mémoire 'hook' les données du user , ces données seront transmissibles à tout les components enfants , ici Routes */}
-      
+
       <Routes />
-      
-      
     </UserContext.Provider>
-   </div>
-     
-   
   );
 };
 
