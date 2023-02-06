@@ -36,11 +36,17 @@ const App = () => {
 
   // A chaque fois que user évolue , ça relance la fonction useEffect
   return (
-    <UserContext.Provider value={userData}>
+   <div id='app'>
+      <UserContext.Provider value={userData} >
       {/*Garde en mémoire 'hook' les données du user , ces données seront transmissibles à tout les components enfants , ici Routes */}
-
+      
       <Routes />
+      
+      
     </UserContext.Provider>
+   </div>
+     
+   
   );
 };
 

@@ -1,36 +1,55 @@
 import axios from 'axios';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-
+import ReactModal from 'react-modal';
 const CreateComment = (props) => {
-    console.log(props)
+  console.log(props);
   const postProps = props.postProps.post;
 
   const comment = useRef();
-  
+
   const createComment = async () => {
     await axios
       .patch(
         `${process.env.REACT_APP_API_URL}api/post/comment-post/${postProps._id}`,
-        { text:comment.current.value},
+        { text: comment.current.value },
         {
           withCredentials: true,
         }
       )
       .then((res) => {
-        console.log(res)
-        props.updateComments()
+        console.log(res);
+        props.updateComments();
       })
-      .catch((err)=>{
-        console.log(err)
+      .catch((err) => {
+        console.log(err);
       });
   };
   console.log(props);
   const handleComment = (e) => {
     if (e.key === 'Enter') {
-        createComment()
+      createComment();
     }
   };
+
+  // Modal \\
+  const [isOpen, setIsOpen] = useState(false);
+ const [closeOnClick,setCloseOnClick]= useState(false)
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal =()=>{
+    setIsOpen(false)
+  }
+  const handle=()=>{
+    setCloseOnClick(false)
+  }
+  ReactModal.setAppElement('#app');
+
+  const hello =()=>{
+    console.log("hello")
+  }
+
   return (
     <div className="comments-container">
       <div className="flex cl ">
@@ -55,6 +74,21 @@ const CreateComment = (props) => {
                 />
               </div>
             </form>
+            <button onClick={openModal}> open modal</button>
+            <ReactModal
+              isOpen={isOpen}
+              className="modal"
+              contentLabel="Voulez vous..."
+              overlayClassName="overlay"
+              shouldCloseOnOverlayClick={true}
+              onRequestClose={closeModal}
+              shouldCloseOnEsc={true}
+            >
+              <div className='div'>
+              <button onClick={handle} > console</button>
+              </div>
+              
+            </ReactModal>
           </div>
         </div>
       </div>

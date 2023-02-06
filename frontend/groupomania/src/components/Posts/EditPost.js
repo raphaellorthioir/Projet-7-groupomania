@@ -36,7 +36,7 @@ const EditPost = (props) => {
    
   const [error, setError] = useState();
 
-  // When is Editing
+ 
 
   const handleEditPost = (e) => {
     e.preventDefault();

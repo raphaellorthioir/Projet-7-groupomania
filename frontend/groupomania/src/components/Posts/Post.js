@@ -6,9 +6,9 @@ import EditPost from './EditPost';
 import axios from 'axios';
 import Comments from './Comments';
 import CreateComment from './CreateComment';
+import ReactModal from 'react-modal';
 
 const Post = (props) => {
- 
   const navigate = useNavigate();
   // CONTEXT \\
   const user = useContext(UserContext);
@@ -41,7 +41,7 @@ const Post = (props) => {
   };
 
   const windowSize = useRef([window.innerWidth]);
-  
+
   // DATE \\
   const createdAt = props.post.createdAt;
   const updatedAt = props.post.updatedAt;
@@ -112,7 +112,18 @@ const Post = (props) => {
       });
   };
 
-  //RENDER
+  //MODAL\\
+
+  const [isOpen, setIsOpen] = useState(false);
+  ReactModal.setAppElement('#root');
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+ const closeModal=()=>{
+  setIsOpen(false)
+ }
+  //RENDER\\
   return (
     <>
       {isEditing ? (
@@ -145,23 +156,34 @@ const Post = (props) => {
                 </div>
               </NavLink>
               {(user.userId === props.post.userId || user.isAdmin) && (
-                <div onMouseLeave={handleMouseLeave} className="edit-box">
-                  <div className="icon-box">
-                    <i
-                      onClick={handleMouseEnter}
-                      className="fa-solid fa-ellipsis-vertical"
-                    ></i>
-                  </div>
+                <>
+                  <div onMouseLeave={handleMouseLeave} className="edit-box">
+                    <div className="icon-box">
+                      <i
+                        onClick={handleMouseEnter}
+                        className="fa-solid fa-ellipsis-vertical"
+                      ></i>
+                    </div>
 
-                  <ul
-                    onMouseLeave={handleMouseLeave}
-                    className="list-box"
-                    ref={ul}
-                  >
-                    <li onClick={editPost}>Modifier</li>
-                    <li onClick={deletePost}>Supprimer</li>
-                  </ul>
-                </div>
+                    <ul
+                      onMouseLeave={handleMouseLeave}
+                      className="list-box"
+                      ref={ul}
+                    >
+                      <li onClick={editPost}>Modifier</li>
+                      <li onClick={openModal}>Supprimer</li>
+                    </ul>
+                  </div>
+                  <ReactModal
+                    isOpen={isOpen}
+                    className="modal"
+                    contentLabel="Voulez vous..."
+                    overlayClassName="overlay"
+                    shouldCloseOnOverlayClick={true}
+                    onRequestClose={closeModal}
+                    shouldCloseOnEsc={true}
+                  ></ReactModal>
+                </>
               )}
             </div>
             {isUpdated ? (
@@ -256,7 +278,7 @@ const Post = (props) => {
           </div>
           <>
             {showComment ? (
-              comments.length >=1 ? (
+              comments.length >= 1 ? (
                 windowSize.current[0] <= 480 ? (
                   <Navigate to={`/post?id=${props.post._id}`} />
                 ) : (
