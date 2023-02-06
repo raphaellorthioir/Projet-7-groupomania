@@ -202,17 +202,26 @@ exports.commentPost = (req, res, next) => {
         {
           $push: {
             comments: {
-              userId: req.body.userId,
+              userId: req.auth.userId,
+              pseudo:user.pseudo,
+              profilPicture:user.profilPicture,
               text: req.body.text,
               timestamp: new Date().getTime(),
             },
           },
         },
+        {
+          new: true,
+          upsert: true,
+          setDefaultOnInsert: true,
+          runValidators: true,
+        },
         (err, post) => {
-          if (!err) res.status(200).json(post.comments);
-          else if (err) res.status(400).json(err);
+          post.comments.sort((a,b)=> {return b.timestamp -a.timestamp})
+          if (!err) return res.status(200).json(post.comments);
+          else if (err) return res.status(400).json(err);
         }
-      );
+      )
     }
   });
 };

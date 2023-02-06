@@ -9,6 +9,7 @@ import CreateComment from './CreateComment';
 import ReactModal from 'react-modal';
 
 const Post = (props) => {
+  console.log(props);
   const navigate = useNavigate();
   // CONTEXT \\
   const user = useContext(UserContext);
@@ -24,11 +25,14 @@ const Post = (props) => {
   const [image, setImage] = useState();
 
   /* comments */
-  const comments = props.post.comments;
+  const comments = props.post.comments.sort((a, b) => {
+    return b.timestamp - a.timestamp;
+  });
   const [showComment, setShowComment] = useState(false);
   const [commentsData, setCommentsData] = useState(comments);
   const updateComments = (newCommentsArr) => {
     setCommentsData(newCommentsArr);
+    console.log(commentsData);
   };
   // REFS \\
   const ul = useRef();
@@ -128,7 +132,7 @@ const Post = (props) => {
     closeModal();
   };
   const noResModal = () => {
-    closeModal()
+    closeModal();
   };
   //RENDER\\
   return (
@@ -306,7 +310,10 @@ const Post = (props) => {
                       postProps={props}
                       updateComments={updateComments}
                     />
-                    <Comments postProps={props.comments} />
+                    {commentsData &&
+                      commentsData.map((item) => (
+                        <Comments comment={item} key={item._id} />
+                      ))}
                   </>
                 )
               ) : (

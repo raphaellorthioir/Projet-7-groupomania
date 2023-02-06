@@ -52,7 +52,6 @@ module.exports.checkUser = (req, res, next) => {
       }
     });
   } else {
-    res.locals.user = null;
     next();
   }
 };
@@ -63,7 +62,7 @@ module.exports.requireAuth = (req, res, next) => {
     jwt.verify(token, process.env.SECRET_TOKEN, (err, decodedToken) => {
       if (err) {
         console.log('erreur requireAuth');
-        res.send(200).json('no token');
+        res.status(400).json(err);
       } else {
         res.status(200).json({
           userId: decodedToken.userId,
@@ -75,6 +74,6 @@ module.exports.requireAuth = (req, res, next) => {
       }
     });
   } else {
-    console.log('no token');
+    console.log('no token')
   }
 };

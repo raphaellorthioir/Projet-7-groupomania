@@ -33,6 +33,7 @@ const Home = () => {
   const switchCreatePost = () => {
     setWantCreatePost(true);
   };
+
   return (
     <>
       {user ? (
@@ -40,11 +41,10 @@ const Home = () => {
           <header>
             <Navbar />
           </header>
-
           {wantCreatePost ? (
             <CreatePost updatePosts={updatePosts} />
           ) : (
-            <div className='flex ac-center create-container'>
+            <div className="flex ac-center create-container">
               <div className="createSwitch" onClick={switchCreatePost}>
                 Quelque chose à dire ?
               </div>

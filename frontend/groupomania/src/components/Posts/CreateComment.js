@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { useRef, useState } from 'react';
+import { useRef} from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import ReactModal from 'react-modal';
+
 const CreateComment = (props) => {
   console.log(props);
   const postProps = props.postProps.post;
@@ -19,7 +19,7 @@ const CreateComment = (props) => {
       )
       .then((res) => {
         console.log(res);
-        props.updateComments();
+        props.updateComments(res.data.comments);
       })
       .catch((err) => {
         console.log(err);
@@ -33,22 +33,6 @@ const CreateComment = (props) => {
   };
 
   // Modal \\
-  const [isOpen, setIsOpen] = useState(false);
- const [closeOnClick,setCloseOnClick]= useState(false)
-  const openModal = () => {
-    setIsOpen(true);
-  };
-  const closeModal =()=>{
-    setIsOpen(false)
-  }
-  const handle=()=>{
-    setCloseOnClick(false)
-  }
-  ReactModal.setAppElement('#app');
-
-  const hello =()=>{
-    console.log("hello")
-  }
 
   return (
     <div className="comments-container">
@@ -59,7 +43,7 @@ const CreateComment = (props) => {
             <div className="pseudo">{postProps.pseudo}</div>
           </div>
           <div className="form-container">
-            <form name="commentSubmit" onSubmit={handleComment}>
+            <form name="commentSubmit" onSubmit={createComment}>
               <div className="comment-textarea">
                 <label htmlFor="comment"></label>
                 <TextareaAutosize
@@ -74,21 +58,6 @@ const CreateComment = (props) => {
                 />
               </div>
             </form>
-            <button onClick={openModal}> open modal</button>
-            <ReactModal
-              isOpen={isOpen}
-              className="modal"
-              contentLabel="Voulez vous..."
-              overlayClassName="overlay"
-              shouldCloseOnOverlayClick={true}
-              onRequestClose={closeModal}
-              shouldCloseOnEsc={true}
-            >
-              <div className='div'>
-              <button onClick={handle} > console</button>
-              </div>
-              
-            </ReactModal>
           </div>
         </div>
       </div>
