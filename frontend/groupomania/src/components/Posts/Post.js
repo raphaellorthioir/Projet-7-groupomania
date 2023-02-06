@@ -120,9 +120,16 @@ const Post = (props) => {
   const openModal = () => {
     setIsOpen(true);
   };
- const closeModal=()=>{
-  setIsOpen(false)
- }
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  const yesResModal = (e) => {
+    deletePost();
+    closeModal();
+  };
+  const noResModal = () => {
+    closeModal()
+  };
   //RENDER\\
   return (
     <>
@@ -179,10 +186,22 @@ const Post = (props) => {
                     className="modal"
                     contentLabel="Voulez vous..."
                     overlayClassName="overlay"
-                    shouldCloseOnOverlayClick={true}
                     onRequestClose={closeModal}
-                    shouldCloseOnEsc={true}
-                  ></ReactModal>
+                  >
+                    <div className="modal-container ">
+                      <div className=" modal-box  ">
+                        <div className="modal-ask">Supprimer le post ?</div>
+                        <div className="flex row btn-box ">
+                          <button onClick={yesResModal} className="yes">
+                            Oui
+                          </button>
+                          <button onClick={noResModal} className="no">
+                            Non
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </ReactModal>
                 </>
               )}
             </div>

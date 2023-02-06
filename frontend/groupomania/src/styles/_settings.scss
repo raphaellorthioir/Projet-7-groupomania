@@ -15,8 +15,8 @@ $font-1: "font-1", sans-serif;
 $font-2: "font-2", serif;
 $font-3: "font-3", serif;
 
-$color-1: #ff7b77;
-$color-2: #ffd0c4;
+$color-1: white;
+$color-2: #0077ff;
 $color-3: rgb(0, 22, 44);
 $color-4: #fdeeee;
 $black: rgb(40, 40, 40);
@@ -38,6 +38,33 @@ section{
   height: 200px;
   border: 1px solid black;
   border-radius: 30px;
+  .modal-container{
+    flex-wrap: wrap;
+    margin: auto auto;
+      text-align: center;
+    
+    .modal-box{
+      
+      margin: 20% 20%;
+      width: fit-content;
+      .btn-box{
+        margin: auto;
+        width: fit-content;
+  
+        .yes{
+          margin-right: 20px;
+        }
+        .no{
+          margin-left: 20px;
+        }
+      }
+    }
+      
+      .modal-ask{
+        margin-bottom: 10px;
+      }
+      
+  }
 }
 .overlay{
   position: fixed;
@@ -48,9 +75,8 @@ section{
   background-color: rgba(255, 255, 255, 0.529);
   
 }
-.div{
-  height: 100%;
-}
+
+
 .create-container{
   width: 100%;
   .createSwitch{
