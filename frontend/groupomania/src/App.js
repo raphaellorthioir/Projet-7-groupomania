@@ -16,7 +16,6 @@ const App = () => {
         withCredentials: true,
       })
         .then((res) => {
-          console.log(res)
           setUserData({
             userId: res.data.userId,
             isAdmin: res.data.isAdmin,
@@ -28,7 +27,7 @@ const App = () => {
         .catch((err) => {
           setUserData(null);
           setId(null)
-          console.log(err);
+          
         });
     };
 

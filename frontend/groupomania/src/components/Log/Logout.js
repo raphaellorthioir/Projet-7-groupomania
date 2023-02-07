@@ -11,10 +11,12 @@ const Logout = () => {
         withCredentials: true,
       })
       .then((res) => {
+        console.log(res);
         window.location = '/';
       })
       .catch((err) => {
         console.log(err);
+        window.location = '/';
       });
   };
 

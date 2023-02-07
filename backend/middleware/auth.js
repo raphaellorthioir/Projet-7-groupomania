@@ -52,6 +52,7 @@ module.exports.checkUser = (req, res, next) => {
       }
     });
   } else {
+    res.locals.user = null;
     next();
   }
 };
@@ -74,6 +75,6 @@ module.exports.requireAuth = (req, res, next) => {
       }
     });
   } else {
-    console.log('no token')
+    res.status(401).json("no token")
   }
 };

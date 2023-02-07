@@ -41,22 +41,27 @@ const Home = () => {
           <header>
             <Navbar />
           </header>
-          {wantCreatePost ? (
-            <CreatePost updatePosts={updatePosts} />
-          ) : (
-            <div className="flex ac-center create-container">
-              <div className="createSwitch" onClick={switchCreatePost}>
-                Quelque chose à dire ?
-              </div>
-            </div>
-          )}
+          <main>
+            {wantCreatePost ? (
+              <CreatePost updatePosts={updatePosts} />
+            ) : (
+              <section className="flex ac-center create-container">
+                <div className='flex row ai-center space-around create-box'>
+                  <img className='profilPicture' src={user.profilPicture} alt="" />
+                  <div className="createSwitch" onClick={switchCreatePost}>
+                    Quoi de neuf, {user.pseudo} ?
+                  </div>
+                </div>
+              </section>
+            )}
 
-          <div className="post-container cl space-around ai-center ac-center ">
-            {posts &&
-              posts.map((item) => (
-                <Post post={item} updatePosts={updatePosts} key={item._id} />
-              ))}
-          </div>
+            <div className="post-container cl space-around ai-center ac-center ">
+              {posts &&
+                posts.map((item) => (
+                  <Post post={item} updatePosts={updatePosts} key={item._id} />
+                ))}
+            </div>
+          </main>
         </>
       ) : (
         <Navigate to="/signing" />

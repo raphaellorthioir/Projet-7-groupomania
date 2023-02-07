@@ -2,7 +2,7 @@
     margin-top:100px;
     margin-right:auto;
     margin-left:auto;
-    width: 30vw;
+    width: 35vw;
     height: auto;
     
    
@@ -42,8 +42,9 @@
     .post{
         
          box-shadow: rgba(6, 24, 44, 0.26) 0px 0px 0px 2px, rgba(6, 24, 44, 0.403) 0px 4px 6px -1px, rgba(255, 255, 255, 0) 0px 1px 0px inset;
-        padding: 5px;
+        padding: 10px;
         background-color: whitesmoke;
+        border-radius: 25px;
         animation: 1s ease forwards post-display;
         @keyframes post-display {
             from{
@@ -115,7 +116,6 @@
             font-weight: bold;
             font-size: 18px;
             margin: 10px 0;
-            margin-bottom: 30px;
             margin-top: 20px;
             border-left: 1px solid rgba(0, 0, 0, 0.4);
             padding-left: 10px;
@@ -123,15 +123,6 @@
         }
         
        
-        .text{
-            text-align: justify;
-            height: auto;
-            width: auto;
-            white-space: pre;
-            padding-left: 10px;
-            margin-bottom: 20px;
-            cursor: default;
-           }
            .postImg{
             width: fit-content;
             height: auto;

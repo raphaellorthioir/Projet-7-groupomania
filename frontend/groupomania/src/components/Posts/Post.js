@@ -9,7 +9,6 @@ import CreateComment from './CreateComment';
 import ReactModal from 'react-modal';
 
 const Post = (props) => {
-  console.log(props);
   const navigate = useNavigate();
   // CONTEXT \\
   const user = useContext(UserContext);
@@ -28,9 +27,20 @@ const Post = (props) => {
   const comments = props.post.comments.sort((a, b) => {
     return b.timestamp - a.timestamp;
   });
+
   const [showComment, setShowComment] = useState(false);
   const [commentsData, setCommentsData] = useState(comments);
+
+  console.log(commentsData.length);
+  const displayComments = () => {
+    if (showComment) setShowComment(false);
+    else setShowComment(true);
+  };
   const updateComments = (newCommentsArr) => {
+    console.log(newCommentsArr);
+    newCommentsArr.sort((a, b) => {
+      return b.timestamp - a.timestamp;
+    });
     setCommentsData(newCommentsArr);
     console.log(commentsData);
   };
@@ -150,6 +160,7 @@ const Post = (props) => {
           <div className="post">
             <div className="flex row sb">
               <NavLink
+                className="pseudo-link"
                 to={{
                   pathname: '/profil',
                   search: `?user=${props.post.userId}`,
@@ -225,9 +236,10 @@ const Post = (props) => {
                     <Likes {...props} />
                     <div className="comment-icon">
                       <i
-                        onClick={() => setShowComment(true)}
+                        onClick={displayComments}
                         className="fa-regular fa-comment-dots"
                       ></i>
+                      {commentsData.length >= 1 && commentsData.length}
                     </div>
                   </div>
                   {displayValidationMessage && (
@@ -260,11 +272,9 @@ const Post = (props) => {
                     <div className="flex row sb ai-center">
                       <div className="flex row stretch ai-center container">
                         <Likes {...props} />
-                        <div
-                          onClick={() => setShowComment(true)}
-                          className="comment-icon"
-                        >
+                        <div onClick={displayComments} className="comment-icon">
                           <i className="fa-regular fa-comment-dots"></i>
+                          {commentsData.length >=1 && commentsData.length}
                         </div>
                       </div>
                     </div>
@@ -286,11 +296,10 @@ const Post = (props) => {
                     <div className="flex row sb ai-center">
                       <div className="flex row stretch ai-center container">
                         <Likes {...props} />
-                        <div
-                          onClick={() => setShowComment(true)}
-                          className="comment-icon"
-                        >
+                        <div onClick={displayComments} className="comment-icon">
                           <i className="fa-regular fa-comment-dots"></i>
+                          {commentsData.length >=1 && commentsData.length}
+
                         </div>
                       </div>
                     </div>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRef} from 'react';
+import { useRef } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 
 const CreateComment = (props) => {
@@ -19,7 +19,7 @@ const CreateComment = (props) => {
       )
       .then((res) => {
         console.log(res);
-        props.updateComments(res.data.comments);
+        props.updateComments(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -36,29 +36,34 @@ const CreateComment = (props) => {
 
   return (
     <div className="comments-container">
-      <div className="flex cl ">
-        <div className="flex cl  create-comment-container">
+      <div className="flex cl">
+        <div>
           <div className="flex row fs ai-center ac-center pseudo-container">
-            <img src={postProps.profilPicture} alt="Profil" />
+            <img
+              className="profilPicture"
+              src={postProps.profilPicture}
+              alt="Profil"
+            />
             <div className="pseudo">{postProps.pseudo}</div>
           </div>
-          <div className="form-container">
-            <form name="commentSubmit" onSubmit={createComment}>
-              <div className="comment-textarea">
-                <label htmlFor="comment"></label>
-                <TextareaAutosize
-                  name="comment"
-                  id="comment"
-                  placeholder="Commenter..."
-                  minRows={1}
-                  maxRows={20}
-                  autoFocus
-                  ref={comment}
-                  onKeyDown={handleComment}
-                />
-              </div>
-            </form>
-          </div>
+        </div>
+
+        <div className="form-container">
+          <form name="commentSubmit" onSubmit={createComment}>
+            <div className="comment-textarea">
+              <label htmlFor="comment"></label>
+              <TextareaAutosize
+                name="comment"
+                id="comment"
+                placeholder="Commenter..."
+                minRows={1}
+                maxRows={20}
+                autoFocus
+                ref={comment}
+                onKeyDown={handleComment}
+              />
+            </div>
+          </form>
         </div>
       </div>
     </div>
