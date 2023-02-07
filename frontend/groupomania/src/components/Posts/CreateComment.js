@@ -18,14 +18,14 @@ const CreateComment = (props) => {
         }
       )
       .then((res) => {
-        console.log(res);
+        comment.current.value = '';
         props.updateComments(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  console.log(props);
+
   const handleComment = (e) => {
     if (e.key === 'Enter') {
       createComment();

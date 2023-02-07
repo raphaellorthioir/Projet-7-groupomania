@@ -203,8 +203,8 @@ exports.commentPost = (req, res, next) => {
           $push: {
             comments: {
               userId: req.auth.userId,
-              pseudo:user.pseudo,
-              profilPicture:user.profilPicture,
+              pseudo: user.pseudo,
+              profilPicture: user.profilPicture,
               text: req.body.text,
               timestamp: new Date().getTime(),
             },
@@ -212,16 +212,19 @@ exports.commentPost = (req, res, next) => {
         },
         {
           new: true,
+          timestamps: false,
           upsert: true,
           setDefaultOnInsert: true,
           runValidators: true,
         },
         (err, post) => {
-          post.comments.sort((a,b)=> {return b.timestamp -a.timestamp})
+          post.comments.sort((a, b) => {
+            return b.timestamp - a.timestamp;
+          });
           if (!err) return res.status(200).json(post.comments);
           else if (err) return res.status(400).json(err);
         }
-      )
+      );
     }
   });
 };
@@ -268,8 +271,7 @@ exports.deleteComment = (req, res, next) => {
           if (docs.userId === req.auth.userId || req.auth.isAdmin) {
             docs.comments.splice(docs.comments.indexOf(theComment), 1);
             docs.save((err) => {
-              if (!err)
-                return res.status(200).send({ message: 'comment deleted ' });
+              if (!err) return res.status(200).send(docs.comments);
               return res.status(400).send(err);
             });
           } else if (
@@ -278,14 +280,7 @@ exports.deleteComment = (req, res, next) => {
           ) {
             docs.comments.splice(docs.comments.indexOf(theComment), 1);
             docs.save((err) => {
-              if (!err)
-                return res
-                  .status(200)
-                  .send(
-                    req.auth.isAdmin
-                      ? { message: 'comment deleted by Admin' }
-                      : { message: 'comment deleted by commenter' }
-                  );
+              if (!err) return res.status(200).json(docs.comments);
               return res.status(400).send(err);
             });
           }

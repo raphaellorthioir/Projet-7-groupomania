@@ -1,5 +1,4 @@
 @import './settings'; // toujours appeler en premier car il détient les variables pour les autres pages scss
-@import './pages/home';
 @import './components/navbar.scss';
 @import './components/connectionForm.scss';
 @import './pages/signingPage';

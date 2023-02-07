@@ -85,18 +85,6 @@ const CreatePost = (post) => {
         />
         <div>
           <label htmlFor="text"></label>
-
-          {/*  <textarea
-            name="post text"
-            id="text"
-            cols="10"
-            rows="10"
-            maxLength={250}
-            form="post"
-            spellCheck="true"
-            ref={text}
-            placeholder="Mon nouveau Post"
-          ></textarea>*/}
           <div className="scrolltop">
             <div
               className="textEditable"

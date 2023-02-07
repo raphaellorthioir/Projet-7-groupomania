@@ -10,6 +10,7 @@ import ReactModal from 'react-modal';
 
 const Post = (props) => {
   const navigate = useNavigate();
+
   // CONTEXT \\
   const user = useContext(UserContext);
 
@@ -23,28 +24,8 @@ const Post = (props) => {
   const [text, setText] = useState();
   const [image, setImage] = useState();
 
-  /* comments */
-  const comments = props.post.comments.sort((a, b) => {
-    return b.timestamp - a.timestamp;
-  });
-
-  const [showComment, setShowComment] = useState(false);
-  const [commentsData, setCommentsData] = useState(comments);
-
-  console.log(commentsData.length);
-  const displayComments = () => {
-    if (showComment) setShowComment(false);
-    else setShowComment(true);
-  };
-  const updateComments = (newCommentsArr) => {
-    console.log(newCommentsArr);
-    newCommentsArr.sort((a, b) => {
-      return b.timestamp - a.timestamp;
-    });
-    setCommentsData(newCommentsArr);
-    console.log(commentsData);
-  };
   // REFS \\
+
   const ul = useRef();
   // MouseEvent \\
   const handleMouseEnter = () => {
@@ -56,6 +37,57 @@ const Post = (props) => {
 
   const windowSize = useRef([window.innerWidth]);
 
+  /* comments */
+
+  const [showComment, setShowComment] = useState(false);
+  const [commentsData, setCommentsData] = useState(
+    props.post.comments.sort((a, b) => {
+      return b.timestamp - a.timestamp;
+    })
+  );
+
+  const displayComments = () => {
+    if (showComment) setShowComment(false);
+    else setShowComment(true);
+  };
+  const updateComments = (newCommentsArr) => {
+    if (newCommentsArr.length >= 2) {
+      newCommentsArr.sort((a, b) => {
+        return b.timestamp - a.timestamp;
+      });
+
+      setCommentsData(newCommentsArr);
+    } else {
+      setCommentsData(newCommentsArr);
+    }
+  };
+
+  const deleteComment = async (commentId) => {
+    await axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}api/post/delete-comment/${props.post._id}`,
+        {
+          commentId: commentId,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        if (res.data.length > 1) {
+          let data = res.data.sort((a, b) => {
+            return b.timestamp - a.timestamp;
+          });
+          setCommentsData(data);
+        } else {
+          setCommentsData(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/signing')
+      });
+  };
   // DATE \\
   const createdAt = props.post.createdAt;
   const updatedAt = props.post.updatedAt;
@@ -274,7 +306,7 @@ const Post = (props) => {
                         <Likes {...props} />
                         <div onClick={displayComments} className="comment-icon">
                           <i className="fa-regular fa-comment-dots"></i>
-                          {commentsData.length >=1 && commentsData.length}
+                          {commentsData.length >= 1 && commentsData.length}
                         </div>
                       </div>
                     </div>
@@ -298,8 +330,7 @@ const Post = (props) => {
                         <Likes {...props} />
                         <div onClick={displayComments} className="comment-icon">
                           <i className="fa-regular fa-comment-dots"></i>
-                          {commentsData.length >=1 && commentsData.length}
-
+                          {commentsData.length >= 1 && commentsData.length}
                         </div>
                       </div>
                     </div>
@@ -310,7 +341,7 @@ const Post = (props) => {
           </div>
           <>
             {showComment ? (
-              comments.length >= 1 ? (
+              commentsData.length >= 1 ? (
                 windowSize.current[0] <= 480 ? (
                   <Navigate to={`/post?id=${props.post._id}`} />
                 ) : (
@@ -321,7 +352,11 @@ const Post = (props) => {
                     />
                     {commentsData &&
                       commentsData.map((item) => (
-                        <Comments comment={item} key={item._id} />
+                        <Comments
+                          deleteComment={deleteComment}
+                          comment={item}
+                          key={item._id}
+                        />
                       ))}
                   </>
                 )

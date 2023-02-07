@@ -55,7 +55,7 @@ const Home = () => {
               </section>
             )}
 
-            <div className="post-container cl space-around ai-center ac-center ">
+            <div className="post-container  ">
               {posts &&
                 posts.map((item) => (
                   <Post post={item} updatePosts={updatePosts} key={item._id} />
