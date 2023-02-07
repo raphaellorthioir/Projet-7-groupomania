@@ -85,7 +85,7 @@ const Post = (props) => {
       })
       .catch((err) => {
         console.log(err);
-        navigate('/signing')
+        navigate('/signing');
       });
   };
   // DATE \\
@@ -224,8 +224,17 @@ const Post = (props) => {
                       className="list-box"
                       ref={ul}
                     >
-                      <li onClick={editPost}>Modifier</li>
-                      <li onClick={openModal}>Supprimer</li>
+                      {user.userId === props.userId && (
+                        <>
+                          <li onClick={editPost}>Modifier</li>
+                          <li onClick={openModal}>Supprimer</li>
+                        </>
+                      )}
+                      {user.isAdmin && (
+                        <>
+                          <li onClick={openModal}>Supprimer</li>
+                        </>
+                      )}
                     </ul>
                   </div>
                   <ReactModal
