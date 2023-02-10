@@ -1,22 +1,23 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
 import { UserContext } from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 
-const Logout = () => {
+const Logout = (props) => {
   const user = useContext(UserContext);
-
+  const navigate = useNavigate();
   const logout = async () => {
     await axios
       .get(`${process.env.REACT_APP_API_URL}api/auth/logout/${user.userId}`, {
         withCredentials: true,
       })
-      .then((res) => {
-        console.log(res);
-        window.location = '/';
+      .then(() => {
+        props.exit();
+        navigate('/signing');
       })
       .catch((err) => {
         console.log(err);
-        window.location = '/';
+        navigate('/signing');
       });
   };
 

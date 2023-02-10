@@ -190,7 +190,7 @@ const Post = (props) => {
       ) : (
         <section className="flex cl space-around ">
           <div className="post">
-            <div className="flex row sb">
+            <div className="flex row sb pseudo-container">
               <NavLink
                 className="pseudo-link"
                 to={{
@@ -224,7 +224,7 @@ const Post = (props) => {
                       className="list-box"
                       ref={ul}
                     >
-                      {user.userId === props.userId && (
+                      {user.userId === props.post.userId && (
                         <>
                           <li onClick={editPost}>Modifier</li>
                           <li onClick={openModal}>Supprimer</li>
@@ -269,7 +269,7 @@ const Post = (props) => {
                 </div>
                 <div className="title">{title}</div>
                 <div className="text">{text}</div>
-                <div className="postImg">
+                <div className={image && 'postImg'}>
                   {image && <img src={image} loading="lazy" alt="Post"></img>}
                 </div>
                 <div className="flex row sb ai-center">
@@ -310,11 +310,14 @@ const Post = (props) => {
                         ></img>
                       )}
                     </div>
-                    <div className="flex row sb ai-center">
-                      <div className="flex row stretch ai-center container">
-                        <Likes {...props} />
-                        <div onClick={displayComments} className="comment-icon">
-                          <i className="fa-regular fa-comment-dots"></i>
+                    <div className="flex row stretch ai-center ac-center container">
+                      <Likes {...props} />
+                      <div
+                        onClick={displayComments}
+                        className="comment-icon flex row ai-center ac-center"
+                      >
+                        <i className="fa-regular fa-comment-dots"></i>
+                        <div className="comment-counter">
                           {commentsData.length >= 1 && commentsData.length}
                         </div>
                       </div>
@@ -337,9 +340,14 @@ const Post = (props) => {
                     <div className="flex row sb ai-center">
                       <div className="flex row stretch ai-center container">
                         <Likes {...props} />
-                        <div onClick={displayComments} className="comment-icon">
+                        <div
+                          onClick={displayComments}
+                          className="comment-icon flex row ai-center ac-center"
+                        >
                           <i className="fa-regular fa-comment-dots"></i>
-                          {commentsData.length >= 1 && commentsData.length}
+                          <div className="comments-counter">
+                            {commentsData.length >= 1 && commentsData.length}
+                          </div>
                         </div>
                       </div>
                     </div>

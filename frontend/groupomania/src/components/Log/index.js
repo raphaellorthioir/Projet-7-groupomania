@@ -5,10 +5,10 @@ import SignUpForm from './SignUpForm';
 // useState (Hook) pemrmet de manipuler une variable dans le composant( une valeur, un objet , un booléen etc ),
 //puis d'y appliquer une fonction afin de changer son état dans le composant et de le garder en mémoire
 // const [variable, "fonction"] = useState
-const Log = () => {
+const Log = (props) => {
   const [signUpModal, setSignUpModal] = useState(true);
   const [signInModal, setSignInModal] = useState(false);
-
+  const logging = props.logging.logging;
   //e est l'élement cliqué
   const handleModals = (e) => {
     if (e.target.id === 'register') {
@@ -42,9 +42,9 @@ const Log = () => {
         </ul>
         {/* 
           'rendu conditionnel { "si qqchose" && alors fait apparaître le composant }'*/}
-        {signUpModal && <SignUpForm />}
+        {signUpModal && <SignUpForm logging={logging} />}
         {/*'si signUpModal  = true alors affiche SignUpForm'*/}
-        {signInModal && <SignInForm />}
+        {signInModal && <SignInForm logging={logging} />}
         {/*'si signInModal  = true alors affiche SignInForm'*/}
       </div>
     </div>

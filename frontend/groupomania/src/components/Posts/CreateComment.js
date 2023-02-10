@@ -7,7 +7,7 @@ const CreateComment = (props) => {
   const postProps = props.postProps.post;
 
   const comment = useRef();
-
+  const form=useRef()
   const createComment = async () => {
     await axios
       .patch(
@@ -49,7 +49,7 @@ const CreateComment = (props) => {
         </div>
 
         <div className="form-container">
-          <form name="commentSubmit" onSubmit={createComment}>
+          <form ref={form} name="commentSubmit" onSubmit={createComment}>
             <div className="comment-textarea">
               <label htmlFor="comment"></label>
               <TextareaAutosize

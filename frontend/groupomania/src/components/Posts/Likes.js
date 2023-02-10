@@ -28,7 +28,7 @@ const Likes = (props) => {
   useEffect(() => {});
   return (
     <div className="flex row space-around likes-container">
-      <div className='like-icon'>
+      <div className='like-icon flex row ai-center ac-center'>
         <i
           onClick={() => {
             handleLike(1);
@@ -37,7 +37,7 @@ const Likes = (props) => {
         ></i>
         {like}
       </div>
-      <div className='like-icon'>
+      <div className='like-icon flex row ac-center ai-center'>
         <i
           onClick={() => {
             handleLike(-1);

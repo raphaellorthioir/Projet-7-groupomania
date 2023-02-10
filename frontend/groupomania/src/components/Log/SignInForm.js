@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios'; // permet de gérer les fetch dans react
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const SignInForm = () => {
+const SignInForm = (props) => {
   //création de const usestate pour faire transiter des données danss le composant
 
   const email = useRef(null);
@@ -10,29 +10,25 @@ const SignInForm = () => {
   const [emailError, setEmailError] = useState(``);
   const [passwordError, setPasswordError] = useState(``);
 
-  //const navigate = useNavigate();
-
-  // Partie logique Login
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
-    e.preventDefault(); //permet de ne pas recharger la page à la soumission du formulaire
+    e.preventDefault();
 
     const focusedEmail = email.current.value;
     const focusedPsw = password.current.value;
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}api/auth/login`,
-      withCredentials: true /*boolén qui indique si une requête entre deux sites (domaines , ex: front et back) devrait être réalisée avec des infos d'authentification(credentials) comme les cookies 
-      c'est obligatoire pour définir le cookies entre deux domaines différents*/,
+      withCredentials: true,
       data: {
         email: focusedEmail,
         password: focusedPsw,
       },
     })
-      .then((res) => {
-        console.log('envoi réussi du formulaire');
-        console.log(res);
-        window.location = '/';
+      .then(() => {
+        props.logging();
+        navigate('/');
       })
       .catch((res) => {
         console.log(res);
@@ -71,7 +67,9 @@ const SignInForm = () => {
         />
         <br />
         {/* quand on change ce qui a dans l'input , on stock la valeur de l'input dans email et pareil pour password*/}
-        {passwordError && <div className="passwordError error">{passwordError}</div>} 
+        {passwordError && (
+          <div className="passwordError error">{passwordError}</div>
+        )}
         <input type="submit" value="Se connecter" />
       </form>
     </div>

@@ -1,5 +1,5 @@
 // Fichier pour les routes
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   BrowserRouter as Router,
   Route, // permet de définir le chemin vers une puage
@@ -13,18 +13,20 @@ import Profil from '../../pages/Profil';
 import ErrorPage from '../../pages/ErrorPage';
 import SignupLoginPage from '../../pages/SignupLoginPage';
 import Post from '../../pages/Post';
+import Navbar from '../Navbar';
 
-
-const index = () => {
+const index = (props) => {
+  
   return (
     <Router>
-      
+      {props.isLogged && <Navbar exit={props.exit}></Navbar>}
+
       <Routes>
         {/* Permet d'y insérer toutes les Route d'affichage des components */}
-        <Route path="/signing" element={<SignupLoginPage />} />
+        <Route path="/signing" element={<SignupLoginPage logging={props.logging} />} />
         <Route exact path="/" element={<Home />} />
         <Route path="/profil" element={<Profil />} />
-        <Route path='/post' element={<Post/>}/>
+        <Route path="/post" element={<Post />} />
         <Route path="/error-page" element={<ErrorPage />} />
         <Route path="/redirect" element={<Navigate to="/error-page" />} />
         {/*Permet de rediriger vers une autre page si toutes les autres ont échoué  */}

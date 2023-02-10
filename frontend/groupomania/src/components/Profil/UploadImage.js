@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 
 const UploadImage = (props) => {
   const [file, setFile] = useState(props.profilPicture);
-  console.log(props.profilPicture);
-console.log(file);
+
   const handlePicture = (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -20,7 +19,7 @@ console.log(file);
       )
       .then((res) => {
         setFile(res.data.profilPicture)
-        console.log(res);
+   
       })
       .catch((err) => {
         if (err) setFile(null);

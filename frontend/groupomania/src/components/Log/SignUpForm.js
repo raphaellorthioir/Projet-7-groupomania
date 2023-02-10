@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const SignUpForm = () => {
+const SignUpForm = (props) => {
   const pseudo = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -10,6 +11,9 @@ const SignUpForm = () => {
   const [errorPswMatch, setErrorPswMatch] = useState(null);
   const [errorsPsw, setErrorsPsw] = useState(null);
   const [errorEmail, setErrorEmail] = useState(null);
+
+  const logging = props.logging;
+  const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -35,10 +39,10 @@ const SignUpForm = () => {
           password: focusedPassword,
         },
       })
-        .then((res) => {
-          console.log('réponse reçu');
-          console.log(res);
-          window.location = '/';
+        .then(() => {
+          console.log('on test logging');
+          logging();
+          navigate('/');
         })
         .catch((res) => {
           console.log(res);

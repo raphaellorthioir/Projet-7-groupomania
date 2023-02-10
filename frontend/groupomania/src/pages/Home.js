@@ -38,18 +38,21 @@ const Home = () => {
     <>
       {user ? (
         <>
-          <header>
-            <Navbar />
-          </header>
           <main>
             {wantCreatePost ? (
               <CreatePost updatePosts={updatePosts} />
             ) : (
-              <section className="flex ac-center create-container">
-                <div className='flex row ai-center space-around create-box'>
-                  <img className='profilPicture' src={user.profilPicture} alt="" />
-                  <div className="createSwitch" onClick={switchCreatePost}>
-                    Quoi de neuf, {user.pseudo} ?
+              <section className="flex ac-center newPostContainer">
+                <div className="create-container">
+                  <div className="flex row ai-center ac-center space-around create-box">
+                    <img
+                      className="profilPicture"
+                      src={user.profilPicture}
+                      alt=""
+                    />
+                    <div className="createSwitch" onClick={switchCreatePost}>
+                      Quoi de neuf, {user.pseudo} ?
+                    </div>
                   </div>
                 </div>
               </section>

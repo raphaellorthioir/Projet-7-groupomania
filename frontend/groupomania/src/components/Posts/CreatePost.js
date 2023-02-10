@@ -57,7 +57,7 @@ const CreatePost = (post) => {
 
   return (
     <div className="newPostContainer flex cl">
-      <div className="flex row fs ai-center">
+      <div className="flex row fs ai-center pseudo-container">
         <img
           className="profilPicture"
           src={user.profilPicture}
@@ -106,9 +106,8 @@ const CreatePost = (post) => {
         )}
 
         <br />
-        <div className="flex row space-around">
-          <div className=" labelImg flex row space-around ai-center ">
-            <div className="flex row ai-center">
+          <div className=" join-img-container flex row space-around ai-center ac-center ">
+            <div className="flex row ai-center ac-center">
               <div>Joindre une image</div>
               <label htmlFor="file">
                 <i className="fa-regular fa-file-image"></i>
@@ -128,7 +127,7 @@ const CreatePost = (post) => {
             />
             <input type="submit" value="Envoyer" />
           </div>
-        </div>
+        
       </form>
     </div>
   );

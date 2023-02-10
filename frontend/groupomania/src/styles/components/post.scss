@@ -1,10 +1,9 @@
 .post-container{
-    margin-top:100px;
     margin-right:auto;
     margin-left:auto;
-    width: 35vw;
     height: auto;
-    
+    margin-top: 50px;
+   
    
 
   span{
@@ -14,7 +13,8 @@
        text-align: center;
        width:fit-content;
        animation: 10s ease forwards anim-icon;
-       margin-right: 0;
+       padding-right: 10px;
+
        i{
         color: green;
         transform: none;
@@ -26,7 +26,7 @@
     }
    @keyframes anim-icon {
     from{
-        margin-right: 50px;
+        margin-right: 30px;
         opacity: 0;
     }
     5%{  margin-right: 0;
@@ -42,7 +42,6 @@
     .post{
         
          box-shadow: rgba(6, 24, 44, 0.26) 0px 0px 0px 2px, rgba(6, 24, 44, 0.403) 0px 4px 6px -1px, rgba(255, 255, 255, 0) 0px 1px 0px inset;
-        padding: 10px;
         background-color: whitesmoke;
         border-radius: 25px;
         animation: 1s ease forwards post-display;
@@ -64,9 +63,10 @@
                 width: 100px;
                 text-align: end;
                 .icon-box{
-                       
+                    width:100%;
+                    
                          i{
-                            width:20px;
+                            margin-right: 5px;
                             cursor: pointer;
                             font-size: 1.3em;
                          }
@@ -104,13 +104,15 @@
         .date{
             font-size: 0.9em;
             cursor: default;
+            padding-left: 5px;
             i{
                 transform: none;
             }
         }
         .profilPicture{
-         
+            
             margin-right: 10px;
+            margin-bottom: 5px;
         }
         .title{
             font-weight: bold;
@@ -126,7 +128,7 @@
            .postImg{
             width: fit-content;
             height: auto;
-            margin: 20px auto;
+            margin: 10px auto;
             
             img{
                 height:auto;
@@ -135,6 +137,7 @@
            }
             .likes-container{
                 cursor: pointer;
+                margin-left: 15px;
                 .like-icon{
                     margin-right: 10px;
                 }
@@ -146,14 +149,20 @@
             }
             
             .container{
-               margin-top: 10px;
+                width: fit-content;
+                margin-bottom: 5px;
+               
+               
             }
             .comment-icon{
                 cursor: pointer;
-                margin-left: 10px;
-
+                
                 i{
                     font-size: 1.5em;
+                    
+                }
+                .comment-counter{
+                    margin-left: 5px;
                 }
             }
            
