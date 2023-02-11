@@ -28,6 +28,8 @@ exports.createPost = (req, res, next) => {
         post.imageUrl = `${req.protocol}://${req.get(
           'host'
         )}/uploads/client/images/${req.file.filename}`;
+      } else {
+        post.imageUrl = '';
       }
       post
         .save()
@@ -54,11 +56,11 @@ exports.updatePost = (req, res, next) => {
           req.file.filename
         }`,
       }
-    : { ...req.body };
+    : { ...req.body, imageUrl: req.body.imageUrl };
 
   Post.findById(req.params.postId, (err, post) => {
     if (post.userId === req.auth.userId) {
-      if (req.file) {
+      if (req.file && post.imageUrl) {
         const pathImg = post.imageUrl.substring(44);
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
           if (err) console.log('error delete img profil from local folder');
@@ -145,17 +147,17 @@ exports.likePost = (req, res, next) => {
         post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
       }
 
-      Post.updateOne({ _id: req.params.postId }, post)
+      Post.updateOne({ _id: req.params.postId }, post, { timestamps: false })
         .then(() => {
           if (!post.usersLiked.includes(req.auth.userId)) {
             return res.status(200).json({
-              usersLikes: post.usersLiked.length,
-              usersDislikes: post.usersDisliked.length,
+              usersLikes: post.usersLiked,
+              usersDislikes: post.usersDisliked,
             });
           } else {
             return res.status(200).json({
-              usersLikes: post.usersLiked.length,
-              usersDislikes: post.usersDisliked.length,
+              usersLikes: post.usersLiked,
+              usersDislikes: post.usersDisliked,
             });
           }
         })
@@ -172,17 +174,17 @@ exports.likePost = (req, res, next) => {
           1
         );
       }
-      Post.updateOne({ _id: req.params.postId }, post)
+      Post.updateOne({ _id: req.params.postId }, post, { timestamps: false })
         .then(() => {
           if (post.usersDisliked.includes(req.auth.userId)) {
             return res.status(200).json({
-              usersLikes: post.usersLiked.length,
-              usersDislikes: post.usersDisliked.length,
+              usersLikes: post.usersLiked,
+              usersDislikes: post.usersDisliked,
             });
           } else {
             return res.status(200).json({
-              usersLikes: post.usersLiked.length,
-              usersDislikes: post.usersDisliked.length,
+              usersLikes: post.usersLiked,
+              usersDislikes: post.usersDisliked,
             });
           }
         })
@@ -218,6 +220,7 @@ exports.commentPost = (req, res, next) => {
           runValidators: true,
         },
         (err, post) => {
+          console.log(post);
           post.comments.sort((a, b) => {
             return b.timestamp - a.timestamp;
           });
@@ -270,7 +273,7 @@ exports.deleteComment = (req, res, next) => {
         else {
           if (docs.userId === req.auth.userId || req.auth.isAdmin) {
             docs.comments.splice(docs.comments.indexOf(theComment), 1);
-            docs.save((err) => {
+            docs.save({ timestamps: false }, (err) => {
               if (!err) return res.status(200).send(docs.comments);
               return res.status(400).send(err);
             });
@@ -279,13 +282,14 @@ exports.deleteComment = (req, res, next) => {
             req.auth.isAdmin
           ) {
             docs.comments.splice(docs.comments.indexOf(theComment), 1);
-            docs.save((err) => {
+            docs.save({ timestamps: false }, (err) => {
               if (!err) return res.status(200).json(docs.comments);
               return res.status(400).send(err);
             });
           }
         }
-      }
+      },
+      { timestamps: false }
     );
   } catch (err) {
     return res.status(400).send(err);

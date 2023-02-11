@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from './components/AppContext.js';
 import Routes from './components/Routes/index.js';
-import Navbar from './components/Navbar.js';
 
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -33,20 +32,21 @@ const App = () => {
   };
   useEffect(() => {
     logging();
-  }, [id]);
+  }, []);
 
   const exit = () => {
     setId(null);
     setUserData(null);
+  };
+  const unlog = () => {
     setIsLogged(false);
   };
-
   // A chaque fois que user évolue , ça relance la fonction useEffect
   return (
     <UserContext.Provider value={userData}>
       {/*Garde en mémoire 'hook' les données du user , ces données seront transmissibles à tout les components enfants , ici Routes */}
 
-      <Routes exit={exit} logging={logging} isLogged={isLogged} />
+      <Routes exit={exit} unlog={unlog} isLogged={isLogged} logging={logging} />
     </UserContext.Provider>
   );
 };

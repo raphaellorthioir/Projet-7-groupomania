@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SignInForm = (props) => {
   //création de const usestate pour faire transiter des données danss le composant
-
+  console.log(props);
   const email = useRef(null);
   const password = useRef(null);
   const [emailError, setEmailError] = useState(``);
@@ -28,7 +28,6 @@ const SignInForm = (props) => {
     })
       .then(() => {
         props.logging();
-        navigate('/');
       })
       .catch((res) => {
         console.log(res);

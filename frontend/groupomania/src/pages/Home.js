@@ -33,42 +33,38 @@ const Home = () => {
   const switchCreatePost = () => {
     setWantCreatePost(true);
   };
-
+const unSwitchCreatePost =()=>{
+  setWantCreatePost(false)
+}
   return (
     <>
-      {user ? (
-        <>
-          <main>
-            {wantCreatePost ? (
-              <CreatePost updatePosts={updatePosts} />
-            ) : (
-              <section className="flex ac-center newPostContainer">
-                <div className="create-container">
-                  <div className="flex row ai-center ac-center space-around create-box">
-                    <img
-                      className="profilPicture"
-                      src={user.profilPicture}
-                      alt=""
-                    />
-                    <div className="createSwitch" onClick={switchCreatePost}>
-                      Quoi de neuf, {user.pseudo} ?
-                    </div>
-                  </div>
+      <main>
+        {wantCreatePost ? (
+          <CreatePost unSwitchCreatePost={unSwitchCreatePost} updatePosts={updatePosts} />
+        ) : (
+          <section className="flex ac-center newPostContainer">
+            <div className="create-container">
+              <div className="flex row ai-center ac-center space-around create-box">
+                <img
+                  className="profilPicture"
+                  src={user?.profilPicture}
+                  alt=""
+                />
+                <div className="createSwitch" onClick={switchCreatePost}>
+                  Quoi de neuf, {user?.pseudo} ?
                 </div>
-              </section>
-            )}
-
-            <div className="post-container  ">
-              {posts &&
-                posts.map((item) => (
-                  <Post post={item} updatePosts={updatePosts} key={item._id} />
-                ))}
+              </div>
             </div>
-          </main>
-        </>
-      ) : (
-        <Navigate to="/signing" />
-      )}
+          </section>
+        )}
+
+        <div className="post-container  ">
+          {posts &&
+            posts.map((item) => (
+              <Post post={item} updatePosts={updatePosts} key={item._id} />
+            ))}
+        </div>
+      </main>
     </>
   );
 };

@@ -42,7 +42,7 @@ const SignUpForm = (props) => {
         .then(() => {
           console.log('on test logging');
           logging();
-          navigate('/');
+          navigate('/',{replace:true});
         })
         .catch((res) => {
           console.log(res);
@@ -51,29 +51,6 @@ const SignUpForm = (props) => {
           }
           if (res.response.data.errors.email)
             setErrorEmail('Cette adresse est déjà liée à un compte existant');
-          /* if (res.response.data.errors) {
-              if (res.response.data.errors.pseudo) {
-                pseudoError.innerHTML = 'Ce pseudo est déjà pris';
-              }
-              if (res.response.data.errors.email) {
-                emailError.innerHTML = 'Cet email est déjà utilisé';
-              }
-            }
-  
-            if (res.response.data.passwordErrorList) {
-              let dataPassword = res.response.data.passwordErrorList;
-              let ul = document.createElement('ul');
-              ul.setAttribute('id', 'passwordErrorsList');
-              ul.setAttribute('class', 'txt-al-j');
-              let li;
-              passwordErrors.appendChild(ul);
-  
-              dataPassword.forEach((dataList) => {
-                li = document.createElement('li');
-                ul.appendChild(li);
-                li.textContent = `${dataList.message}`;
-              });
-            }*/
         });
     }
   };

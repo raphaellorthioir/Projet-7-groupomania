@@ -14,22 +14,27 @@ import ErrorPage from '../../pages/ErrorPage';
 import SignupLoginPage from '../../pages/SignupLoginPage';
 import Post from '../../pages/Post';
 import Navbar from '../Navbar';
+import LougoutPage from '../../pages/LougoutPage';
 
 const index = (props) => {
-  
   return (
     <Router>
-      {props.isLogged && <Navbar exit={props.exit}></Navbar>}
+      {props.isLogged && <Navbar></Navbar>}
 
       <Routes>
-        {/* Permet d'y insérer toutes les Route d'affichage des components */}
-        <Route path="/signing" element={<SignupLoginPage logging={props.logging} />} />
+        <Route
+          path="/signing"
+          element={<SignupLoginPage logging={props.logging} />}
+        />
         <Route exact path="/" element={<Home />} />
         <Route path="/profil" element={<Profil />} />
         <Route path="/post" element={<Post />} />
+        <Route
+          path="/logout"
+          element={<LougoutPage unlog={props.unlog} exit={props.exit} />}
+        ></Route>
         <Route path="/error-page" element={<ErrorPage />} />
         <Route path="/redirect" element={<Navigate to="/error-page" />} />
-        {/*Permet de rediriger vers une autre page si toutes les autres ont échoué  */}
       </Routes>
     </Router>
   );

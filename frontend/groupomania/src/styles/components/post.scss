@@ -2,7 +2,7 @@
     margin-right:auto;
     margin-left:auto;
     height: auto;
-    margin-top: 50px;
+    
    
    
 
@@ -45,6 +45,7 @@
         background-color: whitesmoke;
         border-radius: 25px;
         animation: 1s ease forwards post-display;
+        margin-bottom: 10px;
         @keyframes post-display {
             from{
                 opacity: 0;

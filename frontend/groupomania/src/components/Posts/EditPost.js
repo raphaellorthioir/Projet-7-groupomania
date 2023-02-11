@@ -1,16 +1,15 @@
 import React, { useContext, useRef, useState } from 'react';
 import { UserContext } from '../AppContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const EditPost = (props) => {
   const user = useContext(UserContext);
-
-  console.log(props)
-
+  console.log(props);
+  const navigate = useNavigate();
   // PROPS VALUES \\
-  const postToEdit = props.postToEdit.post;
-
+  const postToEdit = props.postToEdit;
+  console.log(props);
   // PROPS FUNC \\
-  
 
   /*Stop editing */
   const stopEdit = () => {
@@ -19,9 +18,8 @@ const EditPost = (props) => {
 
   /*Send new values to Post */
 
-  const changePost = (data) => {
-    props.updatePost(data)
-  };
+  // States \\
+  const [files, setFiles] = useState(postToEdit.imageUrl);
 
   // Ref \\
 
@@ -29,23 +27,21 @@ const EditPost = (props) => {
   const updatedText = useRef();
   const updatedImage = useRef();
 
-  // States \\
-  const [files, setFiles] = useState(props.isUpdated ? props.updatedData.image :postToEdit.imageUrl);
-
-  
-   
   const [error, setError] = useState();
-
- 
 
   const handleEditPost = (e) => {
     e.preventDefault();
+    console.log(updatedImage);
     setError(null);
     if (files || updatedText.current.innerText) {
       const data = new FormData();
       data.append('profilPicture', user.profilPicture);
       data.append('title', updatedTitle.current.value);
-      data.append('image', updatedImage.current.files[0]);
+      if (updatedImage.current.files[0]) {
+        data.append('image', updatedImage.current.files[0]);
+      } else if (!files) {
+        data.append('imageUrl', '');
+      }
       data.append('text', updatedText.current.innerText);
       data.append('pseudo', user.pseudo);
       axios
@@ -57,22 +53,24 @@ const EditPost = (props) => {
           }
         )
         .then((res) => {
-          changePost(res.data)
+          props.updatePost(res.data);
           props.stopEdit();
         })
         .catch((err) => {
+          console.log(updatedImage);
           console.log(err);
-          if (err.response.data.error.errors.text) {
-            setError('Votre envoi ne doit pas dépasser les 250 caractères');
+          if (err) {
+            if (err.response.data.error)
+              setError('Votre envoi ne doit pas dépasser les 250 caractères');
+            else {
+              // navigate('/logout');
+            }
           }
         });
     } else {
       setError('*Veuillez écrire un texte ou choisir une image ');
     }
   };
-
-
- 
 
   const setImage = () => {
     const files = updatedImage.current.files[0];
@@ -117,7 +115,9 @@ const EditPost = (props) => {
           placeholder="Titre"
           maxLength={45}
           ref={updatedTitle}
-          defaultValue={ props.isUpdated ? props.updatedData.title : postToEdit.title}
+          defaultValue={
+            props.isUpdated ? props.updatedData.title : postToEdit.title
+          }
           autoFocus
           required
         />
@@ -142,8 +142,7 @@ const EditPost = (props) => {
               placeholder="Contenu du post"
               ref={updatedText}
             >
-              {props.isUpdated ? props.updatedData.text : postToEdit.text}
-              
+              {postToEdit.text}
             </div>
             {error && <p className="error">{error}</p>}
           </div>

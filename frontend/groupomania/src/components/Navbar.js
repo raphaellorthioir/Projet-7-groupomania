@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { UserContext } from './AppContext';
 import Logout from './Log/Logout';
-const Navbar = (props) => {
+const Navbar = () => {
   
   const user = useContext(UserContext);
 
@@ -29,7 +29,7 @@ const Navbar = (props) => {
             >
               <i className="fa-regular fa-user logo-profil"></i>
             </NavLink>
-            <Logout exit={props.exit}></Logout>
+            <Logout></Logout>
           </div>
         </div>
       </nav>

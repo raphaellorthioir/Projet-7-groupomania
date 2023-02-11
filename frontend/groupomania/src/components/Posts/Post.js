@@ -15,14 +15,41 @@ const Post = (props) => {
   const user = useContext(UserContext);
 
   // STATES \\
+  console.log(props);
 
-  const [isUpdated, setIsUpdated] = useState();
+  // DATE \\
+  const createdAt = props.post.createdAt;
+  const updatedAt = props.post.updatedAt;
+
+  const formatCreateDate = (createdAt) => {
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      weekday: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    };
+    return new Date(createdAt).toLocaleDateString('fr-FR', options);
+  };
+  const formatUpdateDate = (updatedAt) => {
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      weekday: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    };
+    return new Date(updatedAt).toLocaleDateString(undefined, options);
+  };
+  const createDate = formatCreateDate(createdAt);
+  const updateDate = formatUpdateDate(updatedAt);
+
   const [isEditing, setIsEditing] = useState(false);
   const [displayValidationMessage, setDisplayValidationMessage] = useState();
-  const [date, setDate] = useState();
-  const [title, setTitle] = useState();
-  const [text, setText] = useState();
-  const [image, setImage] = useState();
+  const [post, setPost] = useState(props.post);
+  const [date, setDate] = useState(updateDate);
 
   // REFS \\
 
@@ -64,7 +91,7 @@ const Post = (props) => {
 
   const deleteComment = async (commentId) => {
     await axios
-      .patch(
+      .put(
         `${process.env.REACT_APP_API_URL}api/post/delete-comment/${props.post._id}`,
         {
           commentId: commentId,
@@ -74,6 +101,7 @@ const Post = (props) => {
         }
       )
       .then((res) => {
+        console.log(res);
         if (res.data.length > 1) {
           let data = res.data.sort((a, b) => {
             return b.timestamp - a.timestamp;
@@ -85,40 +113,9 @@ const Post = (props) => {
       })
       .catch((err) => {
         console.log(err);
-        navigate('/signing');
+        navigate('/logout');
       });
   };
-  // DATE \\
-  const createdAt = props.post.createdAt;
-  const updatedAt = props.post.updatedAt;
-
-  const formatCreateDate = (createdAt) => {
-    const options = {
-      year: 'numeric',
-      month: '2-digit',
-      weekday: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    };
-    return new Date(createdAt).toLocaleDateString('fr-FR', options);
-  };
-  const formatUpdateDate = (updatedAt) => {
-    const options = {
-      year: 'numeric',
-      month: '2-digit',
-      weekday: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    };
-    return new Date(updatedAt).toLocaleDateString(undefined, options);
-  };
-  const createDate = formatCreateDate(createdAt);
-  const updateDate = formatUpdateDate(updatedAt);
-
-  const primitiveCreateDate = new Date(createdAt).valueOf();
-  const primitiveUpdateDate = new Date(updatedAt).valueOf();
 
   // Call the EditPost Component \\
   const editPost = () => {
@@ -135,11 +132,8 @@ const Post = (props) => {
   const updatePost = (data) => {
     const newUpdateDate = formatUpdateDate(data.updatedAt);
     setDate(newUpdateDate);
-    setTitle(data.title);
-    setText(data.text);
-    setImage(data.imageUrl);
+    setPost(data);
     setIsEditing(false);
-    setIsUpdated(true);
     setDisplayValidationMessage(true);
   };
 
@@ -154,7 +148,7 @@ const Post = (props) => {
         props.updatePosts();
       })
       .catch(() => {
-        navigate('/signing');
+        navigate('/logout');
       });
   };
 
@@ -181,11 +175,9 @@ const Post = (props) => {
     <>
       {isEditing ? (
         <EditPost
-          postToEdit={props}
+          postToEdit={post}
           stopEdit={stopEdit}
           updatePost={updatePost}
-          updatedData={{ date, title, text, image }}
-          isUpdated={isUpdated}
         />
       ) : (
         <section className="flex cl space-around ">
@@ -202,14 +194,14 @@ const Post = (props) => {
                   <div className="flex row ai-center ">
                     <img
                       className="profilPicture"
-                      src={props.post.profilPicture}
+                      src={post.profilPicture}
                       alt="Profil"
                     />
-                    <div>{props.post.pseudo}</div>
+                    <div>{post.pseudo}</div>
                   </div>
                 </div>
               </NavLink>
-              {(user.userId === props.post.userId || user.isAdmin) && (
+              {(user?.userId === post.userId || user?.isAdmin) && (
                 <>
                   <div onMouseLeave={handleMouseLeave} className="edit-box">
                     <div className="icon-box">
@@ -224,7 +216,7 @@ const Post = (props) => {
                       className="list-box"
                       ref={ul}
                     >
-                      {user.userId === props.post.userId && (
+                      {user.userId === post.userId && (
                         <>
                           <li onClick={editPost}>Modifier</li>
                           <li onClick={openModal}>Supprimer</li>
@@ -261,100 +253,37 @@ const Post = (props) => {
                 </>
               )}
             </div>
-            {isUpdated ? (
-              <>
-                <div className="date">
-                  <i className="fa-regular fa-pen-to-square"></i> Modifié le{' '}
-                  {date}
-                </div>
-                <div className="title">{title}</div>
-                <div className="text">{text}</div>
-                <div className={image && 'postImg'}>
-                  {image && <img src={image} loading="lazy" alt="Post"></img>}
-                </div>
-                <div className="flex row sb ai-center">
-                  <div className="flex row stretch ai-center container">
-                    <Likes {...props} />
-                    <div className="comment-icon">
-                      <i
-                        onClick={displayComments}
-                        className="fa-regular fa-comment-dots"
-                      ></i>
-                      {commentsData.length >= 1 && commentsData.length}
-                    </div>
-                  </div>
-                  {displayValidationMessage && (
-                    <div className="success-icon flex row ai-center">
-                      <span>Post modifié</span>
-                      <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                {primitiveUpdateDate > primitiveCreateDate ? (
+            <>
+              <div className="date">
+                {createDate < date ? (
                   <>
-                    <div className="date">
-                      <i className="fa-regular fa-pen-to-square"></i>
-                      <span>Modifié le {updateDate}</span>
-                    </div>
-                    <div className="title">{props.post.title}</div>
-                    <div className="text">{props.post.text}</div>
-                    <div className="postImg">
-                      {props.post.imageUrl && (
-                        <img
-                          src={props.post.imageUrl}
-                          loading="lazy"
-                          alt="Post"
-                        ></img>
-                      )}
-                    </div>
-                    <div className="flex row stretch ai-center ac-center container">
-                      <Likes {...props} />
-                      <div
-                        onClick={displayComments}
-                        className="comment-icon flex row ai-center ac-center"
-                      >
-                        <i className="fa-regular fa-comment-dots"></i>
-                        <div className="comment-counter">
-                          {commentsData.length >= 1 && commentsData.length}
-                        </div>
-                      </div>
-                    </div>
+                    <i className="fa-regular fa-pen-to-square"></i>
+                    <span>Modifié le {date}</span>
                   </>
                 ) : (
-                  <>
-                    <div className="date">`Posté le`{createDate}</div>
-                    <div className="title">{props.post.title}</div>
-                    <div className="text">{props.post.text}</div>
-                    <div className="postImg">
-                      {props.post.imageUrl && (
-                        <img
-                          src={props.post.imageUrl}
-                          loading="lazy"
-                          alt="Post"
-                        ></img>
-                      )}
-                    </div>
-                    <div className="flex row sb ai-center">
-                      <div className="flex row stretch ai-center container">
-                        <Likes {...props} />
-                        <div
-                          onClick={displayComments}
-                          className="comment-icon flex row ai-center ac-center"
-                        >
-                          <i className="fa-regular fa-comment-dots"></i>
-                          <div className="comments-counter">
-                            {commentsData.length >= 1 && commentsData.length}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                  <span>Posté le {updateDate}</span>
                 )}
-              </>
-            )}
+              </div>
+              <div className="title">{post.title}</div>
+              <div className="text">{post.text}</div>
+              <div className="postImg">
+                {post.imageUrl && (
+                  <img src={post.imageUrl} loading="lazy" alt="Post"></img>
+                )}
+              </div>
+              <div className="flex row stretch ai-center ac-center container">
+                <Likes {...props} />
+                <div
+                  onClick={displayComments}
+                  className="comment-icon flex row ai-center ac-center"
+                >
+                  <i className="fa-regular fa-comment-dots"></i>
+                  <div className="comment-counter">
+                    {commentsData.length >= 1 && commentsData.length}
+                  </div>
+                </div>
+              </div>
+            </>
           </div>
           <>
             {showComment ? (

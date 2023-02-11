@@ -14,5 +14,5 @@ router.delete('/:postId',checkUser, multer, postCtrl.deletePost);
 
 router.patch('/comment-post/:postId',checkUser, postCtrl.commentPost);
 router.patch('/edit-comment/:postId',checkUser, postCtrl.editComment);
-router.patch('/delete-comment/:postId',checkUser, postCtrl.deleteComment);
+router.put('/delete-comment/:postId',checkUser, postCtrl.deleteComment);
 module.exports = router;

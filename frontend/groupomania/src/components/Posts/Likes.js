@@ -1,10 +1,13 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../AppContext';
 
 const Likes = (props) => {
+  const user = useContext(UserContext);
   const postId = props.post._id;
-  const [like, setLike] = useState(props.post.usersLiked.length);
-  const [disLike, setDisLike] = useState(props.post.usersDisliked.length);
+
+  const [like, setLike] = useState(props.post.usersLiked);
+  const [disLike, setDisLike] = useState(props.post.usersDisliked);
   const handleLike = (e) => {
     axios
       .post(
@@ -28,23 +31,28 @@ const Likes = (props) => {
   useEffect(() => {});
   return (
     <div className="flex row space-around likes-container">
-      <div className='like-icon flex row ai-center ac-center'>
+      <div className="like-icon flex row ai-center ac-center">
         <i
+          style={
+            like.includes(user?.userId)
+              ? { color: 'green' }
+              : {}
+          }
           onClick={() => {
             handleLike(1);
           }}
           className="fa-regular fa-thumbs-up"
         ></i>
-        {like}
+        {like.length}
       </div>
-      <div className='like-icon flex row ac-center ai-center'>
-        <i
+      <div className="like-icon flex row ac-center ai-center">
+        <i style={ disLike.includes(user?.userId) ? {color:"red"} :{} }
           onClick={() => {
             handleLike(-1);
           }}
           className="fa-regular fa-thumbs-down"
         ></i>
-        {disLike}
+        {disLike.length}
       </div>
     </div>
   );

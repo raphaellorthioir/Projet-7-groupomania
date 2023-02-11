@@ -1,9 +1,12 @@
 import axios from 'axios';
 import React, { useContext, useRef, useState } from 'react';
 import { UserContext } from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = (post) => {
   const user = useContext(UserContext);
+  const navigate = useNavigate();
+  const form = useRef();
   const title = useRef();
   const text = useRef();
   const image = useRef();
@@ -19,7 +22,9 @@ const CreatePost = (post) => {
       const data = new FormData();
       data.append('profilPicture', user.profilPicture);
       data.append('title', title.current.value);
-      data.append('image', image.current.files[0]);
+      if (file) {
+        data.append('image', image.current.files[0]);
+      }
       data.append('text', text.current.innerText);
       data.append('pseudo', user.pseudo);
       axios
@@ -28,15 +33,19 @@ const CreatePost = (post) => {
         })
         .then(() => {
           post.updatePosts();
-          title.current.value = '';
-          console.log(image.current.files);
+          post.unSwitchCreatePost()
           text.current.innerText = '';
+          form.current.reset();
           setFile(null);
         })
         .catch((err) => {
           console.log(err);
-          if (err.response.data.error.errors.text) {
-            setError('Votre envoi ne doit pas dépasser les 250 caractères');
+          if (err) {
+            if (err.response.data.error)
+              setError('Votre envoi ne doit pas dépasser les 250 caractères');
+            else {
+              navigate('/logout');
+            }
           }
         });
     } else {
@@ -45,6 +54,7 @@ const CreatePost = (post) => {
   };
 
   const checkImage = () => {
+    console.log(form);
     const files = image.current.files[0];
     const newImg = URL.createObjectURL(files);
     setFile(newImg);
@@ -52,6 +62,7 @@ const CreatePost = (post) => {
 
   const removeImage = () => {
     URL.revokeObjectURL(file);
+    image.current.value = null;
     setFile(null);
   };
 
@@ -66,6 +77,7 @@ const CreatePost = (post) => {
         <div>{user.pseudo}</div>
       </div>
       <form
+        ref={form}
         className="flex cl space-around"
         id="post"
         name="postSubmit"
@@ -106,28 +118,27 @@ const CreatePost = (post) => {
         )}
 
         <br />
-          <div className=" join-img-container flex row space-around ai-center ac-center ">
-            <div className="flex row ai-center ac-center">
-              <div>Joindre une image</div>
-              <label htmlFor="file">
-                <i className="fa-regular fa-file-image"></i>
-              </label>
-            </div>
-
-            <input
-              type="file"
-              name="file"
-              id="file"
-              title=""
-              accept="image/jpeg, image/png image/jpg"
-              style={{ color: 'transparent' }}
-              onChange={checkImage}
-              className="imgInput"
-              ref={image}
-            />
-            <input type="submit" value="Envoyer" />
+        <div className=" join-img-container flex row space-around ai-center ac-center ">
+          <div className="flex row ai-center ac-center">
+            <div>Joindre une image</div>
+            <label htmlFor="file">
+              <i className="fa-regular fa-file-image"></i>
+            </label>
           </div>
-        
+
+          <input
+            type="file"
+            name="file"
+            id="file"
+            title=""
+            accept="image/jpeg, image/png image/jpg"
+            style={{ color: 'transparent' }}
+            onChange={checkImage}
+            className="imgInput"
+            ref={image}
+          />
+          <input type="submit" value="Envoyer" />
+        </div>
       </form>
     </div>
   );

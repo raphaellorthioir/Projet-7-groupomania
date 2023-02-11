@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { UserContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
-const Logout = (props) => {
+const Logout = () => {
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const logout = async () => {
@@ -12,12 +12,11 @@ const Logout = (props) => {
         withCredentials: true,
       })
       .then(() => {
-        props.exit();
-        navigate('/signing');
+        navigate('/logout');
       })
       .catch((err) => {
-        console.log(err);
-        navigate('/signing');
+        console.log(err)
+        navigate('/logout');
       });
   };
 

@@ -5,6 +5,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.22);
    padding: 5px;
 
+   
    .delete-comment-btn{
     font-size: 1.1em;
     cursor: pointer;
@@ -16,15 +17,27 @@
     }
    .form-container{
     margin: 10px 0;
+    width: 100%;
+    position: relative;
     
-    
+    p{
+        height: 10px;
+    }
+    .input-container{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin-right: 10px;
+    }
          .comment-textarea{
-            width: 85%;
-            margin: auto;
+            width: 80%;
+       
+            
                 textarea{
                     font-size: 1em;
-                   padding-left:8px;
-                   padding-top: 8px;
+                   padding-left:20px;
+                   padding-top: 5px;
+                   padding-bottom: 5px;
                     width: 100%;
                     margin: auto;
                     height: 100%;
@@ -32,12 +45,48 @@
                     overflow: hidden;
                     border: none;
                     resize: none;
-                    outline: 2px solid #00162c89;
+                    outline: 0;
+                    box-shadow:   0 0 5px 1px rgba(0, 0, 0, 0.082) ;
                     &:hover{
-                        background-color: rgb(196, 196, 196);
+                        background-color: rgba(196, 196, 196, 0.332);
+                    }
+                    &:focus{
+                        background-color: white;
                     }
                 }
             }
-         
+            
+         .send-comment-btn{
+            display: none;
+            
+         }
+         .icon-label{
+            display: block;
+            position: relative;
+            width: 40px;
+            height: 40px;
+            margin: 0;
+            background-color: #0077ff;
+            color:white;
+            border-radius: 50%;
+            text-align: center;
+            cursor: pointer;
+            .icon-box{
+                width: fit-content;
+                height: fit-content;
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                margin: auto auto;
+            }
+            
+        }
+        i{
+            margin-right: 3px;
+            margin-top: 3px;
+            font-size: 1.5rem;
+        }
         }
     }

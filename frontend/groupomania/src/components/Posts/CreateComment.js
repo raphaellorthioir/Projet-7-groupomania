@@ -1,34 +1,42 @@
 import axios from 'axios';
-import { useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
+import { UserContext } from '../AppContext';
 
 const CreateComment = (props) => {
-  console.log(props);
+  const user = useContext(UserContext);
   const postProps = props.postProps.post;
 
+  const [errorComment, setError] = useState(null);
+  const navigate = useNavigate();
   const comment = useRef();
-  const form=useRef()
-  const createComment = async () => {
-    await axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}api/post/comment-post/${postProps._id}`,
-        { text: comment.current.value },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        comment.current.value = '';
-        props.updateComments(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const form = useRef();
+  const error = useRef();
 
-  const handleComment = (e) => {
-    if (e.key === 'Enter') {
-      createComment();
+  const createComment = async (e) => {
+    e.preventDefault();
+    if (form.current.elements.comment.textLength < 1) {
+      console.log('cc');
+      setError('*Votre commentaire est vide');
+    } else {
+      setError(null);
+      await axios
+        .patch(
+          `${process.env.REACT_APP_API_URL}api/post/comment-post/${postProps._id}`,
+          { text: comment.current.value },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          form.current.reset()
+          props.updateComments(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          navigate('/logout');
+        });
     }
   };
 
@@ -41,29 +49,56 @@ const CreateComment = (props) => {
           <div className="flex row fs ai-center ac-center pseudo-container">
             <img
               className="profilPicture"
-              src={postProps.profilPicture}
+              src={user.profilPicture}
               alt="Profil"
             />
-            <div className="pseudo">{postProps.pseudo}</div>
+            <div className="pseudo">{user.pseudo}</div>
           </div>
         </div>
 
-        <div className="form-container">
-          <form ref={form} name="commentSubmit" onSubmit={createComment}>
+        <div className="form-container ">
+          <form
+            ref={form}
+            className="flex row fs"
+            name="commentSubmit"
+          >
+            <label htmlFor="comment"></label>
             <div className="comment-textarea">
-              <label htmlFor="comment"></label>
               <TextareaAutosize
                 name="comment"
                 id="comment"
                 placeholder="Commenter..."
+                minLength={10}
+                maxLength={20}
                 minRows={1}
                 maxRows={20}
                 autoFocus
                 ref={comment}
-                onKeyDown={handleComment}
+                onChange={() => setError(null)}
               />
             </div>
+            <div onClick={createComment} className="input-container">
+              <label htmlFor="sendComment" className="icon-label">
+                <div className="icon-box">
+                  <i className="fa-regular fa-paper-plane"></i>
+                </div>
+              </label>
+              <input
+                name="sendComment"
+                id="sendComment"
+                type="submit"
+                value=""
+                className="send-comment-btn"
+              ></input>
+            </div>
           </form>
+          {errorComment ? (
+            <p className="error" ref={error}>
+              {errorComment}
+            </p>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
