@@ -14,9 +14,6 @@ const Post = (props) => {
   // CONTEXT \\
   const user = useContext(UserContext);
 
-  // STATES \\
-  console.log(props);
-
   // DATE \\
   const createdAt = props.post.createdAt;
   const updatedAt = props.post.updatedAt;
@@ -180,7 +177,7 @@ const Post = (props) => {
           updatePost={updatePost}
         />
       ) : (
-        <section className="flex cl space-around ">
+        <section id={props.post._id} className="flex cl space-around ">
           <div className="post">
             <div className="flex row sb pseudo-container">
               <NavLink

@@ -7,7 +7,7 @@ const Navbar = () => {
   const user = useContext(UserContext);
 
   return (
-    <header>
+    <header id='header'>
       <nav>
         <div className=" nav-container flex sb">
           <div className="logo">

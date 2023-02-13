@@ -4,9 +4,9 @@ import UploadImage from '../components/Profil/UploadImage';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { HashLink } from 'react-router-hash-link';
 //import { useLocation } from "react-router-dom";
 const Profil = () => {
- 
   const [userProfil, setUserProfil] = useState({});
   const [searchParams] = useSearchParams();
 
@@ -19,7 +19,7 @@ const Profil = () => {
           withCredentials: true,
         })
         .then((res) => {
-          console.log(res)
+          console.log(res);
           setUserProfil(res.data.docs);
         })
         .catch((res) => {
@@ -35,6 +35,14 @@ const Profil = () => {
     <div className="profil-page flex cl space-around">
       <>
         <main>
+          <HashLink
+            className="createPost-btn"
+            smooth
+            scroll={(el) => el.scrollIntoView({ block: 'end' })}
+            to="/#63e816be0a77b45831a578c2"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </HashLink>
           <div>
             <div className="flex row space-around">
               <img src={userProfil.profilPicture} alt={` Profil de `} />

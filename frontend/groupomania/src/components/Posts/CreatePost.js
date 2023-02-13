@@ -33,7 +33,7 @@ const CreatePost = (post) => {
         })
         .then(() => {
           post.updatePosts();
-          post.unSwitchCreatePost()
+          post.unSwitchCreatePost();
           text.current.innerText = '';
           form.current.reset();
           setFile(null);
@@ -67,7 +67,7 @@ const CreatePost = (post) => {
   };
 
   return (
-    <div className="newPostContainer flex cl">
+    <div id="createPost" className="newPostContainer flex cl">
       <div className="flex row fs ai-center pseudo-container">
         <img
           className="profilPicture"

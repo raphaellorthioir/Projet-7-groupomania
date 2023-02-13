@@ -1,5 +1,4 @@
 // Fichier pour les routes
-import React, { useContext } from 'react';
 import {
   BrowserRouter as Router,
   Route, // permet de définir le chemin vers une puage
