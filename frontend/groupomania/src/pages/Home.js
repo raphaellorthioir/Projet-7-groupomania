@@ -148,10 +148,12 @@ const Home = () => {
             contentLabel="Voulez vous..."
             overlayClassName="create-post-overlay"
             onRequestClose={closeModal}
+            shouldCloseOnOverlayClick={false}
             preventScroll={true}
           >
             <CreatePost
               updatePosts={updatePosts}
+              closeModal={closeModal}
             />
           </ReactModal>
         </main>

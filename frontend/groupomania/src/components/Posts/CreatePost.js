@@ -12,7 +12,7 @@ const CreatePost = (post) => {
   const image = useRef();
   const [file, setFile] = useState();
   const [error, setError] = useState();
-
+  const windowSize =useRef([window.innerWidth])
   // When is Editing
 
   const handleNewPost = (e) => {
@@ -65,7 +65,9 @@ const CreatePost = (post) => {
     image.current.value = null;
     setFile(null);
   };
-
+ const closeModal=()=>{
+  post.closeModal()
+ }
   return (
     <div id="createPost" className="newPostContainer flex cl">
       <div className="flex row fs ai-center pseudo-container">
@@ -75,6 +77,7 @@ const CreatePost = (post) => {
           alt={user.pseudo}
         />
         <div>{user.pseudo}</div>
+        {windowSize.current[0] <= 480  && <span onClick={closeModal} className='stop-create'> <i className="fa-solid fa-xmark"></i> </span> } 
       </div>
       <form
         ref={form}
