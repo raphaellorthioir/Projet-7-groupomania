@@ -1,5 +1,5 @@
 .newPostContainer{
- 
+  margin-top: 20px;
   margin-bottom: 100px;
   border-radius: 15px;
   width: 100%;
@@ -131,7 +131,7 @@
    }
     
     .textEditable{
-      height: 50px;
+      max-height: 30vh;
       margin: auto;
       outline: none;
       padding-left: 10px;
@@ -151,7 +151,9 @@
       color: rgba(0, 0, 0, 0.5);
     }
   }
-  
+  @media screen and (max-width:720px) {
+    display: none;
+  }
   }
 
 

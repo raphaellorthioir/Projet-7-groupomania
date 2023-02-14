@@ -11,7 +11,7 @@ const Profil = () => {
   const [searchParams] = useSearchParams();
 
   const param = searchParams.get('user');
-
+ console.log(param)
   useEffect(() => {
     const fetch = async () => {
       await axios
@@ -38,7 +38,7 @@ const Profil = () => {
           <HashLink
             className="createPost-btn"
             smooth
-            scroll={(el) => el.scrollIntoView({ block: 'end' })}
+          
             to="/#63e816be0a77b45831a578c2"
           >
             <i class="fa-solid fa-pencil"></i>

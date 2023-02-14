@@ -112,16 +112,15 @@ exports.logout = (req, res) => {
 exports.userProfil = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
-
-  if (req.params.id === req.auth.userId || req.auth.isAdmin) {
-    User.findById(req.params.id, (err, docs) => {
-      if (!err) res.send({ message: "user's profil access granted ", docs });
-      else console.log('ID unknown :' + err);
-    }).select('  -password -email -isAdmin'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
-  } else {
-    res.clearCookie('jwt');
-    res.status(401).json('Unauthorized request');
-  }
+  User.findById(req.params.id, (err, docs) => {
+    if (!err) {
+      res.send({ message: "user's profil access granted ", docs });
+    } else {
+      res.clearCookie('jwt');
+      res.status(400).json(err);
+    }
+    console.log('ID unknown :' + err);
+  }).select('  -password -email -isAdmin'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
 };
 
 //UPDATE USER PROFIL PAGE

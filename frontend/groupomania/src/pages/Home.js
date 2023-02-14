@@ -1,17 +1,19 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../components/AppContext';
 import Post from '../components/Posts/Post';
 import axios from 'axios';
 import CreatePost from '../components/Posts/CreatePost';
 import { Navigate } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
-import AnchorLink from 'react-anchor-link-smooth-scroll';
+import ReactModal from 'react-modal';
 const Home = () => {
   const user = useContext(UserContext);
   const [posts, setPosts] = useState();
   const [wantCreatePost, setWantCreatePost] = useState(false);
   const [loadPosts, setLoadPosts] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  ReactModal.setAppElement('#root');
+  const windowSize = useRef([window.innerWidth]);
 
   const fetchPosts = async () => {
     await axios
@@ -29,19 +31,25 @@ const Home = () => {
   };
   const updatePosts = () => {
     fetchPosts();
+    setIsOpen(false)
+    console.log('cc');
   };
 
   const loadMore = () => {
     // window.innerHeight = document.documentElement.scrollTop + 1 : partie qui corrend à l'endroit (barre de défilement) où on se trouve dans le document , le plus 1(pixel) permet d'activer la condition
     //document.scrollingElement.scrollHeight : partie qui calcule la hauteur de tout le document
-    console.log(window.innerHeight + document.documentElement.scrollTop + 1);
-    console.log(document.scrollingElement.scrollHeight);
     if (
       window.innerHeight + document.documentElement.scrollTop + 1 >
       document.scrollingElement.scrollHeight
     ) {
       setLoadPosts(true);
     }
+  };
+
+  const refresh = () => {
+    console.log('cc');
+    window.location.reload();
+    window.scroll(0, 0);
   };
   useEffect(() => {
     console.log('hello');
@@ -52,10 +60,18 @@ const Home = () => {
     return () => window.removeEventListener('scroll', loadMore);
   }, [loadPosts]);
 
-  const scroll = () => {
+  const createPostModal = (e) => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  const goToCreatePost = (e) => {
+    e.preventDefault();
     setWantCreatePost(true);
     const el = document.getElementById('createPost');
-    el.scrollIntoView({
+
+    el?.scrollIntoView({
       behavior: 'smooth',
       block: 'center',
       inline: 'center',
@@ -67,6 +83,7 @@ const Home = () => {
   const unSwitchCreatePost = () => {
     setWantCreatePost(false);
   };
+
   return (
     <>
       {user ? (
@@ -101,15 +118,42 @@ const Home = () => {
                 <Post post={item} updatePosts={updatePosts} key={item._id} />
               ))}
           </div>
-          <button onClick={scroll}> </button>
-          <HashLink
-            onClick={switchCreatePost}
+          <button
+            id="scrollToCreate"
+            title="créer un post"
+            name="création de post"
+            type="button"
+            aria-pressed="false"
             className="createPost-btn"
-            smooth
-            to="#createPost"
+            onClick={
+              windowSize.current[0] <= 480 ? createPostModal : goToCreatePost
+            }
           >
-            <i class="fa-solid fa-pencil"></i>
-          </HashLink>
+            <i class="fa-solid fa-pencil"></i>{' '}
+          </button>
+          <button
+            id="refresh"
+            title="créer un post"
+            name="création de post"
+            type="button"
+            aria-pressed="false"
+            className="createPost-btn"
+            onClick={refresh}
+          >
+            <i class="fa-solid fa-rotate-right"></i>{' '}
+          </button>
+          <ReactModal
+            isOpen={isOpen}
+            className="create-post-modal"
+            contentLabel="Voulez vous..."
+            overlayClassName="create-post-overlay"
+            onRequestClose={closeModal}
+            preventScroll={true}
+          >
+            <CreatePost
+              updatePosts={updatePosts}
+            />
+          </ReactModal>
         </main>
       ) : (
         <Navigate to="/signing" />

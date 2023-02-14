@@ -48,6 +48,7 @@ const Post = (props) => {
   const [post, setPost] = useState(props.post);
   const [date, setDate] = useState(updateDate);
 
+  
   // REFS \\
 
   const ul = useRef();
@@ -252,14 +253,13 @@ const Post = (props) => {
             </div>
             <>
               <div className="date">
-                {createDate < date ? (
+                {createDate < date  ? (
                   <>
                     <i className="fa-regular fa-pen-to-square"></i>
                     <span>Modifié le {date}</span>
                   </>
-                ) : (
-                  <span>Posté le {updateDate}</span>
-                )}
+                ) : <span>Posté le {createDate}</span> }
+                
               </div>
               <div className="title">{post.title}</div>
               <div className="text">{post.text}</div>
@@ -279,7 +279,13 @@ const Post = (props) => {
                     {commentsData.length >= 1 && commentsData.length}
                   </div>
                 </div>
+                {displayValidationMessage && (
+                  <span className="success-icon">Post modifié
+                    <i class="fa-regular fa-circle-check"></i>
+                  </span>
+                )}
               </div>
+           
             </>
           </div>
           <>

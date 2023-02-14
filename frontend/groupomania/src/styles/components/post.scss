@@ -10,8 +10,10 @@
     cursor: default;
   }
     .success-icon{
+        position: absolute;
        text-align: center;
        width:fit-content;
+       right: 0;
        animation: 10s ease forwards anim-icon;
        padding-right: 10px;
 
@@ -29,7 +31,7 @@
         margin-right: 30px;
         opacity: 0;
     }
-    5%{  margin-right: 0;
+    10%{  margin-right: 0;
         opacity: 1;
      }
     99%{
@@ -167,9 +169,21 @@
                 }
             }
            
+
+               
     }
-   
-   
+    @media screen  and (max-width:720px) {
+         
+        .post{
+            border-radius: 0;
+            margin-bottom: 3px;
+        }
+          section{
+            margin-bottom: 0;
+            
+           }
+       
+       }
   }
   
-
+  

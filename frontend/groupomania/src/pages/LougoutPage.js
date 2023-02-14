@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LougoutPage = (props) => {
   const navigate = useNavigate();
-  console.log(props);
+  const windowSize = useRef([window.innerWidth]);
   const logout = () => {
     props.exit();
     navigate('/signing');
@@ -17,9 +17,17 @@ const LougoutPage = (props) => {
     <div className="disconnect-container ">
       <div className="disconnect-box flex cl ai-center ac-center ">
         <div className="img-box">
-          <img src={require('../images/icon-.png')} alt="Groupomania" />
+          <img
+            src={
+              windowSize.current[0] < 480
+                ? require('../images/icon-left-font-monochrome-black -350p.png')
+                : require('../images/icon-.png')
+            }
+            style={{ width: '350' }}
+            alt="Groupomania"
+          />
         </div>
-        <h1>Deconnexion ...</h1>
+        <h1>Déconnexion ...</h1>
       </div>
     </div>
   );

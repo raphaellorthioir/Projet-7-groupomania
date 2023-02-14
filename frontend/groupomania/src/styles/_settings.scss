@@ -24,10 +24,10 @@ $white: rgb(253, 253, 253);
 $shadow: rgb(219, 218, 218);
 
 header{
-  height:100px;
+  height:51px;
 }
 main{
-  width: 35vw;
+  width: 30vw;
   margin-top: 100px;
   margin: auto auto;
 }
@@ -99,37 +99,115 @@ section{
 }
 
 
-
+.create-post-modal{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: rgb(245, 244, 244);
+  width: 95%;
+  height: fit-content;
+  margin: auto;
+  border: 1px solid black;
+  border-radius: 25px;
+  
+   > div{
+    display: block;
+    box-shadow: none;
+    margin-top: 100px;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    margin: 0;
+    
+    form{
+      .pseudo-container{
+        height: 50px;
+        margin-bottom: 20px;
+      }
+      .textEditable{
+        
+        max-height: 400px;
+      }
+      input.title{margin-bottom: 25px;
+      margin-top: 25px;}
+    }
+   
+    
+    }
+   
+  
+   
+}
+.create-post-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.529);
+}
 .pseudo-container{
   margin-top: 8px;
   margin-left: 5px;
   margin-right: 5px;
 }
 
-.createPost-btn{
+#scrollToCreate{
   position: fixed;
   display: block;
-  bottom: 0;
-  right: 0;
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  margin-right: 50px;
-  margin-bottom: 50px;
   border: 0;
   text-align: center;
   padding: 0;
-  box-shadow:  black 0px 0px 2px 1px ;
+  color: #050100;
+ 
+  bottom: 70px;
+  right: 2%;
+  background-color: #0077ff; 
+ 
+ 
+ 
   &:hover{
     background-color: #0077ff;
-    color: white;
+    color: rgb(255, 255, 255);
     transform: scale(1.1);
   }
+ 
   i{
     font-size: 1.5em;
    
   }
   
+}
+#refresh{
+  position: fixed;
+  display: block;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 0;
+  text-align: center;
+  padding: 0;
+  color: #050100;
+  bottom: 10px;
+  right: 2%;
+  
+ 
+ 
+ 
+  &:hover{
+    background-color: #0077ff;
+    color: rgb(255, 255, 255);
+    transform: scale(1.1);
+  }
+ 
+  i{
+    font-size: 1.5em;
+   
+  }
 }
 .flex{
   display: flex;
@@ -275,4 +353,12 @@ body {
 .success {
   color: green;
   font-weight: bold;
+}
+
+@media  screen and (max-width:720px) {
+  main{
+    width: 100%;
+   
+  }
+  
 }
