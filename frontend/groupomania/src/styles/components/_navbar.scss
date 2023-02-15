@@ -7,7 +7,7 @@ nav {
   top: 0;
   z-index: 1;
   margin: auto;
-  padding: 0 10px;
+  padding: 0 5px;
   overflow: hidden;
 
   .logo img {
@@ -15,7 +15,7 @@ nav {
   }
 
   @media screen and(max-width: 1251px) {
-    padding: 0 20px;
+  
   }
  .logo-profil{
   font-size: 2em;

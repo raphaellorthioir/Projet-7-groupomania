@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Post = require('../models/post');
 const bcrypt = require('bcrypt'); /*package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, 
                                     les # sont comparés lorsque le user envoie son mdp */
 const jwt = require('jsonwebtoken');
@@ -131,9 +132,7 @@ exports.updateUser = (req, res, next) => {
   if (req.params.id === req.auth.userId || req.auth.isAdmin) {
     User.findById(req.params.id, (err, docs) => {
       const pathImg = docs.profilPicture.substring(44);
-      console.log(pathImg);
-      console.log(req.file);
-      if (req.file && req.file.originalname !== 'random-user.png') {
+      if (req.file && pathImg !== 'random-user.png') {
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
           if (err) console.log('error delete img profil from local folder');
           else console.log(' img profil deleted from folder');
@@ -158,6 +157,28 @@ exports.updateUser = (req, res, next) => {
           },
           (err, docs) => {
             if (!err) {
+              Post.updateMany(
+                { userId: req.params.id },
+                {
+                  $set: {
+                    profilPicture: `${req.protocol}://${req.get(
+                      'host'
+                    )}/uploads/client/images/${req.file.filename}`,
+                  },
+                },
+                {
+                  new: true,
+                  upsert: true,
+                  setDefaultOnInsert: true,
+                  runValidators: true,
+                  timestamps: false,
+                },
+                (err, posts) => {
+                  if (!err)
+                    console.log({ message: 'sucéés update many', posts });
+                  console.log({ message: 'echec update many', err });
+                }
+              );
               return res.status(200).json(docs);
             }
             if (err) return res.status(500).send({ message: 'erreur' });
@@ -171,6 +192,9 @@ exports.updateUser = (req, res, next) => {
               email: req.body.email,
               pseudo: req.body.pseudo,
               bio: req.body.bio,
+              profilPicture: `${req.protocol}://${req.get(
+                'host'
+              )}/uploads/client/images/${req.file.filename}`,
             },
           },
           {
@@ -181,6 +205,27 @@ exports.updateUser = (req, res, next) => {
           },
           (err, docs) => {
             if (!err) {
+              Post.updateMany(
+                { userId: docs._id },
+                {
+                  $set: {
+                    profilPicture: `${req.protocol}://${req.get(
+                      'host'
+                    )}/uploads/client/images/${req.file.filename}`,
+                  },
+                },
+                {
+                  new: true,
+                  upsert: true,
+                  setDefaultOnInsert: true,
+                  runValidators: true,
+                  timestamps: false,
+                },
+                (err, posts) => {
+                  if (!err) console.log({ message: 'sucéés update many', posts });
+                  console.log({ message: 'echec update many', err });
+                }
+              );
               return res.status(200).json(docs);
             }
             if (err) return res.status(500).send(err);

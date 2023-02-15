@@ -10,7 +10,7 @@ import ReactModal from 'react-modal';
 
 const Post = (props) => {
   const navigate = useNavigate();
-
+ console.log(props)
   // CONTEXT \\
   const user = useContext(UserContext);
 
