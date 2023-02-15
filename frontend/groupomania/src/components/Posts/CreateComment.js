@@ -5,8 +5,11 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { UserContext } from '../AppContext';
 
 const CreateComment = (props) => {
-  const user = useContext(UserContext);
+  
+ 
   const postProps = props.postProps.post;
+  const userProps=props.postProps.getUser
+
 
   const [errorComment, setError] = useState(null);
   const navigate = useNavigate();
@@ -49,10 +52,10 @@ const CreateComment = (props) => {
           <div className="flex row fs ai-center ac-center pseudo-container">
             <img
               className="profilPicture"
-              src={user.profilPicture}
+              src={userProps.profilPicture}
               alt="Profil"
             />
-            <div className="pseudo">{user.pseudo}</div>
+            <div className="pseudo">{userProps.pseudo}</div>
           </div>
         </div>
 

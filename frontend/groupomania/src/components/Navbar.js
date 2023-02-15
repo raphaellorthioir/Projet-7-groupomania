@@ -3,11 +3,10 @@ import { NavLink } from 'react-router-dom';
 import { UserContext } from './AppContext';
 import Logout from './Log/Logout';
 const Navbar = () => {
-  
   const user = useContext(UserContext);
 
   return (
-    <header id='header'>
+    <header id="header">
       <nav>
         <div className=" nav-container flex sb">
           <div className="logo">

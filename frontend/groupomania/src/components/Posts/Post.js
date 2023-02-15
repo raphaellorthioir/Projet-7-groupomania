@@ -9,8 +9,8 @@ import CreateComment from './CreateComment';
 import ReactModal from 'react-modal';
 
 const Post = (props) => {
+  
   const navigate = useNavigate();
- console.log(props)
   // CONTEXT \\
   const user = useContext(UserContext);
 
@@ -72,8 +72,9 @@ const Post = (props) => {
   );
 
   const displayComments = () => {
-    if (showComment) setShowComment(false);
-    else setShowComment(true);
+   
+      if (showComment) setShowComment(false);
+      else setShowComment(true);
   };
   const updateComments = (newCommentsArr) => {
     if (newCommentsArr.length >= 2) {
@@ -173,6 +174,7 @@ const Post = (props) => {
     <>
       {isEditing ? (
         <EditPost
+         getUser={props.getUser}
           postToEdit={post}
           stopEdit={stopEdit}
           updatePost={updatePost}

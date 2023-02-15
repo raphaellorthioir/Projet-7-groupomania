@@ -56,7 +56,6 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) /* objet filter de comparaison */
     .then((user) => {
-      console.log(user);
       if (!user) {
         return res.status(401).json({ emailError: `email inconnu` });
       }
@@ -74,8 +73,6 @@ exports.login = (req, res, next) => {
               {
                 userId: user._id,
                 isAdmin: user.isAdmin,
-                pseudo: user.pseudo,
-                profilPicture: user.profilPicture,
               } /*vérifie l'id de l'utilisateur*/,
               process.env
                 .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,
@@ -83,7 +80,7 @@ exports.login = (req, res, next) => {
             );
           }
           res.cookie('jwt', token, { httpOnly: true });
-          res.status(200).json('Login succeeded');
+          res.send("Loging ok")
         })
         .catch((err) => res.status(500).json('Wrong password', err));
     })
@@ -112,7 +109,7 @@ exports.logout = (req, res) => {
 //GET USER PROFIL
 exports.userProfil = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown :' + req.params.id);
+    return res.status(400).send('ID unknown  :' + req.params.id);
   User.findById(req.params.id, (err, docs) => {
     if (!err) {
       res.send({ message: "user's profil access granted ", docs });
@@ -222,7 +219,8 @@ exports.updateUser = (req, res, next) => {
                   timestamps: false,
                 },
                 (err, posts) => {
-                  if (!err) console.log({ message: 'sucéés update many', posts });
+                  if (!err)
+                    console.log({ message: 'sucéés update many', posts });
                   console.log({ message: 'echec update many', err });
                 }
               );

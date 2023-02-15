@@ -35,7 +35,7 @@ const EditPost = (props) => {
     setError(null);
     if (files || updatedText.current.innerText) {
       const data = new FormData();
-      data.append('profilPicture', user.profilPicture);
+      data.append('profilPicture', props.getUser.profilPicture);
       data.append('title', updatedTitle.current.value);
       if (updatedImage.current.files[0]) {
         data.append('image', updatedImage.current.files[0]);
@@ -43,7 +43,7 @@ const EditPost = (props) => {
         data.append('imageUrl', '');
       }
       data.append('text', updatedText.current.innerText);
-      data.append('pseudo', user.pseudo);
+      data.append('pseudo', props.getUser.pseudo);
       axios
         .put(
           `${process.env.REACT_APP_API_URL}api/post/${postToEdit._id}`,
@@ -89,10 +89,10 @@ const EditPost = (props) => {
         <div className="flex row ai-center">
           <img
             className="profilPicture"
-            src={user.profilPicture}
-            alt={user.pseudo}
+            src={props.getUser.profilPicture}
+            alt={props.getUser.pseudo}
           />
-          <div className="pseudo">{user.pseudo}</div>
+          <div className="pseudo">{props.getUser.pseudo}</div>
         </div>
 
         <div onClick={stopEdit} className="stop-edit flex row ai-center">

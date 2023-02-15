@@ -65,16 +65,17 @@ module.exports.requireAuth = (req, res, next) => {
         console.log('erreur requireAuth');
         res.status(400).json(err);
       } else {
-        res.status(200).json({
-          userId: decodedToken.userId,
-          isAdmin: decodedToken.isAdmin,
-          pseudo: decodedToken.pseudo,
-          profilPicture: decodedToken.profilPicture,
+        UserModel.findById(decodedToken.userId, (err, user) => {
+          if (err) {
+            res.status(401).json(err);
+          } else {
+            res.status(200).json(user)
+           
+          }
         });
-        next();
       }
     });
   } else {
-    res.status(401).json("no token")
+    res.status(401).json('no token');
   }
 };

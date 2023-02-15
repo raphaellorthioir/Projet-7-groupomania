@@ -8,8 +8,9 @@ import ReactModal from 'react-modal';
 const Home = () => {
   const user = useContext(UserContext);
   const [posts, setPosts] = useState();
+  const [getUser, setGetUser] = useState();
   const [wantCreatePost, setWantCreatePost] = useState(false);
-  const [loadPosts, setLoadPosts] = useState();
+  const [loadPosts, setLoadPosts] = useState(true);
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   ReactModal.setAppElement('#root');
@@ -31,10 +32,21 @@ const Home = () => {
   };
   const updatePosts = () => {
     fetchPosts();
-    setIsOpen(false)
+    setIsOpen(false);
     console.log('cc');
   };
 
+  const fetchUser = async () => {
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}api/auth/${user.userId}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        
+        setGetUser(res.data.docs);
+        
+      });
+  };
   const loadMore = () => {
     // window.innerHeight = document.documentElement.scrollTop + 1 : partie qui corrend à l'endroit (barre de défilement) où on se trouve dans le document , le plus 1(pixel) permet d'activer la condition
     //document.scrollingElement.scrollHeight : partie qui calcule la hauteur de tout le document
@@ -52,8 +64,9 @@ const Home = () => {
     window.scroll(0, 0);
   };
   useEffect(() => {
-    console.log('hello');
-
+    fetchUser();
+  }, []);
+  useEffect(() => {
     fetchPosts();
     setLoadPosts(false);
     window.addEventListener('scroll', loadMore);
@@ -91,6 +104,7 @@ const Home = () => {
           {wantCreatePost ? (
             <div id="machin">
               <CreatePost
+              getUser={getUser}
                 unSwitchCreatePost={unSwitchCreatePost}
                 updatePosts={updatePosts}
               />
@@ -101,11 +115,11 @@ const Home = () => {
                 <div className="flex row ai-center ac-center space-around create-box">
                   <img
                     className="profilPicture"
-                    src={user?.profilPicture}
+                    src={getUser?.profilPicture}
                     alt=""
                   />
                   <div className="createSwitch" onClick={switchCreatePost}>
-                    Quoi de neuf, {user?.pseudo} ?
+                    Quoi de neuf, {getUser?.pseudo} ?
                   </div>
                 </div>
               </div>
@@ -115,7 +129,7 @@ const Home = () => {
           <div className="post-container  ">
             {posts &&
               posts.map((item) => (
-                <Post post={item} updatePosts={updatePosts} key={item._id} />
+                <Post getUser={getUser} post={item} updatePosts={updatePosts} key={item._id} />
               ))}
           </div>
           <button
@@ -151,10 +165,7 @@ const Home = () => {
             shouldCloseOnOverlayClick={false}
             preventScroll={true}
           >
-            <CreatePost
-              updatePosts={updatePosts}
-              closeModal={closeModal}
-            />
+            <CreatePost updatePosts={updatePosts} closeModal={closeModal} />
           </ReactModal>
         </main>
       ) : (

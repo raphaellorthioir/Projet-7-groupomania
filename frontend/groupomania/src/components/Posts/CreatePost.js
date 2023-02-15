@@ -4,6 +4,7 @@ import { UserContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const CreatePost = (post) => {
+ 
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const form = useRef();
@@ -12,7 +13,7 @@ const CreatePost = (post) => {
   const image = useRef();
   const [file, setFile] = useState();
   const [error, setError] = useState();
-  const windowSize =useRef([window.innerWidth])
+  const windowSize = useRef([window.innerWidth]);
   // When is Editing
 
   const handleNewPost = (e) => {
@@ -20,7 +21,7 @@ const CreatePost = (post) => {
     setError(null);
     if (file || text.current.innerText) {
       const data = new FormData();
-      data.append('profilPicture', user.profilPicture);
+      data.append('profilPicture', post.getUser.profilPicture);
       data.append('title', title.current.value);
       if (file) {
         data.append('image', image.current.files[0]);
@@ -65,19 +66,24 @@ const CreatePost = (post) => {
     image.current.value = null;
     setFile(null);
   };
- const closeModal=()=>{
-  post.closeModal()
- }
+  const closeModal = () => {
+    post.closeModal();
+  };
   return (
     <div id="createPost" className="newPostContainer flex cl">
       <div className="flex row fs ai-center pseudo-container">
         <img
           className="profilPicture"
-          src={user.profilPicture}
-          alt={user.pseudo}
+          src={post.getUser.profilPicture}
+          alt={post.getUser.pseudo}
         />
-        <div>{user.pseudo}</div>
-        {windowSize.current[0] <= 480  && <span onClick={closeModal} className='stop-create'> <i className="fa-solid fa-xmark"></i> </span> } 
+        <div>{post.getUser.pseudo}</div>
+        {windowSize.current[0] <= 480 && (
+          <span onClick={closeModal} className="stop-create">
+            {' '}
+            <i className="fa-solid fa-xmark"></i>{' '}
+          </span>
+        )}
       </div>
       <form
         ref={form}

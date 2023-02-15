@@ -5,7 +5,6 @@ import Routes from './components/Routes/index.js';
 
 const App = () => {
   const [userData, setUserData] = useState(null);
-  const [id, setId] = useState(null);
   const [isLogged, setIsLogged] = useState();
 
   const logging = async () => {
@@ -16,18 +15,14 @@ const App = () => {
     })
       .then((res) => {
         setUserData({
-          userId: res.data.userId,
+          userId: res.data._id,
           isAdmin: res.data.isAdmin,
-          pseudo: res.data.pseudo,
-          profilPicture: res.data.profilPicture,
         });
-        setId(res.data.userId);
         setIsLogged(true);
       })
       .catch((err) => {
         console.log(err);
         setUserData(null);
-        setId(null);
       });
   };
   useEffect(() => {
@@ -35,7 +30,6 @@ const App = () => {
   }, []);
 
   const exit = () => {
-    setId(null);
     setUserData(null);
   };
   const unlog = () => {
