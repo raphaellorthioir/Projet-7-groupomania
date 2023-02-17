@@ -33,6 +33,7 @@
         background-color: white;
         cursor: text;
         transition: background-color ease 0.1s;
+        border-radius: 0;
         &:hover{
           background-color: rgba(0, 0, 0, 0.100);
         }

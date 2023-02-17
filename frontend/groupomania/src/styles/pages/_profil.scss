@@ -1,16 +1,26 @@
 
 .profil-page{
-    width: 100%;
-    height: 100%;
+    width: 80vw;
+    height: auto;
+    margin: auto auto;
+    background-color: white;
+    margin-top: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    
     .photo-change{
-
         display: block;
         position: relative;
         background-color: #0077ff ;
-        width: 40px;
-        height: 40px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
         margin-left: 10px;
+        transition: ease 0.1s;
+        cursor: pointer;
+         &:hover{
+            transform: scale(1.1);
+        }
         .camera-icon{
             position: absolute;
             top: 0;
@@ -22,43 +32,90 @@
             height: fit-content;
             margin: auto auto;
 
-            i{
+                i{
                 font-size: 1.5em;
+             }
             }
-        }
-    }
+         }
     .profil-picture-btn{
         display: none;
     }
-   
+   .settings-icon{
+       position: relative; 
+       width: 150px;
+       max-height: 300px;
+       font-size: 1em;
+       cursor: pointer;
+       
+        i{
+        font-size: 1.3em;
+         }
+           
+        .list-box{
+        
+            position: absolute;
+            left: 0;
+            width: auto;
+            list-style:none;
+            background-color: white;
+            margin-block-start: 0;
+            margin-block-end: 0;
+            display: none;
+        
+            ul{
+                padding: 5px;
+                margin:0;
+                margin-top: 5px;
+                box-shadow: 0 1px 5px 1px;
+                border-radius: 5px;
+                .set-profil{
+                    &:hover{
+                        color: #0077ff;
+                    }
+                }
+                #delete-profil{
+                    &:hover{
+                        color: red;
+                    }
+                }
+            }
+            li{
+            padding: 5px;
+                list-style: none;
+                width: auto;
+                text-align: justify;
+                white-space: nowrap;
+                cursor: pointer;
+            }
+         }
+        }
     input{
-    
-        margin-top: 10px;
-        margin-bottom: 10px;
+        
         margin-left: 10px;
-        height: 40px;
+        height: 30px;
         width: 200px;
-        border: 1px black solid;
+        border-radius: 5px;
+        border: 1px rgba(0, 0, 0, 0.254) solid;
     }
-    .textarea-box{
-        width: fit-content;
-        margin: auto;
-        .textArea{
-            width: 95vw;
-            resize: none;
-            
+    #stop-edit{
+        background-color:red;
+        margin-left: 10px;
+        transition: transform 0.1s ease;
+        &:hover{
+            color: white;
+            transform: scale(1.1);
         }
     }
+   
     
     .setting-btn{
-        margin-top: 200px;
         button{
             font-size: 0.9em;
             width: fit-content;
             height: fit-content;
-        }
+         }
         .delete-profil-btn{
-            background-color: #d21f3c;
+            background-color: #f85149;
         }
     }
     .send-btn{
@@ -71,22 +128,16 @@
         margin: auto;
     }
     .upload-pic{
-        
-            cursor: pointer;
-            border:1px;
-            border-radius: 20px 20px 20px 20px;
-            background-color: rgb(102, 147, 238);
-            width:auto;
-            text-align: center;
-            padding-top: 10px;
-            label{
-                cursor: pointer;
-                margin: 0 5px;
-            }
-}
-
-
-       /* .hide-input{
-            display: none;
-        }*/
+        cursor: pointer;
+        border:1px;
+       border-radius: 20px 20px 20px 20px;
+       background-color: rgb(102, 147, 238);
+       width:auto;
+       text-align: center;
+       padding-top: 10px;
+        label{
+           cursor: pointer;
+           margin:  5px;
+        }
     }
+}

@@ -13,6 +13,7 @@ const Home = () => {
   const [loadPosts, setLoadPosts] = useState(true);
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [spinner, setSpinner] = useState(false);
   ReactModal.setAppElement('#root');
   const windowSize = useRef([window.innerWidth]);
 
@@ -22,6 +23,7 @@ const Home = () => {
         withCredentials: true,
       })
       .then((res) => {
+        console.log(res);
         const data = res.data.slice(0, numberOfPosts + 5);
         setNumberOfPosts(numberOfPosts + 5);
         setPosts(data);
@@ -31,9 +33,9 @@ const Home = () => {
       });
   };
   const updatePosts = () => {
+    if (windowSize.current[0] <= 480) window.scroll(0, 2);
     fetchPosts();
     setIsOpen(false);
-    console.log('cc');
   };
 
   const fetchUser = async () => {
@@ -42,9 +44,7 @@ const Home = () => {
         withCredentials: true,
       })
       .then((res) => {
-        
         setGetUser(res.data.docs);
-        
       });
   };
   const loadMore = () => {
@@ -56,11 +56,16 @@ const Home = () => {
     ) {
       setLoadPosts(true);
     }
+    if (document.documentElement.scrollTop === 0) {
+      setSpinner(true);
+      setTimeout(() => {
+        fetchPosts();
+        setSpinner(false);
+      }, 1000);
+    }
   };
 
   const refresh = () => {
-    console.log('cc');
-    window.location.reload();
     window.scroll(0, 0);
   };
   useEffect(() => {
@@ -104,7 +109,7 @@ const Home = () => {
           {wantCreatePost ? (
             <div id="machin">
               <CreatePost
-              getUser={getUser}
+                getUser={getUser}
                 unSwitchCreatePost={unSwitchCreatePost}
                 updatePosts={updatePosts}
               />
@@ -129,7 +134,12 @@ const Home = () => {
           <div className="post-container  ">
             {posts &&
               posts.map((item) => (
-                <Post getUser={getUser} post={item} updatePosts={updatePosts} key={item._id} />
+                <Post
+                  getUser={getUser}
+                  post={item}
+                  updatePosts={updatePosts}
+                  key={item._id}
+                />
               ))}
           </div>
           <button
@@ -138,7 +148,7 @@ const Home = () => {
             name="création de post"
             type="button"
             aria-pressed="false"
-            className="createPost-btn"
+            className="home-btn"
             onClick={
               windowSize.current[0] <= 480 ? createPostModal : goToCreatePost
             }
@@ -151,7 +161,7 @@ const Home = () => {
             name="création de post"
             type="button"
             aria-pressed="false"
-            className="createPost-btn"
+            className="home-btn"
             onClick={refresh}
           >
             <i class="fa-solid fa-rotate-right"></i>{' '}
@@ -165,8 +175,17 @@ const Home = () => {
             shouldCloseOnOverlayClick={false}
             preventScroll={true}
           >
-            <CreatePost updatePosts={updatePosts} closeModal={closeModal} />
+            <CreatePost
+              getUser={getUser}
+              updatePosts={updatePosts}
+              closeModal={closeModal}
+            />
           </ReactModal>
+          {spinner && (
+            <div className="load-post-spinner">
+              <i class="fa-solid fa-circle-notch"></i>
+            </div>
+          )}
         </main>
       ) : (
         <Navigate to="/signing" />

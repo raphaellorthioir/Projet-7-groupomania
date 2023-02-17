@@ -80,7 +80,7 @@ exports.login = (req, res, next) => {
             );
           }
           res.cookie('jwt', token, { httpOnly: true });
-          res.send("Loging ok")
+          res.send('Loging ok');
         })
         .catch((err) => res.status(500).json('Wrong password', err));
     })
@@ -108,8 +108,11 @@ exports.logout = (req, res) => {
 
 //GET USER PROFIL
 exports.userProfil = (req, res, next) => {
-  if (!ObjectID.isValid(req.params.id))
+  console.log(req.params.id);
+  if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send('ID unknown  :' + req.params.id);
+  }
+
   User.findById(req.params.id, (err, docs) => {
     if (!err) {
       res.send({ message: "user's profil access granted ", docs });
@@ -130,6 +133,7 @@ exports.updateUser = (req, res, next) => {
     User.findById(req.params.id, (err, docs) => {
       const pathImg = docs.profilPicture.substring(44);
       if (req.file && pathImg !== 'random-user.png') {
+        console.log('pas de file');
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
           if (err) console.log('error delete img profil from local folder');
           else console.log(' img profil deleted from folder');
@@ -189,9 +193,6 @@ exports.updateUser = (req, res, next) => {
               email: req.body.email,
               pseudo: req.body.pseudo,
               bio: req.body.bio,
-              profilPicture: `${req.protocol}://${req.get(
-                'host'
-              )}/uploads/client/images/${req.file.filename}`,
             },
           },
           {
@@ -201,34 +202,35 @@ exports.updateUser = (req, res, next) => {
             runValidators: true,
           },
           (err, docs) => {
+            console.log(docs)
             if (!err) {
               Post.updateMany(
                 { userId: docs._id },
                 {
                   $set: {
-                    profilPicture: `${req.protocol}://${req.get(
-                      'host'
-                    )}/uploads/client/images/${req.file.filename}`,
+                    pseudo: req.body.pseudo,
                   },
                 },
                 {
-                  new: true,
-                  upsert: true,
+                  
+                  upsert:true,
                   setDefaultOnInsert: true,
                   runValidators: true,
                   timestamps: false,
                 },
                 (err, posts) => {
-                  if (!err)
+                  if (!err) {
+                    console.log(" a fonctionné")
                     console.log({ message: 'sucéés update many', posts });
-                  console.log({ message: 'echec update many', err });
+                  }
+                  if(err) console.log({ message: 'echec update many', err });
                 }
               );
               return res.status(200).json(docs);
             }
             if (err) return res.status(500).send(err);
           }
-        ).select('-password -email -_id -isAdmin -createdAt -updatedAt -__v ');
+        ).select('-password -email  -isAdmin -createdAt -updatedAt -__v ');
       }
     });
   } else {

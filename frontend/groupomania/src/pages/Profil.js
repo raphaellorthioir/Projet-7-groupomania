@@ -1,8 +1,9 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import TextareaAutosize from 'react-textarea-autosize';
 import { UserContext } from '../components/AppContext';
+import UpdateProfil from '../components/Profil/UpdateProfil';
+
 //import { useLocation } from "react-router-dom";
 const Profil = () => {
   const user = useContext(UserContext);
@@ -11,9 +12,8 @@ const Profil = () => {
   const [isSettingProfil, setIsSettingProfil] = useState(false);
   const [profilImage, setProfilImage] = useState();
   const image = useRef();
-  const form = useRef();
+  const list = useRef();
   const param = searchParams.get('user');
-  console.log(param);
   useEffect(() => {
     const fetch = async () => {
       await axios
@@ -29,7 +29,6 @@ const Profil = () => {
           setUserProfil(null);
         });
     };
-
     fetch();
   }, []);
 
@@ -65,102 +64,89 @@ const Profil = () => {
     setProfilImage(newImg);
     fetchProfilImage();
   };
-  const handleSubmit = () => {};
+
+  const showList = () => {
+    list.current.style.display = 'block';
+  };
+  const hideList = () => {
+    list.current.style.display = 'none';
+  };
+  const stopEdit = () => {
+    setIsSettingProfil(false);
+  };
+  const setProfil = (data) => {
+    setUserProfil(data);
+  };
 
   return (
     <>
       {user ? (
         <main className="flex cl profil-page">
-          <div className="flex cl space-around ">
-            <div
-              style={{ marginTop: '15px' }}
-              className="flex row fs ai-center"
-            >
-              <img
-                className="profilPicture"
-                src={profilImage}
-                alt={` Profil de `}
-                style={{ width: '70px', height: '70px' }}
-              />
-              <h1> {userProfil.pseudo} </h1>
-              {user.userId === userProfil._id && (
-                <>
-                  <label className="photo-change " htmlFor="file">
-                    <div className="camera-icon">
-                      <i class="fa-solid fa-camera"></i>
-                    </div>
-                  </label>
-                  <input
-                    ref={image}
-                    onChange={checkImage}
-                    id="file"
-                    type="file"
-                    className="profil-picture-btn"
-                  ></input>
-                </>
-              )}
-            </div>
-            <p>Inscrit depuis le {createDate}</p>
-          </div>
-          <div>
-            <h2>Biographie</h2>
-            {isSettingProfil && (
-              <div className="textarea-box">
-                <TextareaAutosize
-                  name="bio"
-                  id="bio"
-                  className="textArea"
-                  placeholder="Votre biographie"
-                  minLength={10}
-                  maxLength={250}
-                  minRows={10}
-                  maxRows={20}
-                  autoFocus
-                  defaultValue={userProfil.bio}
-                >
-                  {' '}
-                </TextareaAutosize>
-              </div>
-            )}
-            <p>{userProfil.bio}</p>
-          </div>
-          {isSettingProfil && (
-            <form onSubmit={handleSubmit} ref={form}>
-              <label htmlFor="email">Modifier votre email</label>
-              <br />
-              <div className="flex row ai-center">
-                <input type="email" name="email" id="email" />
-                <button className="send-btn"> Envoyer</button>
-              </div>
-
-              <br />
-              <label htmlFor="password"> Modifier votre mot de passe</label>
-              <br />
-              <div className="flex row ai-center">
-                <input type="password" name="password" id="password" />
-                <button className="send-btn"> Envoyer</button>
-              </div>
-            </form>
-          )}
-
           {isSettingProfil ? (
-            <button className="validate"> Enregistrer</button>
+            <UpdateProfil
+              stopEdit={stopEdit}
+              bio={userProfil.bio}
+              setProfil={setProfil}
+            />
           ) : (
-            <div className="flex row space-around setting-btn">
-              <button
-                onClick={() => setIsSettingProfil(true)}
-                title="Modifier profil"
-              >
-                Modifier Profil
-              </button>
-              <button className="delete-profil-btn">
-                Supprimer mon compte
-              </button>
-            </div>
+            <>
+              <div className="flex cl space-around ">
+                <div className="flex row sb ai-center">
+                  <div
+                    style={{ marginTop: '15px' }}
+                    className="flex row fs ai-center"
+                  >
+                    <img
+                      className="profilPicture"
+                      src={profilImage}
+                      alt={` Profil de `}
+                      style={{ width: '70px', height: '70px' }}
+                    />
+                    <h1> {userProfil.pseudo} </h1>
+                    {user?.userId === userProfil._id && (
+                      <>
+                        <label className="photo-change " htmlFor="file">
+                          <div className="camera-icon">
+                            <i class="fa-solid fa-camera"></i>
+                          </div>
+                        </label>
+                        <input
+                          ref={image}
+                          onChange={checkImage}
+                          id="file"
+                          type="file"
+                          className="profil-picture-btn"
+                          accept="image/.jpg imgae/.jpeg image/.png"
+                        ></input>
+                      </>
+                    )}
+                  </div>
+                  <div className="settings-icon flex cl ai-f-end">
+                    <div>
+                      <i onClick={showList} class="fa-solid fa-gear"></i>
+                      <div ref={list} className="list-box">
+                        <ul onMouseLeave={hideList}>
+                          <li
+                            class="set-profil"
+                            onClick={() => setIsSettingProfil(true)}
+                          >
+                            Modifier Profil
+                          </li>
+                          <li id="delete-profil">Supprimer compte</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p>Inscrit depuis le {createDate}</p>
+              </div>
+              <h2>Biographie</h2>
+              <p style={{ whiteSpace: 'pre' }}>{userProfil.bio}</p>
+            </>
           )}
         </main>
       ) : (
-        <Navigate to="/logout" />
+        <div></div>
       )}
     </>
   );

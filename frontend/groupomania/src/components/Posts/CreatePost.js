@@ -4,7 +4,7 @@ import { UserContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const CreatePost = (post) => {
- 
+ console.log(post)
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const form = useRef();
