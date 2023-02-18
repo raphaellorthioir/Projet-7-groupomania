@@ -1,16 +1,11 @@
-//const { updateOne, findOne, findById } = require('../models/post');
 const Post = require('../models/post');
 const { path, request } = require('../app');
 const ObjectID = require('mongoose').Types.ObjectId;
 const fs = require('fs');
-/*const { isBuffer } = require('util');
-const { post } = require('../routes/user');
-const { timeStamp, log } = require('console');*/
 const User = require('../models/user');
-const { log } = require('console');
+
 exports.createPost = (req, res, next) => {
   try {
-    console.log(req.file);
     if (req.params.id === req.auth.userId) {
       const postObject = req.body;
       delete postObject._id;
@@ -134,7 +129,6 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.likePost = (req, res, next) => {
-  console;
   Post.findOne({ _id: req.params.postId }).then((post) => {
     if (req.body.like == 1) {
       if (!post.usersLiked.includes(req.auth.userId)) {
@@ -220,7 +214,6 @@ exports.commentPost = (req, res, next) => {
           runValidators: true,
         },
         (err, post) => {
-          console.log(post);
           post.comments.sort((a, b) => {
             return b.timestamp - a.timestamp;
           });

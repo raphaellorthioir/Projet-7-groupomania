@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const { path } = require('../app');
 const { reset } = require('nodemon');
 const fs = require('fs');
-const { log } = require('console');
 const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
 
 //  SIGNUP
@@ -108,7 +107,6 @@ exports.logout = (req, res) => {
 
 //GET USER PROFIL
 exports.userProfil = (req, res, next) => {
-  console.log(req.params.id);
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send('ID unknown  :' + req.params.id);
   }
@@ -120,7 +118,6 @@ exports.userProfil = (req, res, next) => {
       res.clearCookie('jwt');
       res.status(400).json(err);
     }
-    console.log('ID unknown :' + err);
   }).select('  -password -email -isAdmin'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
 };
 
@@ -133,7 +130,6 @@ exports.updateUser = (req, res, next) => {
     User.findById(req.params.id, (err, docs) => {
       const pathImg = docs.profilPicture.substring(44);
       if (req.file && pathImg !== 'random-user.png') {
-        console.log('pas de file');
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
           if (err) console.log('error delete img profil from local folder');
           else console.log(' img profil deleted from folder');
@@ -202,7 +198,6 @@ exports.updateUser = (req, res, next) => {
             runValidators: true,
           },
           (err, docs) => {
-            console.log(docs)
             if (!err) {
               Post.updateMany(
                 { userId: docs._id },
@@ -212,18 +207,16 @@ exports.updateUser = (req, res, next) => {
                   },
                 },
                 {
-                  
-                  upsert:true,
+                  upsert: true,
                   setDefaultOnInsert: true,
                   runValidators: true,
                   timestamps: false,
                 },
                 (err, posts) => {
                   if (!err) {
-                    console.log(" a fonctionné")
                     console.log({ message: 'sucéés update many', posts });
                   }
-                  if(err) console.log({ message: 'echec update many', err });
+                  console.log({ message: 'echec update many', err });
                 }
               );
               return res.status(200).json(docs);
@@ -255,8 +248,6 @@ exports.updatePassword = (req, res, next) => {
               password: hash,
             },
           },
-
-          //console.log(req.body.password),
           {
             new: true,
             upsert: true,
