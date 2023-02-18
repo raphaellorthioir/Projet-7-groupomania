@@ -9,7 +9,6 @@ import CreateComment from './CreateComment';
 import ReactModal from 'react-modal';
 
 const Post = (props) => {
-  
   const navigate = useNavigate();
   // CONTEXT \\
   const user = useContext(UserContext);
@@ -48,7 +47,6 @@ const Post = (props) => {
   const [post, setPost] = useState(props.post);
   const [date, setDate] = useState(updateDate);
 
-  
   // REFS \\
 
   const ul = useRef();
@@ -61,6 +59,7 @@ const Post = (props) => {
   };
 
   const windowSize = useRef([window.innerWidth]);
+  console.log(windowSize[0]);
 
   /* comments */
 
@@ -72,9 +71,8 @@ const Post = (props) => {
   );
 
   const displayComments = () => {
-   
-      if (showComment) setShowComment(false);
-      else setShowComment(true);
+    if (showComment) setShowComment(false);
+    else setShowComment(true);
   };
   const updateComments = (newCommentsArr) => {
     if (newCommentsArr.length >= 2) {
@@ -174,7 +172,7 @@ const Post = (props) => {
     <>
       {isEditing ? (
         <EditPost
-         getUser={props.getUser}
+          getUser={props.getUser}
           postToEdit={post}
           stopEdit={stopEdit}
           updatePost={updatePost}
@@ -255,13 +253,14 @@ const Post = (props) => {
             </div>
             <>
               <div className="date">
-                {createDate < date  ? (
+                {createDate < date ? (
                   <>
                     <i className="fa-regular fa-pen-to-square"></i>
                     <span>Modifié le {date}</span>
                   </>
-                ) : <span>Posté le {createDate}</span> }
-                
+                ) : (
+                  <span>Posté le {createDate}</span>
+                )}
               </div>
               <div className="title">{post.title}</div>
               <div className="text">{post.text}</div>
@@ -272,22 +271,48 @@ const Post = (props) => {
               </div>
               <div className="flex row stretch ai-center ac-center container">
                 <Likes {...props} />
-                <div
-                  onClick={displayComments}
-                  className="comment-icon flex row ai-center ac-center"
-                >
-                  <i className="fa-regular fa-comment-dots"></i>
-                  <div className="comment-counter">
-                    {commentsData.length >= 1 && commentsData.length}
-                  </div>
-                </div>
+                {windowSize.current[0] <= 480 ? (
+                  <NavLink
+                    className="comment-icon flex row ai-center ac-center"
+                    to={{
+                      pathname: '/post',
+                      search: `?post=${props.post._id}`,
+                      hash: '#comment',
+                    }}
+                    target="_blank"
+                  >
+                    <>
+                      <i className="fa-regular fa-comment-dots"></i>
+                      <div className="comment-counter">
+                        {commentsData.length >= 1 && commentsData.length}
+                      </div>
+                    </>
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    className="comment-icon flex row ai-center ac-center"
+                    to={{
+                      pathname: '/post',
+                      search: `?post=${props.post._id}`,
+                    }}
+                    target="_blank"
+                  >
+                    <>
+                      <i className="fa-regular fa-comment-dots"></i>
+                      <div className="comment-counter">
+                        {commentsData.length >= 1 && commentsData.length}
+                      </div>
+                    </>
+                  </NavLink>
+                )}
+
                 {displayValidationMessage && (
-                  <span className="success-icon">Post modifié
+                  <span className="success-icon">
+                    Post modifié
                     <i class="fa-regular fa-circle-check"></i>
                   </span>
                 )}
               </div>
-           
             </>
           </div>
           <>
