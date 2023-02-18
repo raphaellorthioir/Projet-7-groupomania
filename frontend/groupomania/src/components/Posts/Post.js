@@ -59,6 +59,7 @@ const Post = (props) => {
   };
 
   const windowSize = useRef([window.innerWidth]);
+  console.log(windowSize[0]);
 
   /* comments */
 
@@ -270,21 +271,41 @@ const Post = (props) => {
               </div>
               <div className="flex row stretch ai-center ac-center container">
                 <Likes {...props} />
-                <NavLink
-                  className="comment-icon flex row ai-center ac-center"
-                  to={{
-                    pathname: '/post',
-                    search: `?post=${props.post._id}`,
-                  }}
-                  target="_blank"
-                >
-                  <>
-                    <i className="fa-regular fa-comment-dots"></i>
-                    <div className="comment-counter">
-                      {commentsData.length >= 1 && commentsData.length}
-                    </div>
-                  </>
-                </NavLink>
+                {windowSize.current[0] <= 480 ? (
+                  <NavLink
+                    className="comment-icon flex row ai-center ac-center"
+                    to={{
+                      pathname: '/post',
+                      search: `?post=${props.post._id}`,
+                      hash: '#comment',
+                    }}
+                    target="_blank"
+                  >
+                    <>
+                      <i className="fa-regular fa-comment-dots"></i>
+                      <div className="comment-counter">
+                        {commentsData.length >= 1 && commentsData.length}
+                      </div>
+                    </>
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    className="comment-icon flex row ai-center ac-center"
+                    to={{
+                      pathname: '/post',
+                      search: `?post=${props.post._id}`,
+                    }}
+                    target="_blank"
+                  >
+                    <>
+                      <i className="fa-regular fa-comment-dots"></i>
+                      <div className="comment-counter">
+                        {commentsData.length >= 1 && commentsData.length}
+                      </div>
+                    </>
+                  </NavLink>
+                )}
+
                 {displayValidationMessage && (
                   <span className="success-icon">
                     Post modifié
