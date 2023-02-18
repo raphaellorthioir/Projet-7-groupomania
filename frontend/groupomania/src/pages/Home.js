@@ -23,7 +23,6 @@ const Home = () => {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res);
         const data = res.data.slice(0, numberOfPosts + 5);
         setNumberOfPosts(numberOfPosts + 5);
         setPosts(data);

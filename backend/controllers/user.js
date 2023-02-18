@@ -184,7 +184,7 @@ exports.updateUser = (req, res, next) => {
             }
             if (err) return res.status(500).send({ message: 'erreur' });
           }
-        ).select('-password -email -_id -isAdmin -createdAt -updatedAt -__v ');
+        ).select('-password -email -_id -isAdmin  -__v ');
       } else {
         User.findOneAndUpdate(
           { _id: req.params.id },
@@ -202,7 +202,7 @@ exports.updateUser = (req, res, next) => {
             runValidators: true,
           },
           (err, docs) => {
-            console.log(docs)
+            console.log(docs);
             if (!err) {
               Post.updateMany(
                 { userId: docs._id },
@@ -212,25 +212,24 @@ exports.updateUser = (req, res, next) => {
                   },
                 },
                 {
-                  
-                  upsert:true,
+                  upsert: true,
                   setDefaultOnInsert: true,
                   runValidators: true,
                   timestamps: false,
                 },
                 (err, posts) => {
                   if (!err) {
-                    console.log(" a fonctionné")
+                    console.log(' a fonctionné');
                     console.log({ message: 'sucéés update many', posts });
                   }
-                  if(err) console.log({ message: 'echec update many', err });
+                  if (err) console.log({ message: 'echec update many', err });
                 }
               );
               return res.status(200).json(docs);
             }
             if (err) return res.status(500).send(err);
           }
-        ).select('-password -email  -isAdmin -createdAt -updatedAt -__v ');
+        ).select('-password -email  -isAdmin  -updatedAt -__v ');
       }
     });
   } else {
@@ -284,7 +283,9 @@ exports.deleteUser = (req, res) => {
   if (req.params.id === req.auth.userId || req.auth.isAdmin) {
     User.deleteOne({ _id: req.params.id })
       .then(() =>
-        res.status(200).json({ message: 'USER Successfully deleted' })
+        Post.deleteMany({ userId: req.auth.userId }).then(() =>
+          res.status(200).json({ message: 'USER Successfully deleted' })
+        )
       )
 
       .catch((error) => {

@@ -1,16 +1,19 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../components/AppContext';
 import UpdateProfil from '../components/Profil/UpdateProfil';
+import ReactModal from 'react-modal';
 
 //import { useLocation } from "react-router-dom";
 const Profil = () => {
   const user = useContext(UserContext);
+  const navigate = useNavigate();
   const [userProfil, setUserProfil] = useState({});
   const [searchParams] = useSearchParams();
   const [isSettingProfil, setIsSettingProfil] = useState(false);
   const [profilImage, setProfilImage] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const image = useRef();
   const list = useRef();
   const param = searchParams.get('user');
@@ -21,6 +24,7 @@ const Profil = () => {
           withCredentials: true,
         })
         .then((res) => {
+          console.log(res);
           setUserProfil(res.data.docs);
           setProfilImage(res.data.docs.profilPicture);
         })
@@ -54,10 +58,12 @@ const Profil = () => {
     month: '2-digit',
     day: 'numeric',
   };
+  console.log(userProfil);
   const createDate = new Date(userProfil.createdAt).toLocaleDateString(
     'fr-FR',
     options
   );
+
   const checkImage = () => {
     const files = image.current.files[0];
     const newImg = URL.createObjectURL(files);
@@ -77,7 +83,22 @@ const Profil = () => {
   const setProfil = (data) => {
     setUserProfil(data);
   };
-
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  const deleteUser = async () => {
+    await axios
+      .delete(`${process.env.REACT_APP_API_URL}api/auth/deleteUser/${param}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+        navigate('/logout');
+      });
+  };
   return (
     <>
       {user ? (
@@ -121,22 +142,31 @@ const Profil = () => {
                       </>
                     )}
                   </div>
-                  <div className="settings-icon flex cl ai-f-end">
-                    <div>
-                      <i onClick={showList} class="fa-solid fa-gear"></i>
-                      <div ref={list} className="list-box">
-                        <ul onMouseLeave={hideList}>
-                          <li
-                            class="set-profil"
-                            onClick={() => setIsSettingProfil(true)}
-                          >
-                            Modifier Profil
-                          </li>
-                          <li id="delete-profil">Supprimer compte</li>
-                        </ul>
+                  {(user?.userId === userProfil._id || user?.isAdmin) && (
+                    <div className="settings-icon flex cl ai-f-end">
+                      <div>
+                        <i onClick={showList} class="fa-solid fa-gear"></i>
+                        <div ref={list} className="list-box">
+                          <ul onMouseLeave={hideList}>
+                            {user?.userId === userProfil._id && (
+                              <li
+                                class="set-profil"
+                                onClick={() => setIsSettingProfil(true)}
+                              >
+                                Modifier Profil
+                              </li>
+                            )}
+                            {user?.userId === userProfil._id &&
+                              user.isAdmin && (
+                                <li onClick={openModal} id="delete-profil">
+                                  Supprimer compte
+                                </li>
+                              )}
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 <p>Inscrit depuis le {createDate}</p>
               </div>
@@ -144,6 +174,31 @@ const Profil = () => {
               <p style={{ whiteSpace: 'pre' }}>{userProfil.bio}</p>
             </>
           )}
+          <ReactModal
+            isOpen={isOpen}
+            className="modal"
+            contentLabel="Voulez vous..."
+            overlayClassName="overlay"
+            onRequestClose={closeModal}
+          >
+            <div className="modal-container ">
+              <div className=" modal-box  ">
+                <div className="modal-ask">Supprimer votre compte ?</div>
+                <div className="flex row btn-box ">
+                  <button
+                    style={{ backgroundColor: 'red' }}
+                    onClick={deleteUser}
+                    className="yes"
+                  >
+                    Oui
+                  </button>
+                  <button onClick={closeModal} className="no">
+                    Non
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ReactModal>
         </main>
       ) : (
         <div></div>

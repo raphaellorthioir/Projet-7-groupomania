@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { useContext, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
-import { UserContext } from '../AppContext';
 
 const CreateComment = (props) => {
   
