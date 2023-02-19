@@ -2,7 +2,9 @@
     margin-right:auto;
     margin-left:auto;
     height: auto;
-    
+    section{
+        margin-bottom: 50px;
+    }
   span{
     cursor: default;
   }
@@ -11,6 +13,7 @@
        text-align: center;
        width:fit-content;
        right: 0;
+       bottom: 0;
        animation: 10s ease forwards anim-icon;
        padding-right: 10px;
 
@@ -44,7 +47,6 @@
         background-color: white;
         border-radius: 20px;
         animation: 1s ease forwards post-display;
-        margin-bottom: 10px;
         @keyframes post-display {
             from{
                 opacity: 0;
@@ -129,7 +131,9 @@
            .postImg{
             width: fit-content;
             height: auto;
-            margin: 10px auto;
+            margin: auto auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
             
             img{
                 height:auto;
@@ -150,7 +154,8 @@
             }
             
             .container{
-                width: fit-content;
+                position: relative;
+                width: 100%;
                 margin-bottom: 5px;
                
                
@@ -163,7 +168,7 @@
                     
                 }
                 .comment-counter{
-                    margin-left: 5px;
+                    margin-left: 10px;
                 }
             }
            

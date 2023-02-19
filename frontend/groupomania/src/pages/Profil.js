@@ -156,12 +156,12 @@ const Profil = () => {
                                 Modifier Profil
                               </li>
                             )}
-                            {user?.userId === userProfil._id &&
-                              user.isAdmin && (
-                                <li onClick={openModal} id="delete-profil">
-                                  Supprimer compte
-                                </li>
-                              )}
+                            {(user?.userId === userProfil._id ||
+                              user.isAdmin) && (
+                              <li onClick={openModal} id="delete-profil">
+                                Supprimer compte
+                              </li>
+                            )}
                           </ul>
                         </div>
                       </div>

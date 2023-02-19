@@ -59,7 +59,6 @@ const Post = (props) => {
   };
 
   const windowSize = useRef([window.innerWidth]);
-  console.log(windowSize[0]);
 
   /* comments */
 
@@ -179,7 +178,10 @@ const Post = (props) => {
         />
       ) : (
         <section id={props.post._id} className="flex cl space-around ">
-          <div className="post">
+          <div
+            className="post"
+            style={showComment ? { borderRadius: '20px 20px 0 0' , boxShadow:"rgba(100, 100, 111, 0.1) 0px 7px 29px 0px"}  : {}}
+          >
             <div className="flex row sb pseudo-container">
               <NavLink
                 className="pseudo-link"
@@ -220,7 +222,7 @@ const Post = (props) => {
                           <li onClick={openModal}>Supprimer</li>
                         </>
                       )}
-                      {user.isAdmin && (
+                      {user.isAdmin && user.userId !== post.userId && (
                         <>
                           <li onClick={openModal}>Supprimer</li>
                         </>
@@ -271,40 +273,15 @@ const Post = (props) => {
               </div>
               <div className="flex row stretch ai-center ac-center container">
                 <Likes {...props} />
-                {windowSize.current[0] <= 480 ? (
-                  <NavLink
-                    className="comment-icon flex row ai-center ac-center"
-                    to={{
-                      pathname: '/post',
-                      search: `?post=${props.post._id}`,
-                      hash: '#comment',
-                    }}
-                    target="_blank"
-                  >
-                    <>
-                      <i className="fa-regular fa-comment-dots"></i>
-                      <div className="comment-counter">
-                        {commentsData.length >= 1 && commentsData.length}
-                      </div>
-                    </>
-                  </NavLink>
-                ) : (
-                  <NavLink
-                    className="comment-icon flex row ai-center ac-center"
-                    to={{
-                      pathname: '/post',
-                      search: `?post=${props.post._id}`,
-                    }}
-                    target="_blank"
-                  >
-                    <>
-                      <i className="fa-regular fa-comment-dots"></i>
-                      <div className="comment-counter">
-                        {commentsData.length >= 1 && commentsData.length}
-                      </div>
-                    </>
-                  </NavLink>
-                )}
+                <div
+                  onClick={displayComments}
+                  className="comment-icon flex rox ai-center"
+                >
+                  <i className="fa-regular fa-comment-dots"></i>
+                  <div className="comment-counter">
+                    {commentsData.length >= 1 && commentsData.length}
+                  </div>
+                </div>
 
                 {displayValidationMessage && (
                   <span className="success-icon">
@@ -318,24 +295,20 @@ const Post = (props) => {
           <>
             {showComment ? (
               commentsData.length >= 1 ? (
-                windowSize.current[0] <= 480 ? (
-                  <Navigate to={`/post?id=${props.post._id}`} />
-                ) : (
-                  <>
-                    <CreateComment
-                      postProps={props}
-                      updateComments={updateComments}
-                    />
-                    {commentsData &&
-                      commentsData.map((item) => (
-                        <Comments
-                          deleteComment={deleteComment}
-                          comment={item}
-                          key={item._id}
-                        />
-                      ))}
-                  </>
-                )
+                <>
+                  <CreateComment
+                    postProps={props}
+                    updateComments={updateComments}
+                  />
+                  {commentsData &&
+                    commentsData.map((item) => (
+                      <Comments
+                        deleteComment={deleteComment}
+                        comment={item}
+                        key={item._id}
+                      />
+                    ))}
+                </>
               ) : (
                 <>
                   <CreateComment
