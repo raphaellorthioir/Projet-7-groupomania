@@ -6,9 +6,9 @@ const SignupLoginPage = (props) => {
   const user = useContext(UserContext);
 
   return (
-    <div className="profil-page flex ai-center ac-center">
+    <main className='signing-page flex cl ac-center' >
       {user ? <Navigate to="/" /> : <Log logging={props} />}
-    </div>
+    </main>
   );
 };
 

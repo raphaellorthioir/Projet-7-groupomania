@@ -13,7 +13,7 @@ const UpdateProfil = (props) => {
     profil: '',
     password: '',
   });
-  console.log(formPassword);
+  
 
   const showPassword = () => {
     let result = formPassword.current.elements.password.type;
@@ -26,7 +26,6 @@ const UpdateProfil = (props) => {
     e.preventDefault();
     setSuccess(null);
     setEmailErrors(null);
-    console.log('edit');
     let bio;
     let pseudo;
     let email;
@@ -79,11 +78,9 @@ const UpdateProfil = (props) => {
           { withCredentials: true }
         )
         .then((res) => {
-          console.log(res);
           setSuccess(true);
         })
         .catch((err) => {
-          console.log(err);
           setPasswordErrors(
             'Votre mot de passe ne respecte pas les conditions ci dessus'
           );

@@ -24,13 +24,12 @@ const Profil = () => {
           withCredentials: true,
         })
         .then((res) => {
-          console.log(res);
           setUserProfil(res.data.docs);
           setProfilImage(res.data.docs.profilPicture);
         })
-        .catch((res) => {
-          console.log(res);
-          setUserProfil(null);
+        .catch((err) => {
+          console.log(err);
+          navigate('/logout');
         });
     };
     fetch();
@@ -58,7 +57,6 @@ const Profil = () => {
     month: '2-digit',
     day: 'numeric',
   };
-  console.log(userProfil);
   const createDate = new Date(userProfil.createdAt).toLocaleDateString(
     'fr-FR',
     options
@@ -95,7 +93,6 @@ const Profil = () => {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res);
         navigate('/logout');
       });
   };
@@ -128,7 +125,7 @@ const Profil = () => {
                       <>
                         <label className="photo-change " htmlFor="file">
                           <div className="camera-icon">
-                            <i class="fa-solid fa-camera"></i>
+                            <i className="fa-solid fa-camera"></i>
                           </div>
                         </label>
                         <input
@@ -145,12 +142,12 @@ const Profil = () => {
                   {(user?.userId === userProfil._id || user?.isAdmin) && (
                     <div className="settings-icon flex cl ai-f-end">
                       <div>
-                        <i onClick={showList} class="fa-solid fa-gear"></i>
+                        <i onClick={showList} className="fa-solid fa-gear"></i>
                         <div ref={list} className="list-box">
                           <ul onMouseLeave={hideList}>
                             {user?.userId === userProfil._id && (
                               <li
-                                class="set-profil"
+                                className="set-profil"
                                 onClick={() => setIsSettingProfil(true)}
                               >
                                 Modifier Profil

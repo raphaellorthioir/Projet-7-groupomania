@@ -68,7 +68,7 @@ const Home = () => {
     window.scroll(0, 0);
   };
   useEffect(() => {
-    fetchUser();
+    if(user)fetchUser();
   }, []);
   useEffect(() => {
     fetchPosts();
@@ -152,7 +152,7 @@ const Home = () => {
               windowSize.current[0] <= 480 ? createPostModal : goToCreatePost
             }
           >
-            <i class="fa-solid fa-pencil"></i>{' '}
+            <i className="fa-solid fa-pencil"></i>{' '}
           </button>
           <button
             id="refresh"
@@ -163,7 +163,7 @@ const Home = () => {
             className="home-btn"
             onClick={refresh}
           >
-            <i class="fa-solid fa-rotate-right"></i>{' '}
+            <i className="fa-solid fa-rotate-right"></i>{' '}
           </button>
           <ReactModal
             isOpen={isOpen}
@@ -182,7 +182,7 @@ const Home = () => {
           </ReactModal>
           {spinner && (
             <div className="load-post-spinner">
-              <i class="fa-solid fa-circle-notch"></i>
+              <i className="fa-solid fa-circle-notch"></i>
             </div>
           )}
         </main>

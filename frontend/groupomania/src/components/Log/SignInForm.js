@@ -38,41 +38,49 @@ const SignInForm = (props) => {
   };
 
   return (
-    <div>
-      <form
-        action=""
-        className="flex cl ai-center"
-        onSubmit={handleLogin}
-        id="sign-up-form"
-      >
-        <label htmlFor="email">Email</label>
-        <br />
-        <input
-          type="text"
-          name="email"
-          id="email"
-          ref={email}
-          placeholder="Email"
-        />
-        {emailError && <div className="emailError error">{emailError}</div>}
+    <form
+      action=""
+      className="flex cl ai-center"
+      onSubmit={handleLogin}
+      id="sign-up-form"
+    >
+      <div className=" flex row ac-center">
+        <div className="inputs-container flex cl ai-center">
+          <br />
+          <div>
+            <label htmlFor="email">Email</label>
+            <br />
+            <input
+              type="text"
+              name="email"
+              id="email"
+              ref={email}
+              placeholder="Email"
+            />
+          </div>
 
-        <br />
-        <label htmlFor="password">Mot de passe</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          ref={password}
-          placeholder="Mot de passe"
-        />
-        <br />
-        {/* quand on change ce qui a dans l'input , on stock la valeur de l'input dans email et pareil pour password*/}
-        {passwordError && (
-          <div className="passwordError error">{passwordError}</div>
-        )}
-        <input type="submit" value="Se connecter" />
-      </form>
-    </div>
+          {emailError && <div className="error">{emailError}</div>}
+          <br />
+          <div>
+          <label htmlFor="password">Mot de passe</label>
+          <br />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            ref={password}
+            placeholder="Mot de passe"
+          />
+          </div>
+          <br />
+          {/* quand on change ce qui a dans l'input , on stock la valeur de l'input dans email et pareil pour password*/}
+          {passwordError && <div className=" error">{passwordError}</div>}
+          <br />
+          <input type="submit" value="Se connecter" />
+          <br />
+        </div>
+      </div>
+    </form>
   );
 };
 

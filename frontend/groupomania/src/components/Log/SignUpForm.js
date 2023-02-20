@@ -9,8 +9,9 @@ const SignUpForm = (props) => {
   const confirmPsw = useRef(null);
 
   const [errorPswMatch, setErrorPswMatch] = useState(null);
-  const [errorsPsw, setErrorsPsw] = useState(null);
+  const [errorsPsw, setErrorsPsw] = useState();
   const [errorEmail, setErrorEmail] = useState(null);
+  const [errorPseudo, setErrorPseudo] = useState();
 
   const logging = props.logging;
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const SignUpForm = (props) => {
   const handleRegister = (e) => {
     e.preventDefault();
     if (errorsPsw) setErrorsPsw(null);
+    if (errorPseudo) setErrorPseudo(null);
     if (errorPswMatch) setErrorPswMatch(null);
     if (errorEmail) setErrorEmail(null);
 
@@ -42,67 +44,94 @@ const SignUpForm = (props) => {
         .then(() => {
           console.log('on test logging');
           logging();
-          navigate('/',{replace:true});
+          navigate('/', { replace: true });
         })
-        .catch((res) => {
-          console.log(res);
-          if (res.response.data.passwordErrorList) {
-            setErrorsPsw(res.response.data.passwordErrorList);
+        .catch((err) => {
+          console.log(err);
+          if (err.response.data.passwordErrorList) {
+            setErrorsPsw(err.response.data.passwordErrorList);
           }
-          if (res.response.data.errors.email)
+          if (err.response.data.errors.email)
             setErrorEmail('Cette adresse est déjà liée à un compte existant');
+          if (err.response.data.errors.pseudo)
+            setErrorPseudo('Ce pseudo est déjà pris');
         });
     }
   };
 
   return (
-    <form action="" onSubmit={handleRegister}>
-      <label htmlFor="pseudo">Pseudo</label>
-      <br />
-      <input
-        type="text"
-        name="pseudo"
-        id="pseudo"
-        ref={pseudo}
-        placeholder="Votre Pseudo"
-        required
-      />
-      <div className=" error errorPseudo"></div>
-      <label htmlFor="email">Email</label>
-      <br />
-      <input type="email" name="email" id="email" ref={email} />
-      {errorEmail && <div className=" error errorEmail"> {errorEmail}</div>}
+    <form onSubmit={handleRegister}>
+      <div className=" flex row ac-center">
+        <div className='inputs-container flex cl ai-center'>
+          <div>
+            <br />
+            <label htmlFor="pseudo">Pseudo</label>
+            <br />
+            <input
+              type="text"
+              name="pseudo"
+              id="pseudo"
+              ref={pseudo}
+              placeholder="Votre Pseudo"
+              required
+            />
+          </div>
+          {errorPseudo && (
+            <div className=" error error-text  ">{errorPseudo}</div>
+          )}
+          <br />
 
-      <label htmlFor="password">Mot de passe</label>
-      <br />
-
-      <input type="password" name="password" id="password" ref={password} />
-      {errorsPsw &&
-        errorsPsw.map((item) => (
-          <div className=" error passwordErrors"> {item.message}</div>
-        ))}
-
-      <br />
-      <label htmlFor="password-conf">Confirmer mot de passe</label>
-      <br />
-      <input
-        type="password"
-        name="password-conf"
-        id="password-conf"
-        ref={confirmPsw}
-      />
-      {errorPswMatch && (
-        <div className="error passwordConfirmError">
-          Les mot de passe ne correspondent pas
+          <div>
+            <label htmlFor="email">Email</label>
+            <br />
+            <input type="email" name="email" id="email" ref={email} />
+          </div>
+          {errorEmail && <div className=" error error-text"> {errorEmail}</div>}
+          <br />
+          <div>
+            <label htmlFor="password">Mot de passe</label>
+            <br />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              ref={password}
+            />
+          </div>
+          {errorsPsw && (
+            <ul className=" error error-text">
+              {errorsPsw.map((item) => (
+                <li>{item.message}</li>
+              ))}
+            </ul>
+          )}
+          <br />
+          <label htmlFor="password-conf">Confirmer mot de passe</label>
+          <br />
+          <input
+            type="password"
+            name="password-conf"
+            id="password-conf"
+            placeholder="Confirmer"
+            ref={confirmPsw}
+          />
+          {errorPswMatch && (
+            <div className="error error-text">
+              Les mot de passe ne correspondent pas
+            </div>
+          )}
+          <br />
+          <br />
+          <br />
+          <div style={{ margin: 'auto', width: 'fit-content' }}>
+            <input
+              type="submit"
+              value="Valider inscription"
+              onSubmit={handleRegister}
+            />
+          </div>
         </div>
-      )}
-
-      <br />
-      <input
-        type="submit"
-        value="Valider inscription"
-        onSubmit={handleRegister}
-      />
+      </div>
     </form>
   );
 };

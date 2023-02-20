@@ -37,12 +37,7 @@ body {
 header{
   height:51px;
 }
-main{
-  width: 45vw;
-  margin-top: 100px;
-  padding-bottom: 50px;
-  margin: auto auto;
-}
+
 section{
   margin-bottom: 50px;
   
@@ -326,14 +321,7 @@ a,
 a:visited {
   color: $color-3;
 }
-/*input,
-textarea {
-  resize: none;
-  border-radius: 20px;
-  width: 270px;
-  font-family: $font-1;
-  background: $white;
-}*/
+
 
 .profilPicture{
   width: 40px;

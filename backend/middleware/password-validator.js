@@ -11,7 +11,7 @@ passwordSchema
   .has()
   .uppercase(1, 'Une majuscule obligatoire') // Must have uppercase letters
   .has()
-  .lowercase() // Must have lowercase letters
+  .lowercase(1,"Une minuscule obligatoire") // Must have lowercase letters
   .has()
   .digits(2, 'Doit contenir au moins deux chiffres') // Must have at least 2 digits
   .has()

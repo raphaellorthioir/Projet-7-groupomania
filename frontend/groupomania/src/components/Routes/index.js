@@ -11,7 +11,6 @@ import Home from '../../pages/Home';
 import Profil from '../../pages/Profil';
 import ErrorPage from '../../pages/ErrorPage';
 import SignupLoginPage from '../../pages/SignupLoginPage';
-import Post from '../../pages/Post';
 import Navbar from '../Navbar';
 import LougoutPage from '../../pages/LougoutPage';
 
@@ -27,7 +26,6 @@ const index = (props) => {
         />
         <Route exact path="/" element={<Home />} />
         <Route path="/profil" element={<Profil />} />
-        <Route path="/post" element={<Post />} />
         <Route
           path="/logout"
           element={<LougoutPage unlog={props.unlog} exit={props.exit} />}
