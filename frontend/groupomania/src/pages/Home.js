@@ -1,4 +1,10 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+} from 'react';
 import { UserContext } from '../components/AppContext';
 import Post from '../components/Posts/Post';
 import axios from 'axios';
@@ -65,10 +71,11 @@ const Home = () => {
   };
 
   const refresh = () => {
+    window.location.reload();
     window.scroll(0, 0);
   };
   useEffect(() => {
-    if(user)fetchUser();
+    if (user) fetchUser();
   }, []);
   useEffect(() => {
     fetchPosts();
@@ -77,7 +84,7 @@ const Home = () => {
     return () => window.removeEventListener('scroll', loadMore);
   }, [loadPosts]);
 
-  const createPostModal = (e) => {
+  const createPostModal = () => {
     setIsOpen(true);
   };
   const closeModal = () => {
@@ -105,86 +112,94 @@ const Home = () => {
     <>
       {user ? (
         <main>
-          {wantCreatePost ? (
-            <div id="machin">
-              <CreatePost
-                getUser={getUser}
-                unSwitchCreatePost={unSwitchCreatePost}
-                updatePosts={updatePosts}
-              />
-            </div>
-          ) : (
-            <section id="section" className="flex ac-center newPostContainer">
-              <div className="create-container">
-                <div className="flex row ai-center ac-center space-around create-box">
-                  <img
-                    className="profilPicture"
-                    src={getUser?.profilPicture}
-                    alt=""
-                  />
-                  <div className="createSwitch" onClick={switchCreatePost}>
-                    Quoi de neuf, {getUser?.pseudo} ?
+          <div className="home">
+            {wantCreatePost ? (
+              <section>
+                <CreatePost
+                  getUser={getUser}
+                  unSwitchCreatePost={unSwitchCreatePost}
+                  updatePosts={updatePosts}
+                />
+              </section>
+            ) : (
+              <article
+                id="createPost"
+                className="flex ac-center newPostContainer"
+              >
+                <div className="create-container">
+                  <div className="flex row ai-center ac-center space-around create-box">
+                    <img
+                      className="profilPicture"
+                      src={getUser?.profilPicture}
+                      alt=""
+                    />
+                    <div className="createSwitch" onClick={switchCreatePost}>
+                      Quoi de neuf, {getUser?.pseudo} ?
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
-          )}
+              </article>
+            )}
 
-          <div className="post-container  ">
-            {posts &&
-              posts.map((item) => (
-                <Post
-                  getUser={getUser}
-                  post={item}
-                  updatePosts={updatePosts}
-                  key={item._id}
-                />
-              ))}
+            <section>
+              {posts &&
+                posts.map((item) => (
+                  <Post
+                    getUser={getUser}
+                    post={item}
+                    updatePosts={updatePosts}
+                    key={item._id}
+                  />
+                ))}
+            </section>
+            <button
+              id="scrollToCreate"
+              title="créer un post"
+              name="création de post"
+              type="button"
+              aria-pressed="false"
+              className="home-btn"
+              onClick={
+                windowSize.current[0] <= 720 ? createPostModal : goToCreatePost
+              }
+            >
+              <i className="fa-solid fa-pencil"></i>{' '}
+            </button>
+            <button
+              id="refresh"
+              title="créer un post"
+              name="création de post"
+              type="button"
+              aria-pressed="false"
+              className="home-btn"
+              onClick={refresh}
+            >
+              <i className="fa-solid fa-rotate-right"></i>{' '}
+            </button>
+            <ReactModal
+              isOpen={isOpen}
+              className="create-post-modal"
+              contentLabel="Voulez vous..."
+              overlayClassName="create-post-overlay"
+              onRequestClose={closeModal}
+              shouldCloseOnOverlayClick={false}
+              preventScroll={true}
+            >
+              <CreatePost
+                getUser={getUser}
+                updatePosts={updatePosts}
+                closeModal={closeModal}
+              />
+              <div onClick={closeModal} className='stop-modal'>
+              <i class="fa-solid fa-xmark"></i>
+              </div>
+            </ReactModal>
+            {spinner && (
+              <div className="load-post-spinner">
+                <i className="fa-solid fa-circle-notch"></i>
+              </div>
+            )}
           </div>
-          <button
-            id="scrollToCreate"
-            title="créer un post"
-            name="création de post"
-            type="button"
-            aria-pressed="false"
-            className="home-btn"
-            onClick={
-              windowSize.current[0] <= 480 ? createPostModal : goToCreatePost
-            }
-          >
-            <i className="fa-solid fa-pencil"></i>{' '}
-          </button>
-          <button
-            id="refresh"
-            title="créer un post"
-            name="création de post"
-            type="button"
-            aria-pressed="false"
-            className="home-btn"
-            onClick={refresh}
-          >
-            <i className="fa-solid fa-rotate-right"></i>{' '}
-          </button>
-          <ReactModal
-            isOpen={isOpen}
-            className="create-post-modal"
-            contentLabel="Voulez vous..."
-            overlayClassName="create-post-overlay"
-            onRequestClose={closeModal}
-            shouldCloseOnOverlayClick={false}
-            preventScroll={true}
-          >
-            <CreatePost
-              getUser={getUser}
-              updatePosts={updatePosts}
-              closeModal={closeModal}
-            />
-          </ReactModal>
-          {spinner && (
-            <div className="load-post-spinner">
-              <i className="fa-solid fa-circle-notch"></i>
-            </div>
-          )}
         </main>
       ) : (
         <Navigate to="/signing" />

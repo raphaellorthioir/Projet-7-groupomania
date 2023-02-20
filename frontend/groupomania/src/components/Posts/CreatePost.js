@@ -4,13 +4,14 @@ import { UserContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const CreatePost = (post) => {
- console.log(post)
+  console.log(post);
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const form = useRef();
   const title = useRef();
   const text = useRef();
   const image = useRef();
+  const createPost = useRef();
   const [file, setFile] = useState();
   const [error, setError] = useState();
   const windowSize = useRef([window.innerWidth]);
@@ -53,6 +54,9 @@ const CreatePost = (post) => {
       setError('*Veuillez écrire un texte ou télécharger une image ');
     }
   };
+  if (createPost.current && createPost.current.style.display === 'none') {
+    createPost.current.style.display = 'block';
+  }
 
   const checkImage = () => {
     console.log(form);
@@ -70,20 +74,29 @@ const CreatePost = (post) => {
     post.closeModal();
   };
   return (
-    <div id="createPost" className="newPostContainer flex cl">
-      <div className="flex row fs ai-center pseudo-container">
-        <img
-          className="profilPicture"
-          src={post.getUser.profilPicture}
-          alt={post.getUser.pseudo}
-        />
-        <div>{post.getUser.pseudo}</div>
-        {windowSize.current[0] <= 480 && (
-          <span onClick={closeModal} className="stop-create">
-            {' '}
-            <i className="fa-solid fa-xmark"></i>{' '}
-          </span>
-        )}
+    <article
+      ref={createPost}
+      id="createPost"
+      className="newPostContainer flex cl"
+    >
+      <div className="flex row sb" style={{position:'relative'}}>
+        <div className="flex row fs ai-center pseudo-container">
+          <img
+            className="profilPicture"
+            src={post.getUser.profilPicture}
+            alt={post.getUser.pseudo}
+          />
+          <div>{post.getUser.pseudo}</div>
+          {windowSize.current[0] <= 480 && (
+            <span onClick={closeModal} className="stop-create">
+              {' '}
+              <i className="fa-solid fa-xmark"></i>{' '}
+            </span>
+          )}
+        </div>
+        <div onClick={()=>post.unSwitchCreatePost()} className='stop-create'>
+          <i class="fa-solid fa-xmark"></i>
+        </div>
       </div>
       <form
         ref={form}
@@ -129,7 +142,6 @@ const CreatePost = (post) => {
         <br />
         <div className=" join-img-container flex row space-around ai-center ac-center ">
           <div className="flex row ai-center ac-center">
-            <div>Joindre une image</div>
             <label htmlFor="file">
               <i className="fa-regular fa-file-image"></i>
             </label>
@@ -149,7 +161,7 @@ const CreatePost = (post) => {
           <input type="submit" value="Envoyer" />
         </div>
       </form>
-    </div>
+    </article>
   );
 };
 

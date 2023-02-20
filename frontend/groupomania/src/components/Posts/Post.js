@@ -51,7 +51,7 @@ const Post = (props) => {
 
   const ul = useRef();
   // MouseEvent \\
-  const handleMouseEnter = () => {
+  const showList = () => {
     ul.current.style.display = 'block';
   };
   const handleMouseLeave = () => {
@@ -177,14 +177,20 @@ const Post = (props) => {
           updatePost={updatePost}
         />
       ) : (
-        <section id={props.post._id} className="flex cl space-around ">
+        <article>
           <div
             className="post"
-            style={showComment ? { borderRadius: '20px 20px 0 0' , boxShadow:"rgba(100, 100, 111, 0.1) 0px 7px 29px 0px"}  : {}}
+            style={
+              showComment
+                ? {
+                    borderRadius: '20px 20px 0 0',
+                    boxShadow: 'rgba(100, 100, 111, 0.1) 0px 7px 29px 0px',
+                  }
+                : {}
+            }
           >
             <div className="flex row sb pseudo-container">
               <NavLink
-                className="pseudo-link"
                 to={{
                   pathname: '/profil',
                   search: `?user=${props.post.userId}`,
@@ -203,10 +209,10 @@ const Post = (props) => {
               </NavLink>
               {(user?.userId === post.userId || user?.isAdmin) && (
                 <>
-                  <div onMouseLeave={handleMouseLeave} className="edit-box">
-                    <div className="icon-box">
+                  <div className="edit-box">
+                    <div onMouseLeave={handleMouseLeave} className="icon-box">
                       <i
-                        onClick={handleMouseEnter}
+                        onClick={showList}
                         className="fa-solid fa-ellipsis-vertical"
                       ></i>
                     </div>
@@ -258,10 +264,10 @@ const Post = (props) => {
                 {createDate < date ? (
                   <>
                     <i className="fa-regular fa-pen-to-square"></i>
-                    <span>Modifié le {date}</span>
+                    <time>Modifié le {date}</time>
                   </>
                 ) : (
-                  <span>Posté le {createDate}</span>
+                  <time>Posté le {createDate}</time>
                 )}
               </div>
               <div className="title">{post.title}</div>
@@ -321,7 +327,7 @@ const Post = (props) => {
               <></>
             )}
           </>
-        </section>
+        </article>
       )}
     </>
   );

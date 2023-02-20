@@ -129,11 +129,16 @@ exports.updateUser = (req, res, next) => {
   if (req.params.id === req.auth.userId || req.auth.isAdmin) {
     User.findById(req.params.id, (err, docs) => {
       const pathImg = docs.profilPicture.substring(44);
-      if (req.file && pathImg !== 'random-user.png') {
-        fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
-          if (err) console.log('error delete img profil from local folder');
-          else console.log(' img profil deleted from folder');
-        });
+      if (req.file) {
+        if (pathImg === 'random-user.jpg') {
+          console.log('random-user.png ok');
+        } else {
+          fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
+            if (err) console.log('error delete img profil from local folder');
+            else console.log(' img profil deleted from folder');
+          });
+        }
+
         User.findOneAndUpdate(
           { _id: req.params.id },
           {
@@ -198,7 +203,7 @@ exports.updateUser = (req, res, next) => {
             runValidators: true,
           },
           (err, docs) => {
-            console.log(docs)
+            console.log(docs);
             if (!err) {
               Post.updateMany(
                 { userId: docs._id },
@@ -215,7 +220,7 @@ exports.updateUser = (req, res, next) => {
                 },
                 (err, posts) => {
                   if (!err) {
-                    console.log(" a fonctionné")
+                    console.log(' a fonctionné');
                     console.log({ message: 'sucéés update many', posts });
                   }
                   if (err) console.log({ message: 'echec update many', err });
