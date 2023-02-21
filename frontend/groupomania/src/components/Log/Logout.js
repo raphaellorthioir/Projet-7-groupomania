@@ -15,7 +15,6 @@ const Logout = () => {
         navigate('/logout');
       })
       .catch((err) => {
-        console.log(err)
         navigate('/logout');
       });
   };

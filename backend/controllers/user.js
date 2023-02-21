@@ -1,30 +1,24 @@
 const User = require('../models/user');
 const Post = require('../models/post');
-const bcrypt = require('bcrypt'); /*package de hashage de mot de passe, une BD doit absolument avoir des profils users cryptés, 
-                                    les # sont comparés lorsque le user envoie son mdp */
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { path } = require('../app');
 const { reset } = require('nodemon');
 const fs = require('fs');
-const ObjectID = require('mongoose').Types.ObjectId; // permet d'accéder à tous les objectId de la BD , notamment de la collection users
+const ObjectID = require('mongoose').Types.ObjectId;
 
 //  SIGNUP
 exports.signup = (req, res, next) => {
   bcrypt
-    .hash(
-      req.body.password,
-      10
-    ) /* hashage du mot de passe ; fonction asynchrone */
+    .hash(req.body.password, 10)
     .then((hash) => {
       const user = new User({
-        /* création d'une nouvelle instance du modèle User */
         pseudo: req.body.pseudo,
         email: req.body.email,
         password: hash,
       });
       user
-        .save() /* méthode pour enregistrer la requête dans la BD */
-        /* toujours renvoyer un code de succés ou d'erreur pour faciliter le débugage */
+        .save()
         .then(() => {
           User.findOne({ email: req.body.email }).then((user) => {
             token = jwt.sign(
@@ -33,27 +27,21 @@ exports.signup = (req, res, next) => {
                 isAdmin: user.isAdmin,
                 pseudo: user.pseudo,
                 profilPicture: user.profilPicture,
-              } /*vérifie l'id de l'utilisateur*/,
-              process.env
-                .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,
-              { expiresIn: '24h' } /* le token expire au bout de 24h */
+              },
+              process.env.SECRET_TOKEN,
+              { expiresIn: '24h' }
             );
             res.cookie('jwt', token, { httpOnly: true });
             res.status(200).json('User account created');
           });
         })
-
-        // res.status(201).json({ message: 'User created !', user }) ) /* code 201 = création de ressource réussie */
-
         .catch((err) => res.status(400).json(err));
-      /* code 400 erreur lors de la requête : syntaxe invalide*/
     })
     .catch((err) => res.status(500).json('Password error', err));
 };
 
-//SignIn
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email }) /* objet filter de comparaison */
+  User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ emailError: `email inconnu` });
@@ -61,8 +49,6 @@ exports.login = (req, res, next) => {
       bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {
-          /* nous renvoit un booléen */
-
           if (!valid) {
             return res
               .status(401)
@@ -72,10 +58,9 @@ exports.login = (req, res, next) => {
               {
                 userId: user._id,
                 isAdmin: user.isAdmin,
-              } /*vérifie l'id de l'utilisateur*/,
-              process.env
-                .SECRET_TOKEN /* chaîne de caractère qui permet l'encodage*/,
-              { expiresIn: '24h' } /* le token expire au bout de 24h */
+              },
+              process.env.SECRET_TOKEN,
+              { expiresIn: '24h' }
             );
           }
           res.cookie('jwt', token, { httpOnly: true });
@@ -85,8 +70,6 @@ exports.login = (req, res, next) => {
     })
     .catch((err) => res.status(500).json('User not found', err));
 };
-
-//LOGOUT
 
 exports.logout = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
@@ -105,7 +88,6 @@ exports.logout = (req, res) => {
   }
 };
 
-//GET USER PROFIL
 exports.userProfil = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send('ID unknown  :' + req.params.id);
@@ -118,7 +100,7 @@ exports.userProfil = (req, res, next) => {
       res.clearCookie('jwt');
       res.status(400).json(err);
     }
-  }).select('  -password -email -isAdmin'); // permet de sélectionner ce qu'on souhaite trouver dans le profil User ou ce qu'on ne souhaite pas voir (-)
+  }).select('  -password -email -isAdmin');
 };
 
 //UPDATE USER PROFIL PAGE
@@ -220,7 +202,6 @@ exports.updateUser = (req, res, next) => {
                 },
                 (err, posts) => {
                   if (!err) {
-                    console.log(' a fonctionné');
                     console.log({ message: 'sucéés update many', posts });
                   }
                   if (err) console.log({ message: 'echec update many', err });
@@ -239,7 +220,6 @@ exports.updateUser = (req, res, next) => {
   }
 };
 
-// UPDATE PASSWORD
 exports.updatePassword = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
@@ -275,7 +255,6 @@ exports.updatePassword = (req, res, next) => {
   }
 };
 
-//DELETE USER ACOOUNT
 exports.deleteUser = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);

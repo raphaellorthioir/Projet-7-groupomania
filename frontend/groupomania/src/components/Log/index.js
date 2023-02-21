@@ -51,7 +51,7 @@ const Log = (props) => {
             <div
               onClick={handleModals}
               id="register"
-              className={signUpModal ? 'active-btn ' : null}
+              className={signUpModal ? 'active-btn ' : 'blue'}
             >
               {/* on peut mettre une condition pour décider de mettre les attributs selon certains événements  */}
               S'inscrire
@@ -62,7 +62,7 @@ const Log = (props) => {
             <div
               onClick={handleModals}
               id="login"
-              className={signInModal ? 'active-btn' : null}
+              className={signInModal ? 'active-btn' : 'blue'}
             >
               Se connecter
             </div>

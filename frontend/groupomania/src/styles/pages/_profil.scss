@@ -1,58 +1,83 @@
 
 .profil-page{
-    width: 80vw;
-    height: auto;
+    width: 70%;
+    height: 100%;
     margin: auto auto;
-    background-color: white;
     margin-top: 20px;
-    border-radius: 15px;
-    padding: 10px;
-    
-    .photo-change{
-        display: block;
-        position: relative;
-        background-color: #0077ff ;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        margin-left: 10px;
-        transition: ease 0.1s;
-        cursor: pointer;
-         &:hover{
-            transform: scale(1.1);
-        }
-        .camera-icon{
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            color: white;
-            width: fit-content;
-            height: fit-content;
-            margin: auto auto;
-
-                i{
-                font-size: 1.5em;
-             }
-            }
-         }
-    .profil-picture-btn{
-        display: none;
+    @media screen and (max-width:1024px) {
+        width: 90%;
+        
     }
+    .profil-container{
+        height: fit-content;
+        width: 100%;
+        margin: auto;
+        margin-top: 50px;
+        padding: 10px;
+        background-color: white;
+        border-radius: 15px;
+        @media screen and (max-width:1024px) {
+           border-radius: 0;
+            
+        }
+        .relative{
+            position: relative;
+        }
+
+        .profilPicture{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 3px solid rgba(169, 169, 169, 0.505)
+          }
+            
+            .photo-change{
+                display: block;
+                position: relative;
+                background-color: #0077ff ;
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                margin-left: 10px;
+                transition: ease 0.1s;
+                cursor: pointer;
+                &:hover{
+                    transform: scale(1.1);
+                }
+                .camera-icon{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    color: white;
+                    width: fit-content;
+                    height: fit-content;
+                    margin: auto auto;
+                    i{
+                        font-size: 1.5em;
+                    }
+                    
+                }
+             }
+             .profil-picture-btn{
+                display: none;
+            }
+        }
+   
    .settings-icon{
-       position: relative; 
-       width: 150px;
-       max-height: 300px;
+       position: absolute; 
+       right: 0;
+       top: 0;
+       width: 190px;
        font-size: 1em;
        cursor: pointer;
-       
         i{
         font-size: 1.3em;
          }
-           
         .list-box{
-        
+
             position: absolute;
             left: 0;
             width: auto;
@@ -77,67 +102,17 @@
                     &:hover{
                         color: red;
                     }
-                }
+                 }
             }
             li{
-            padding: 5px;
+                 padding: 5px;
                 list-style: none;
                 width: auto;
                 text-align: justify;
                 white-space: nowrap;
                 cursor: pointer;
-            }
+             }
          }
-        }
-    input{
-        
-        margin-left: 10px;
-        height: 30px;
-        width: 200px;
-        border-radius: 5px;
-        border: 1px rgba(0, 0, 0, 0.254) solid;
     }
-    #stop-edit{
-        background-color:red;
-        margin-left: 10px;
-        transition: transform 0.1s ease;
-        &:hover{
-            color: white;
-            transform: scale(1.1);
-        }
-    }
-   
     
-    .setting-btn{
-        button{
-            font-size: 0.9em;
-            width: fit-content;
-            height: fit-content;
-         }
-        .delete-profil-btn{
-            background-color: #f85149;
-        }
-    }
-    .send-btn{
-        margin-left: 10px;
-        height: fit-content;
-    }
-    .validate{
-        width: fit-content;
-        margin-top: 30px;
-        margin: auto;
-    }
-    .upload-pic{
-        cursor: pointer;
-        border:1px;
-       border-radius: 20px 20px 20px 20px;
-       background-color: rgb(102, 147, 238);
-       width:auto;
-       text-align: center;
-       padding-top: 10px;
-        label{
-           cursor: pointer;
-           margin:  5px;
-        }
-    }
 }

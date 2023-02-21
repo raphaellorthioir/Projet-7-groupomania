@@ -29,7 +29,6 @@ exports.createPost = (req, res, next) => {
       post
         .save()
         .then(() => res.status(201).json({ message: 'Post créé', post }))
-        .then(() => console.log(post))
         .catch((error) => res.status(400).json({ error }));
     } else {
       res.clearCookie('jwt');
@@ -187,7 +186,6 @@ exports.likePost = (req, res, next) => {
   });
 };
 
-// Comments
 exports.commentPost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.postId))
     return res.status(400).send(`This post doesn't exist anymore`);
@@ -225,32 +223,6 @@ exports.commentPost = (req, res, next) => {
   });
 };
 
-exports.editComment = (req, res, next) => {
-  if (!ObjectID.isValid(req.params.postId))
-    return res.status(400).send({ message: `This Post doesn't exist` });
-
-  try {
-    return Post.findById(req.params.postId, (err, docs) => {
-      const theComment = docs.comments.find((comment) => {
-        return comment._id.equals(req.body.commentId);
-      });
-
-      if (!theComment) return res.status(404).send(err);
-      else {
-        if (theComment.userId === req.auth.userId) {
-          theComment.text = req.body.text;
-          return docs.save((err) => {
-            if (!err) return res.status(200).send(docs.comments);
-            return res.status(400).send(err);
-          });
-        }
-        res.status(401).json('Unauthorized request');
-      }
-    });
-  } catch (err) {
-    return res.status(400).send(err);
-  }
-};
 exports.deleteComment = (req, res, next) => {
   if (!ObjectID.isValid(req.params.postId))
     return res.status(400).send({ message: `Post doesn't exist` });

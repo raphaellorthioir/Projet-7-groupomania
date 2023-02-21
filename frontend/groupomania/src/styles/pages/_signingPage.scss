@@ -41,31 +41,33 @@ height: 100vh;
           border-top: 1px solid rgba(0, 0, 0, 0.2);
           border-bottom:1px solid rgba(0, 0, 0, 0.2) ;
           padding: 10px;
+          color: $color-1;
+
           &:hover{
             background-color: rgba(128, 128, 128, 0.15);
-        }
-        > div{
-          background-color: 0077ff;
-          cursor: pointer;
-          border-radius: 20px;
-          padding: 10px 20px;
-          transition: 0.2s;
-          list-style: none;
-          width: fit-content;
-          margin: auto;
-          &:hover{
-            background: $color-2;
-        }
-      }
-     }
-        .active-btn {
-          background: $color-1;
-          margin: auto;
-          &:hover {
+          }
+          > div{
+            
+            cursor: pointer;
+            border-radius: 20px;
+            padding: 10px 20px;
+            list-style: none;
+            width: fit-content;
+            margin: auto;
+            &:hover{
+              background: $color-2;
+              color: $color-1;
+            }
+           
+          }
+          .active-btn{
             background: $color-2;
           }
+          .blue{
+            color: $color-3;
+          }
+         }
         }
-      }
       form {
         width:auto;
         padding: 10px;

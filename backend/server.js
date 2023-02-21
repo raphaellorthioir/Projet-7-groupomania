@@ -1,8 +1,7 @@
-const http = require('http'); // import du package http natif Node pour gérer les requêtes serveur
-const app = require('./app'); // import de l'application express
+const http = require('http');
+const app = require('./app');
 
 const normalizePort = (val) => {
-  // fonction qui renvoie un port valide
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -13,12 +12,11 @@ const normalizePort = (val) => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || '3000'); // définit le port à utiliser 3000 par défaut ou un autre si l'environnement en utilise un autre
+const port = normalizePort(process.env.PORT || '3000');
 
-app.set('port', port); // indique à express quel port écouter 
+app.set('port', port);
 
 const errorHandler = (error) => {
-  // fonction qui gère les erreurs
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -38,14 +36,11 @@ const errorHandler = (error) => {
       throw error;
   }
 };
-
-const server = http.createServer(app); // transforme l'environnement local en serveur HTTP et prend en paramètre une fonction qui sera appelée à chaque requête = requestListener = express()
-
+const server = http.createServer(app);
 server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
   console.log('Listening on ' + bind);
 });
-
-server.listen(port); // écoute du port 3000 par défaut
+server.listen(port);

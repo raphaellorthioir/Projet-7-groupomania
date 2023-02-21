@@ -126,7 +126,13 @@ const Home = () => {
                 id="createPost"
                 className="flex ac-center newPostContainer"
               >
-                <div className="create-container">
+                <div
+                  className={
+                    windowSize.current[0] <= 1024
+                      ? 'hideCreatePost'
+                      : 'create-container'
+                  }
+                >
                   <div className="flex row ai-center ac-center space-around create-box">
                     <img
                       className="profilPicture"
@@ -158,9 +164,9 @@ const Home = () => {
               name="création de post"
               type="button"
               aria-pressed="false"
-              className="home-btn"
+              className="create-post-btn"
               onClick={
-                windowSize.current[0] <= 720 ? createPostModal : goToCreatePost
+                windowSize.current[0] <= 1024 ? createPostModal : goToCreatePost
               }
             >
               <i className="fa-solid fa-pencil"></i>{' '}
@@ -190,8 +196,8 @@ const Home = () => {
                 updatePosts={updatePosts}
                 closeModal={closeModal}
               />
-              <div onClick={closeModal} className='stop-modal'>
-              <i class="fa-solid fa-xmark"></i>
+              <div onClick={closeModal} className="stop-modal">
+                <i class="fa-solid fa-xmark"></i>
               </div>
             </ReactModal>
             {spinner && (

@@ -1,20 +1,21 @@
 .disconnect-container{
     width: 100%;
     height: 100%;
-
+    background-color: white;
+    font-size: 2em;
+   
    
  .disconnect-box{
     position: relative;
-    top: 20%;
+    top: 30%;
     height: 100%;
     width: 100%;
+    text-align: center;
     .img-box{
         width: fit-content;
         height: fit-content;
+        margin-bottom: 20px;
         
-       }
-       h1{
-        margin: 0;
        }
  }
   

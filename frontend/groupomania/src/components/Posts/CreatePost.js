@@ -4,7 +4,6 @@ import { UserContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const CreatePost = (post) => {
-  console.log(post);
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const form = useRef();
@@ -41,7 +40,6 @@ const CreatePost = (post) => {
           setFile(null);
         })
         .catch((err) => {
-          console.log(err);
           if (err) {
             if (err.response.data.error)
               setError('Votre envoi ne doit pas dépasser les 250 caractères');
@@ -59,7 +57,6 @@ const CreatePost = (post) => {
   }
 
   const checkImage = () => {
-    console.log(form);
     const files = image.current.files[0];
     const newImg = URL.createObjectURL(files);
     setFile(newImg);
@@ -80,13 +77,13 @@ const CreatePost = (post) => {
       className="newPostContainer flex cl"
     >
       <div className="flex row sb" style={{position:'relative'}}>
-        <div className="flex row fs ai-center pseudo-container">
+        <div className="flex row fs ai-center">
           <img
             className="profilPicture"
             src={post.getUser.profilPicture}
             alt={post.getUser.pseudo}
           />
-          <div>{post.getUser.pseudo}</div>
+          <div className='pseudo'>{post.getUser.pseudo}</div>
           {windowSize.current[0] <= 480 && (
             <span onClick={closeModal} className="stop-create">
               {' '}

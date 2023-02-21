@@ -62,7 +62,6 @@ module.exports.requireAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.SECRET_TOKEN, (err, decodedToken) => {
       if (err) {
-        console.log('erreur requireAuth');
         res.status(400).json(err);
       } else {
         UserModel.findById(decodedToken.userId, (err, user) => {

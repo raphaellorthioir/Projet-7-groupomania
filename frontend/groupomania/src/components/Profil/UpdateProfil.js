@@ -13,7 +13,6 @@ const UpdateProfil = (props) => {
     profil: '',
     password: '',
   });
-  
 
   const showPassword = () => {
     let result = formPassword.current.elements.password.type;
@@ -49,11 +48,10 @@ const UpdateProfil = (props) => {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         setSuccess({
           profil: 'Votre profil a bien été modifié',
         });
-        props.setProfil(res.data)
+        props.setProfil(res.data);
       })
       .catch((err) => {
         if (err.response.data.errors.email.kind === 'unique') {
@@ -63,7 +61,6 @@ const UpdateProfil = (props) => {
   };
   const changePassword = async (e) => {
     e.preventDefault();
-    console.log(formPassword);
     setPasswordErrors(null);
     setSuccess(false);
     let password = formPassword.current[0].value;
@@ -89,8 +86,9 @@ const UpdateProfil = (props) => {
   };
   return (
     <div className="edit-form">
-      <div id='come-back'>
-        <i onClick={()=>props.stopEdit()} class="fa-solid fa-arrow-left"></i> Profil
+      <div id="come-back">
+        <i onClick={() => props.stopEdit()} class="fa-solid fa-arrow-left"></i>{' '}
+        Profil
       </div>
       <div className="form-container">
         <h1> Modifier votre profil</h1>
@@ -196,6 +194,7 @@ const UpdateProfil = (props) => {
               <div>
                 <label htmlFor="confirm-password">Confirmer mot de passe</label>
                 <br />
+                <br />
                 <input
                   type="password"
                   name="confirm-password"
@@ -205,15 +204,14 @@ const UpdateProfil = (props) => {
               </div>
               {passwordErrors && <p className="error">{passwordErrors}</p>}
               {success && <p style={{ color: 'green' }}>{success.password}</p>}
+              <br />
               <div>
                 <label htmlFor="sendPassword"></label>
-                <button
+                <input
                   onClick={changePassword}
-                  type=""
-                  className="sendPassword"
-                >
-                  Envoyer
-                </button>
+                  type="submit"
+                  value={'Envoyer'}
+                ></input>
               </div>
             </div>
 

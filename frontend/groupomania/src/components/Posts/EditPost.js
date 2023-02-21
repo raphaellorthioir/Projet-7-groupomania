@@ -1,37 +1,21 @@
-import React, { useContext, useRef, useState } from 'react';
-import { UserContext } from '../AppContext';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const EditPost = (props) => {
-  const user = useContext(UserContext);
-  console.log(props);
-  const navigate = useNavigate();
-  // PROPS VALUES \\
   const postToEdit = props.postToEdit;
-  console.log(props);
-  // PROPS FUNC \\
 
-  /*Stop editing */
   const stopEdit = () => {
     props.stopEdit();
   };
-
-  /*Send new values to Post */
-
-  // States \\
+  const navigate = useNavigate();
   const [files, setFiles] = useState(postToEdit.imageUrl);
-
-  // Ref \\
-
   const updatedTitle = useRef();
   const updatedText = useRef();
   const updatedImage = useRef();
-
   const [error, setError] = useState();
 
   const handleEditPost = (e) => {
     e.preventDefault();
-    console.log(updatedImage);
     setError(null);
     if (files || updatedText.current.innerText) {
       const data = new FormData();
@@ -57,13 +41,11 @@ const EditPost = (props) => {
           props.stopEdit();
         })
         .catch((err) => {
-          console.log(updatedImage);
-          console.log(err);
           if (err) {
             if (err.response.data.error)
               setError('Votre envoi ne doit pas dépasser les 250 caractères');
             else {
-              // navigate('/logout');
+              navigate('/logout');
             }
           }
         });
@@ -79,7 +61,6 @@ const EditPost = (props) => {
   };
 
   const removeImage = () => {
-    console.log(files);
     setFiles(null);
   };
 
@@ -101,7 +82,6 @@ const EditPost = (props) => {
       </div>
       <form
         className="flex cl space-around"
-        action=""
         id="updatePost"
         name="UpdatePostSubmit"
         onSubmit={handleEditPost}
@@ -123,19 +103,7 @@ const EditPost = (props) => {
         />
         <div>
           <label htmlFor="text"></label>
-
-          {/*  <textarea
-            name="post text"
-            id="text"
-            cols="10"
-            rows="10"
-            maxLength={250}
-            form="post"
-            spellCheck="true"
-            ref={text}
-            placeholder="Mon nouveau Post"
-          ></textarea>*/}
-          <div className="test">
+          <div className="text">
             <div
               className="textEditable"
               contentEditable="true"
@@ -159,9 +127,9 @@ const EditPost = (props) => {
 
         <br />
         <div className="flex row space-around">
-          <div className=" labelImg flex row space-around ai-center ">
+          <div className=" send-box flex row space-around ai-center ">
             <div className="flex row ai-center">
-              <div>Joindre une image</div>
+              <p>Joindre une image</p>
               <label htmlFor="EditPostFile">
                 <i className="fa-regular fa-file-image"></i>
               </label>
@@ -178,7 +146,7 @@ const EditPost = (props) => {
               className="imgInput"
               ref={updatedImage}
             />
-            <input type="submit" value="Modifier" />
+            <input className="submit" type="submit" value="Modifier" />
           </div>
         </div>
       </form>

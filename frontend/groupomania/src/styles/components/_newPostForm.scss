@@ -5,52 +5,38 @@
   width: 100%;
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
   background-color: white;
-  //box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  .stop-create{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.5em;
-    cursor: pointer;
-  }
-  .create-container{
-    width: 100%;
-    height: fit-content;
-    margin: auto;
-    padding: 5px;
-    .create-box{
-      height: fit-content;
-      padding: 0 5px;
+  
+    @media screen  and (max-width:1024px) {
+      box-shadow: none;
     }
-    .createSwitch{
-      border: solid rgba(0, 0, 0, 0.27) 1px;
-      border-radius: 30px;
-      padding: 3px;
-      width: 90%;
+    .stop-create{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5em;
       cursor: pointer;
-      
+    }
+    .create-container{
+      width: 100%;
+      height: fit-content;
+      margin: auto;
+      padding: 5px;
+      .create-box{
+        height: fit-content;
+        padding: 0 5px;
+      }.createSwitch{
+          border: solid rgba(0, 0, 0, 0.27) 1px;
+          border-radius: 30px;
+          padding: 3px;
+          width: 90%;
+          cursor: pointer;
       &:hover{
         background-color: rgba(188, 187, 187, 0.2);
       }
     }
   }
   form{
-    input.title{
-      width: auto;
-      height: 30px;
-      margin:20px 0;
-      border-left: 1px solid rgba(0, 0, 0, 0.4);
-      font-weight: bold;
-      font-size: 1em;
-      margin-left: 10px;
-      background-color: white;
-      border-radius: 0;
-      cursor: text;
-      transition: background-color ease 0.1s;
-      &:hover{
-        background-color: rgba(0, 0, 0, 0.100);
-      }
-    }
+  
     .imgInput{
       text-align: center;
 
@@ -72,20 +58,17 @@
       text-align: center;
       cursor: pointer;
     }
-    
-      
-      
-      i{
-        width: fit-content;
-        height: fit-content;
-        position: absolute;
-        margin: auto;
-        top: 0;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        font-size: 2em;
-        color: white;
+    i{
+      width: fit-content;
+      height: fit-content;
+      position: absolute;
+      margin: auto;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      font-size: 2em;
+      color: white;
         
       }
     
@@ -111,14 +94,9 @@
         width:16px;
         height: 16px;
         cursor: pointer;
-       
         color: black;
         border-radius: 50%;
         background-color: white;
-       
-        
-        
-       
       }
     }
     img{
@@ -128,7 +106,6 @@
       height: auto;
 
     }
-    
    }
  
    .scrolltop{
@@ -137,7 +114,7 @@
     
     .textEditable{
       margin: auto;
-      min-height: 50px;
+      min-height: 100px;
       outline: none;
       padding-left: 10px;
       overflow-y: scroll;

@@ -9,25 +9,25 @@ const Navbar = () => {
     <header id="header">
       <nav>
         <div className=" nav-container flex sb">
-          <div className="logo">
+          <div className="flex ai-center">
             <NavLink to="/">
-              <div className="logo-container flex space-around ai-center ac-center">
+              <div className=" flex ai-center">
                 <img
-                  src={require('../images/icon-left-font-monochrome-black.png')}
+                  src={require('../images/icon-left-font.-navbar (2).png')}
                   alt="icon"
                 />
               </div>
             </NavLink>
           </div>
-          <div className=" profil-container flex space-around ai-center ac-center">
+          <div className=" profil-container flex fe ai-center ac-center">
             <NavLink
               to={{
                 pathname: '/profil',
                 search: `?user=${user?.userId}`,
               }}
             >
-              <i className="fa-regular fa-user logo-profil"></i>
-            </NavLink>
+              <i className="fa-regular fa-user"></i>
+            </NavLink> 
             <Logout></Logout>
           </div>
         </div>

@@ -2,48 +2,52 @@
 .edit-form{
 margin: auto auto;
 width: 90%;
-#come-back{
-    font-size: 1.5em;
-    cursor: pointer;
-}
-.form-container{
-    margin-top: 20px;
-    width: auto;
-    box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
-    padding: 5px;
-}
-.separate-line{
-    display: block;
-    width: 20%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.443);
-    margin: 30px auto;
-   
-}
-    #submit{
-        margin-top: 20px;
-        margin-left: 10px;
-        margin-bottom: 10px;
+    #come-back{
+        font-size: 1.5em;
+        cursor: pointer;
     }
-    .textarea-box{
-        width: 90%;
-        margin: auto;
-        #bio{
-            width: 90%;
-            border-radius: 5px;
-            margin-left: 0;
-            resize: none;
-            outline: none;
-            border: 0;
-            box-shadow: 1px 1px 3px 1px gray;
-            padding: 20px;
-            &:hover{
-                background-color: rgba(128, 128, 128, 0.2);
-            }
-            &:focus{
-                background-color: white;
-            }
-         }
+    .form-container{
+        margin-top: 20px;
+        width: auto;
+        box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+        padding: 5px;
+        h1{
+            text-align: center;
         }
+        .textarea-box{
+            width: 90%;
+            margin: auto;
+            #bio{
+                width: 90%;
+                border-radius: 5px;
+                margin-left: 0;
+                resize: none;
+                outline: none;
+                border: 0;
+                box-shadow: 1px 1px 3px 1px gray;
+                padding: 20px;
+                &:hover{
+                    background-color: rgba(128, 128, 128, 0.2);
+                }
+                &:focus{
+                    background-color: white;
+                }
+             }
+            }
+        .separate-line{
+            display: block;
+            width: 20%;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.443);
+            margin: 30px auto;
+           
+        }
+        
+        .validate{
+            width: fit-content;
+            margin-top: 30px;
+            margin: auto;
+        }
+       
         .password-container{
             width: fit-content;
             position: relative;
@@ -63,11 +67,12 @@ width: 90%;
                     cursor: pointer;
                 }
             }
-            .sendPassword{
-                margin-top: 30px;
-                border: 1px rgba(0, 0, 0, 0.254) solid;
-            }
         }
+    }
+
+   
+   
+       
       
 }
 

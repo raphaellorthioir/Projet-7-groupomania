@@ -19,15 +19,15 @@ const LougoutPage = (props) => {
         <div className="img-box">
           <img
             src={
-              windowSize.current[0] < 480
-                ? require('../images/icon-left-font-monochrome-black -350p.png')
-                : require('../images/icon-.png')
+              windowSize.current[0] <= 770
+                ? require('../images/icon-left-font-logout 500p.png')
+                : require('../images/icon-left-font-logout.png')
             }
             style={{ width: '350' }}
             alt="Groupomania"
           />
         </div>
-        <h1>Déconnexion ...</h1>
+        <div>Déconnexion ...</div>
       </div>
     </div>
   );

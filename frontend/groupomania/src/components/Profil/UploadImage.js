@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 
 const UploadImage = (props) => {
   const [file, setFile] = useState(props.profilPicture);
-
   const handlePicture = (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append('image', file);
-    
+
     axios
       .put(
         `${process.env.REACT_APP_API_URL}api/auth/uploadImgProfil/${props._id}`,
@@ -18,12 +17,10 @@ const UploadImage = (props) => {
         }
       )
       .then((res) => {
-        setFile(res.data.profilPicture)
-   
+        setFile(res.data.profilPicture);
       })
       .catch((err) => {
         if (err) setFile(null);
-        console.log(err);
       });
   };
   return (

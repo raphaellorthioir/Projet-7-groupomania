@@ -42,12 +42,10 @@ const SignUpForm = (props) => {
         },
       })
         .then(() => {
-          console.log('on test logging');
           logging();
           navigate('/', { replace: true });
         })
         .catch((err) => {
-          console.log(err);
           if (err.response.data.passwordErrorList) {
             setErrorsPsw(err.response.data.passwordErrorList);
           }
@@ -62,7 +60,7 @@ const SignUpForm = (props) => {
   return (
     <form onSubmit={handleRegister}>
       <div className=" flex row ac-center">
-        <div className='inputs-container flex cl ai-center'>
+        <div className="inputs-container flex cl ai-center">
           <div>
             <br />
             <label htmlFor="pseudo">Pseudo</label>

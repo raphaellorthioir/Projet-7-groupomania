@@ -1,18 +1,25 @@
 .home{
     width: 700px;
     margin: auto;
+    padding-bottom: 20px;
     @media screen and (max-width:720px){
         width: 100%;
     }
     .profilPicture{
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         margin-right: 10px;
         border: 3px solid rgba(169, 169, 169, 0.505)
       }
+      .hideCreatePost{
+            display: none;
+      }
     #createPost{
         margin: 100px auto;
+        @media  screen and (max-width:1024px) {
+            margin: 0;
+        }
     }
     article{
         margin-bottom: 30px;

@@ -46,11 +46,8 @@ const Post = (props) => {
   const [displayValidationMessage, setDisplayValidationMessage] = useState();
   const [post, setPost] = useState(props.post);
   const [date, setDate] = useState(updateDate);
-
-  // REFS \\
-
   const ul = useRef();
-  // MouseEvent \\
+
   const showList = () => {
     ul.current.style.display = 'block';
   };
@@ -58,17 +55,12 @@ const Post = (props) => {
     ul.current.style.display = 'none';
   };
 
-  const windowSize = useRef([window.innerWidth]);
-
-  /* comments */
-
   const [showComment, setShowComment] = useState(false);
   const [commentsData, setCommentsData] = useState(
     props.post.comments.sort((a, b) => {
       return b.timestamp - a.timestamp;
     })
   );
-
   const displayComments = () => {
     if (showComment) setShowComment(false);
     else setShowComment(true);
@@ -97,7 +89,6 @@ const Post = (props) => {
         }
       )
       .then((res) => {
-        console.log(res);
         if (res.data.length > 1) {
           let data = res.data.sort((a, b) => {
             return b.timestamp - a.timestamp;
@@ -108,23 +99,18 @@ const Post = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err);
         navigate('/logout');
       });
   };
 
-  // Call the EditPost Component \\
   const editPost = () => {
     setDisplayValidationMessage(false);
     setIsEditing(true);
   };
 
-  // stop Edit
   const stopEdit = () => {
     setIsEditing(false);
   };
-  //
-  //update values from Edit¨Post
   const updatePost = (data) => {
     const newUpdateDate = formatUpdateDate(data.updatedAt);
     setDate(newUpdateDate);
@@ -132,9 +118,6 @@ const Post = (props) => {
     setIsEditing(false);
     setDisplayValidationMessage(true);
   };
-
-  // DELETE POST \\
-
   const deletePost = async () => {
     await axios
       .delete(`${process.env.REACT_APP_API_URL}api/post/${props.post._id}`, {
@@ -203,14 +186,14 @@ const Post = (props) => {
                       src={post.profilPicture}
                       alt="Profil"
                     />
-                    <div>{post.pseudo}</div>
+                    <div className="pseudo">{post.pseudo}</div>
                   </div>
                 </div>
               </NavLink>
               {(user?.userId === post.userId || user?.isAdmin) && (
                 <>
-                  <div className="edit-box">
-                    <div onMouseLeave={handleMouseLeave} className="icon-box">
+                  <div onMouseLeave={handleMouseLeave} className="edit-box">
+                    <div className="icon-box">
                       <i
                         onClick={showList}
                         className="fa-solid fa-ellipsis-vertical"
@@ -242,16 +225,18 @@ const Post = (props) => {
                     overlayClassName="overlay"
                     onRequestClose={closeModal}
                   >
-                    <div className="modal-container ">
-                      <div className=" modal-box  ">
-                        <div className="modal-ask">Supprimer le post ?</div>
-                        <div className="flex row btn-box ">
-                          <button onClick={yesResModal} className="yes">
-                            Oui
-                          </button>
-                          <button onClick={noResModal} className="no">
-                            Non
-                          </button>
+                    <div className="modal-container">
+                      <div className=" content  ">
+                        <div>
+                          <div className="modal-ask">Supprimer le post ?</div>
+                          <div className="flex row btn-box ">
+                            <button onClick={yesResModal} className="yes">
+                              Oui
+                            </button>
+                            <button onClick={noResModal} className="no">
+                              Non
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -290,7 +275,7 @@ const Post = (props) => {
                 </div>
 
                 {displayValidationMessage && (
-                  <span className="success-icon">
+                  <span className="success-icon flex row ai-center">
                     Post modifié
                     <i class="fa-regular fa-circle-check"></i>
                   </span>

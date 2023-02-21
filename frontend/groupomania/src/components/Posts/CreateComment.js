@@ -1,14 +1,11 @@
 import axios from 'axios';
-import {  useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 
 const CreateComment = (props) => {
-  
- 
   const postProps = props.postProps.post;
-  const userProps=props.postProps.getUser
-
+  const userProps = props.postProps.getUser;
 
   const [errorComment, setError] = useState(null);
   const navigate = useNavigate();
@@ -19,7 +16,6 @@ const CreateComment = (props) => {
   const createComment = async (e) => {
     e.preventDefault();
     if (form.current.elements.comment.textLength < 1) {
-      console.log('cc');
       setError('*Votre commentaire est vide');
     } else {
       setError(null);
@@ -32,11 +28,10 @@ const CreateComment = (props) => {
           }
         )
         .then((res) => {
-          form.current.reset()
+          form.current.reset();
           props.updateComments(res.data);
         })
         .catch((err) => {
-          console.log(err);
           navigate('/logout');
         });
     }
@@ -59,11 +54,7 @@ const CreateComment = (props) => {
         </div>
 
         <div className="form-container ">
-          <form
-            ref={form}
-            className="flex row fs"
-            name="commentSubmit"
-          >
+          <form ref={form} className="flex row fs" name="commentSubmit">
             <label htmlFor="comment"></label>
             <div className="comment-textarea">
               <TextareaAutosize
