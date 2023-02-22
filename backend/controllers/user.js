@@ -92,7 +92,6 @@ exports.userProfil = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send('ID unknown  :' + req.params.id);
   }
-
   User.findById(req.params.id, (err, docs) => {
     if (!err) {
       res.send({ message: "user's profil access granted ", docs });
@@ -202,9 +201,9 @@ exports.updateUser = (req, res, next) => {
                 },
                 (err, posts) => {
                   if (!err) {
-                    console.log({ message: 'sucéés update many', posts });
+                    console.log({ message: 'Posts update OK ' });
                   }
-                  if (err) console.log({ message: 'echec update many', err });
+                  if (err) console.log({ message: 'Posts update Failed' });
                 }
               );
               return res.status(200).json(docs);

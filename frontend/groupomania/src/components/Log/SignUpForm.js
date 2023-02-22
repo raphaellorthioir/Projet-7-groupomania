@@ -82,7 +82,13 @@ const SignUpForm = (props) => {
           <div>
             <label htmlFor="email">Email</label>
             <br />
-            <input type="email" name="email" id="email" ref={email} />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              ref={email}
+              placeholder="email"
+            />
           </div>
           {errorEmail && <div className=" error error-text"> {errorEmail}</div>}
           <br />
@@ -94,6 +100,7 @@ const SignUpForm = (props) => {
               name="password"
               id="password"
               ref={password}
+              placeholder="Mot de passe"
             />
           </div>
           {errorsPsw && (
@@ -120,7 +127,6 @@ const SignUpForm = (props) => {
           )}
           <br />
           <br />
-          <br />
           <div style={{ margin: 'auto', width: 'fit-content' }}>
             <input
               type="submit"
@@ -128,6 +134,7 @@ const SignUpForm = (props) => {
               onSubmit={handleRegister}
             />
           </div>
+          <br />
         </div>
       </div>
     </form>

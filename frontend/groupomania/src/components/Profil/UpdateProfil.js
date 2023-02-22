@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { UserContext } from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const UpdateProfil = (props) => {
   const user = useContext(UserContext);
@@ -14,6 +15,7 @@ const UpdateProfil = (props) => {
     password: '',
   });
 
+  const navigate = useNavigate();
   const showPassword = () => {
     let result = formPassword.current.elements.password.type;
     if (result === 'text') {
@@ -54,6 +56,14 @@ const UpdateProfil = (props) => {
         props.setProfil(res.data);
       })
       .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401) {
+            navigate('/error-auth-page');
+          }
+          if (err.response.status === 400) {
+            navigate('/error-page');
+          }
+        }
         if (err.response.data.errors.email.kind === 'unique') {
           setEmailErrors('Cette email est utilisé par un autre utilisateur');
         }
@@ -78,9 +88,15 @@ const UpdateProfil = (props) => {
           setSuccess(true);
         })
         .catch((err) => {
-          setPasswordErrors(
-            'Votre mot de passe ne respecte pas les conditions ci dessus'
-          );
+          console.log(err);
+          if (err.response.data.globalMessage) {
+            setPasswordErrors(
+              'Votre mot de passe ne respecte pas les conditions ci dessus'
+            );
+          }
+          if (err.response.status === 401) {
+            navigate('/error-auth-page');
+          }
         });
     } else setPasswordErrors('Les mots de passe ne correspondent pas');
   };

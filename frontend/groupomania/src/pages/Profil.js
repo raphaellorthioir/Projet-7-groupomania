@@ -28,8 +28,12 @@ const Profil = () => {
           setProfilImage(res.data.docs.profilPicture);
         })
         .catch((err) => {
-          console.log(err);
-          navigate('/logout');
+          if (err.response.status === 401) {
+            navigate('/error-auth-page');
+          }
+          if (err.response.status === 400) {
+            navigate('error-page');
+          }
         });
     };
     fetch();
@@ -46,11 +50,17 @@ const Profil = () => {
       )
       .then((res) => {
         console.log(res);
+        setProfilImage(res.data.profilPicture);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response.status === 401) {
+          navigate('/error-auth-page');
+        }
+        if (err.response.status === 400) {
+          navigate('error-page');
+        }
+      });
   };
-
-  // Date
 
   const options = {
     year: 'numeric',
@@ -63,9 +73,6 @@ const Profil = () => {
   );
 
   const checkImage = () => {
-    const files = image.current.files[0];
-    const newImg = URL.createObjectURL(files);
-    setProfilImage(newImg);
     fetchProfilImage();
   };
 
@@ -92,7 +99,7 @@ const Profil = () => {
       .delete(`${process.env.REACT_APP_API_URL}api/auth/deleteUser/${param}`, {
         withCredentials: true,
       })
-      .then((res) => {
+      .then(() => {
         navigate('/logout');
       });
   };

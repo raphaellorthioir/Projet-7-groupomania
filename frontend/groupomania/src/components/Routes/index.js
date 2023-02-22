@@ -9,10 +9,11 @@ import {
 
 import Home from '../../pages/Home';
 import Profil from '../../pages/Profil';
-import ErrorPage from '../../pages/ErrorPage';
+import ErrorAuthPage from '../../pages/ErrorAuthPage';
 import SignupLoginPage from '../../pages/SignupLoginPage';
 import Navbar from '../Navbar';
 import LougoutPage from '../../pages/LougoutPage';
+import ErrorPage from '../../pages/ErrorPage';
 
 const index = (props) => {
   return (
@@ -30,7 +31,14 @@ const index = (props) => {
           path="/logout"
           element={<LougoutPage unlog={props.unlog} exit={props.exit} />}
         ></Route>
-        <Route path="/error-page" element={<ErrorPage />} />
+        <Route
+          path="/error-auth-page"
+          element={<ErrorAuthPage unlog={props.unlog} exit={props.exit} />}
+        />
+        <Route
+          path="/error-page"
+          element={<ErrorPage unlog={props.unlog} exit={props.exit} />}
+        ></Route>
         <Route path="/redirect" element={<Navigate to="/error-page" />} />
       </Routes>
     </Router>

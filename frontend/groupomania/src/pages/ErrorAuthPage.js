@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ErrorPage = (props) => {
+const ErrorAuthPage = (props) => {
   const navigate = useNavigate();
 
   const logout = () => {
@@ -12,13 +12,13 @@ const ErrorPage = (props) => {
     props.unlog();
     setTimeout(logout, 5000);
   }, []);
+
   return (
-    <div>
-      <h1>Erreur 400 : Un problème est survenu </h1>
-      <br />
-      <p>Retour à l'acceuil ... </p>
+    <div className="flex cl ac-center ai-center">
+      <h1>Erreur 401 : Erreur d'authentification</h1>
+      <p> Retour à la page de connexion ...</p>
     </div>
   );
 };
 
-export default ErrorPage;
+export default ErrorAuthPage;

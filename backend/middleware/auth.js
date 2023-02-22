@@ -32,14 +32,13 @@ module.exports.checkUser = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.SECRET_TOKEN, (err, decodedToken) => {
       if (err) {
-        console.log('cookie non trouvé');
         res.clearCookie('jwt', '', { maxAge: 1 });
-        res.send(' Decode Token error ');
+        res.status(401).json(err);
         next();
       } else {
         UserModel.findById(decodedToken.userId, (err, user) => {
           if (err) {
-            res.status(401).json(err);
+            res.status(400).json(err);
           } else {
             req.auth = {
               userId: user.id,
@@ -52,8 +51,8 @@ module.exports.checkUser = (req, res, next) => {
       }
     });
   } else {
-    res.locals.user = null;
-    next();
+    res.clearCookie('jwt','',{maxAge:1})
+    res.status(401).json('unAuthorized request');
   }
 };
 
@@ -68,8 +67,7 @@ module.exports.requireAuth = (req, res, next) => {
           if (err) {
             res.status(401).json(err);
           } else {
-            res.status(200).json(user)
-           
+            res.status(200).json(user);
           }
         });
       }
