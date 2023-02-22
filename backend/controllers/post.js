@@ -183,6 +183,8 @@ exports.likePost = (req, res, next) => {
         })
         .catch((error) => res.status(400).json({ error }));
     }
+  }).catch((err)=>{
+    res.status(500).json(err)
   });
 };
 
@@ -216,10 +218,10 @@ exports.commentPost = (req, res, next) => {
             return b.timestamp - a.timestamp;
           });
           if (!err) return res.status(200).json(post.comments);
-          else if (err) return res.status(400).json(err);
+          else if (err) return res.status(500).json(err);
         }
       );
-    }
+    } else res.status(401).json(err)
   });
 };
 

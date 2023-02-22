@@ -32,7 +32,12 @@ const CreateComment = (props) => {
           props.updateComments(res.data);
         })
         .catch((err) => {
-          navigate('/logout');
+          if (err.response.status === 401) {
+            navigate('/error-auth-page');
+          }
+          if (err.response.status === 500) {
+            navigate('/error-page');
+          }
         });
     }
   };

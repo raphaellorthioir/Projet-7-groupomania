@@ -21,7 +21,7 @@ const SignInForm = (props) => {
         password: focusedPsw,
       },
     })
-      .then((res) => {
+      .then(() => {
         props.logging();
       })
       .catch((res) => {

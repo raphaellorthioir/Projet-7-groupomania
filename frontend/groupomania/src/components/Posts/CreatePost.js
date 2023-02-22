@@ -40,12 +40,13 @@ const CreatePost = (post) => {
           setFile(null);
         })
         .catch((err) => {
-          if (err) {
-            if (err.response.data.error)
-              setError('Votre envoi ne doit pas dépasser les 250 caractères');
-            else {
-              navigate('/logout');
-            }
+          if (err.response.status === 400)
+            setError('Votre envoi ne doit pas dépasser les 250 caractères');
+          if (err.response.status === 401) {
+            navigate('/error-auth-page');
+          }
+          if (err.response.status === 500) {
+            navigate('/error-page');
           }
         });
     } else {
@@ -70,20 +71,23 @@ const CreatePost = (post) => {
   const closeModal = () => {
     post.closeModal();
   };
+  const clear = () => {
+    setError(null);
+  };
   return (
     <article
       ref={createPost}
       id="createPost"
       className="newPostContainer flex cl"
     >
-      <div className="flex row sb" style={{position:'relative'}}>
+      <div className="flex row sb" style={{ position: 'relative' }}>
         <div className="flex row fs ai-center">
           <img
             className="profilPicture"
             src={post.getUser.profilPicture}
             alt={post.getUser.pseudo}
           />
-          <div className='pseudo'>{post.getUser.pseudo}</div>
+          <div className="pseudo">{post.getUser.pseudo}</div>
           {windowSize.current[0] <= 480 && (
             <span onClick={closeModal} className="stop-create">
               {' '}
@@ -91,7 +95,7 @@ const CreatePost = (post) => {
             </span>
           )}
         </div>
-        <div onClick={()=>post.unSwitchCreatePost()} className='stop-create'>
+        <div onClick={() => post.unSwitchCreatePost()} className="stop-create">
           <i class="fa-solid fa-xmark"></i>
         </div>
       </div>

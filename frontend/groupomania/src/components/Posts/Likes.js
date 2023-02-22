@@ -24,8 +24,13 @@ const Likes = (props) => {
         setLike(res.data.usersLikes);
         setDisLike(res.data.usersDislikes);
       })
-      .catch(() => {
-        navigate('/logout');
+      .catch((err) => {
+        if (err.response.status === 401) {
+          navigate('/error-auth-page');
+        }
+        if (err.response.status === 500) {
+          navigate('/error-page');
+        }
       });
   };
 

@@ -41,13 +41,11 @@ const EditPost = (props) => {
           props.stopEdit();
         })
         .catch((err) => {
-          if (err) {
-            if (err.response.data.error)
-              setError('Votre envoi ne doit pas dépasser les 250 caractères');
-            else {
-              navigate('/logout');
-            }
-          }
+          if (err.response.status === 400)
+            setError('Votre post ne doit pas dépasser les 250 caractères');
+          if (err.response.status === 401) {
+            navigate('/error-auth-page');
+          } else navigate('/error-page');
         });
     } else {
       setError('*Veuillez écrire un texte ou choisir une image ');
