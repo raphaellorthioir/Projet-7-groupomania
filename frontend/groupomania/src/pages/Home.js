@@ -1,18 +1,13 @@
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-  forwardRef,
-} from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../components/AppContext';
 import Post from '../components/Posts/Post';
 import axios from 'axios';
 import CreatePost from '../components/Posts/CreatePost';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import ReactModal from 'react-modal';
 const Home = () => {
   const user = useContext(UserContext);
+  const navigate = useNavigate();
   const [posts, setPosts] = useState();
   const [getUser, setGetUser] = useState();
   const [wantCreatePost, setWantCreatePost] = useState(false);
@@ -33,12 +28,11 @@ const Home = () => {
         setNumberOfPosts(numberOfPosts + 5);
         setPosts(data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        navigate('/error-page');
       });
   };
   const updatePosts = () => {
-    if (windowSize.current[0] <= 480) window.scroll(0, 2);
     fetchPosts();
     setIsOpen(false);
   };
@@ -50,11 +44,17 @@ const Home = () => {
       })
       .then((res) => {
         setGetUser(res.data.docs);
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          navigate('error-auth-page');
+        }
+        if (err.response.status === 500) {
+          navigate('/error-page');
+        }
       });
   };
   const loadMore = () => {
-    // window.innerHeight = document.documentElement.scrollTop + 1 : partie qui corrend à l'endroit (barre de défilement) où on se trouve dans le document , le plus 1(pixel) permet d'activer la condition
-    //document.scrollingElement.scrollHeight : partie qui calcule la hauteur de tout le document
     if (
       window.innerHeight + document.documentElement.scrollTop + 1 >
       document.scrollingElement.scrollHeight
@@ -74,6 +74,7 @@ const Home = () => {
     window.location.reload();
     window.scroll(0, 0);
   };
+  
   useEffect(() => {
     if (user) fetchUser();
   }, []);

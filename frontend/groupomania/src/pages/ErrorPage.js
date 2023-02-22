@@ -14,7 +14,9 @@ const ErrorPage = (props) => {
   }, []);
   return (
     <div>
-      <h1 style={{ color: 'red' }}>Erreur 400 : Un problème est survenu </h1>
+      <h1 style={{ color: 'red' }}>
+        Erreur 500 : Un problème est survenu sur le serveur
+      </h1>
       <br />
       <p>Retour à l'acceuil ... </p>
     </div>

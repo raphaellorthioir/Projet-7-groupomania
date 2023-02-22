@@ -104,7 +104,7 @@ exports.getAllPosts = (req, res, next) => {
     .sort({ updatedAt: -1 })
     .exec()
     .then((posts) => res.status(200).json(posts))
-    .catch((error) => res.status(400).json({ error }));
+    .catch((error) => res.status(500).json({ error }));
 };
 
 exports.deletePost = (req, res, next) => {
