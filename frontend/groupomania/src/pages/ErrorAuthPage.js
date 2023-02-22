@@ -15,7 +15,7 @@ const ErrorAuthPage = (props) => {
 
   return (
     <div className="flex cl ac-center ai-center">
-      <h1>Erreur 401 : Erreur d'authentification</h1>
+      <h1 style={{ color: 'red' }}>Erreur 401 : Erreur d'authentification</h1>
       <p> Retour à la page de connexion ...</p>
     </div>
   );

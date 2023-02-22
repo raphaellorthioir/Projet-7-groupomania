@@ -8,6 +8,7 @@ const UpdateProfil = (props) => {
   const user = useContext(UserContext);
   const formEdit = useRef();
   const formPassword = useRef();
+  const [pseudoErrors, setPseudoErrors] = useState();
   const [emailErrors, setEmailErrors] = useState();
   const [passwordErrors, setPasswordErrors] = useState();
   const [success, setSuccess] = useState({
@@ -51,21 +52,25 @@ const UpdateProfil = (props) => {
       )
       .then((res) => {
         setSuccess({
-          profil: 'Votre profil a bien été modifié',
+          profil: 'Profil modifié',
         });
         props.setProfil(res.data);
       })
       .catch((err) => {
+        console.log(err);
         if (err.response) {
           if (err.response.status === 401) {
             navigate('/error-auth-page');
           }
-          if (err.response.status === 400) {
-            navigate('/error-page');
+          if (err.response.status === 500 && err.response.data.errors.pseudo) {
+            setPseudoErrors('Ce pseudo est déjà pris');
           }
-        }
-        if (err.response.data.errors.email.kind === 'unique') {
-          setEmailErrors('Cette email est utilisé par un autre utilisateur');
+          if (
+            err.response.status === 500 &&
+            err.response.data.errors.email.kind
+          ) {
+            setEmailErrors('Cet email est lié à un compte existant.');
+          }
         }
       });
   };
@@ -89,7 +94,7 @@ const UpdateProfil = (props) => {
         })
         .catch((err) => {
           console.log(err);
-          if (err.response.data.globalMessage) {
+          if (err.response.status === 400) {
             setPasswordErrors(
               'Votre mot de passe ne respecte pas les conditions ci dessus'
             );
@@ -99,6 +104,18 @@ const UpdateProfil = (props) => {
           }
         });
     } else setPasswordErrors('Les mots de passe ne correspondent pas');
+  };
+
+  const clear = () => {
+    if (pseudoErrors) {
+      setPseudoErrors(null);
+    }
+    if (emailErrors) {
+      setEmailErrors(null);
+    }
+    if (passwordErrors) {
+      setPasswordErrors(null);
+    }
   };
   return (
     <div className="edit-form">
@@ -140,7 +157,9 @@ const UpdateProfil = (props) => {
             id="pseudo"
             maxLength={20}
             placeholder="Nouveau Pseudo"
+            onChange={clear}
           />
+          {pseudoErrors && <p className="error"> {pseudoErrors}</p>}
           <span className="separate-line"></span>
           <div>
             <label htmlFor="email">
@@ -149,32 +168,38 @@ const UpdateProfil = (props) => {
             </label>
             <br />
             <br />
-            <div className="flex row ai-center">
+            <input
+              defaultValue={''}
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+              onChange={clear}
+            />
+            {emailErrors && (
+              <p style={{ marginLeft: '10px' }} className="error">
+                {emailErrors}
+              </p>
+            )}
+          </div>
+          <br />
+          <div className="flex row sb ai-center">
+            <div>
+              <label htmlFor="submit"></label>
               <input
-                defaultValue={''}
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Email"
-              />
-              {emailErrors && (
-                <p style={{ marginLeft: '10px' }} className="error">
-                  {emailErrors}
+                id="submit"
+                name="submit"
+                type="submit"
+                value={'Enregistrer'}
+              ></input>
+            </div>
+            <div>
+              {success && (
+                <p style={{ color: 'green', marginRight: '20px' }}>
+                  {success.profil}
                 </p>
               )}
             </div>
-          </div>
-          <br />
-          <div className="flex row  ai-center">
-            <label htmlFor="submit"></label>
-            <input
-              id="submit"
-              name="submit"
-              type="submit"
-              className="validate"
-              value={'Enregistrer'}
-            ></input>
-            {success && <p style={{ color: 'green' }}>{success.profil}</p>}
           </div>
         </form>
       </div>
@@ -200,6 +225,7 @@ const UpdateProfil = (props) => {
                 name="password"
                 id="password"
                 placeholder="Mot de passe"
+                onChange={clear}
               />
               <div onClick={showPassword} className="view">
                 <i class="fa-solid fa-eye"></i>
@@ -216,6 +242,7 @@ const UpdateProfil = (props) => {
                   name="confirm-password"
                   id="confirm-password"
                   placeholder="Confirmer mot de passe"
+                  onChange={clear}
                 />
               </div>
               {passwordErrors && <p className="error">{passwordErrors}</p>}

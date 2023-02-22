@@ -31,7 +31,7 @@ const Profil = () => {
           if (err.response.status === 401) {
             navigate('/error-auth-page');
           }
-          if (err.response.status === 400) {
+          if (err.response.status === 500) {
             navigate('error-page');
           }
         });
@@ -56,7 +56,7 @@ const Profil = () => {
         if (err.response.status === 401) {
           navigate('/error-auth-page');
         }
-        if (err.response.status === 400) {
+        if (err.response.status === 500) {
           navigate('error-page');
         }
       });

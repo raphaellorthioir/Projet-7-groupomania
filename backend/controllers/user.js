@@ -97,7 +97,7 @@ exports.userProfil = (req, res, next) => {
       res.send({ message: "user's profil access granted ", docs });
     } else {
       res.clearCookie('jwt');
-      res.status(400).json(err);
+      res.status(500).json(err);
     }
   }).select('  -password -email -isAdmin');
 };
