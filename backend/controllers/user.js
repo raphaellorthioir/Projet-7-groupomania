@@ -63,8 +63,8 @@ exports.login = (req, res, next) => {
               { expiresIn: '24h' }
             );
           }
+
           res.cookie('jwt', token, { httpOnly: true });
-          res.send('Loging ok');
         })
         .catch((err) => res.status(500).json('Wrong password', err));
     })
@@ -112,7 +112,7 @@ exports.updateUser = (req, res, next) => {
       const pathImg = docs.profilPicture.substring(44);
       if (req.file) {
         if (pathImg === 'random-user.jpg') {
-          console.log('random-user.png ok');
+          console.log('random-user.jpg ok');
         } else {
           fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {
             if (err) console.log('error delete img profil from local folder');
@@ -168,10 +168,10 @@ exports.updateUser = (req, res, next) => {
               );
               return res.status(200).json(docs);
             }
-            if (err){
-              res.clearCookie("jwt")
+            if (err) {
+              res.clearCookie('jwt');
               return res.status(404).send(err);
-            } 
+            }
           }
         ).select('-password -email -_id -isAdmin  -__v ');
       } else {

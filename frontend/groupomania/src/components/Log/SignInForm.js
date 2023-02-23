@@ -24,9 +24,10 @@ const SignInForm = (props) => {
       .then(() => {
         props.logging();
       })
-      .catch((res) => {
-        setEmailError(res.response.data.emailError);
-        setPasswordError(res.response.data.passwordError);
+      .catch((err) => {
+        console.log(err);
+        setEmailError(err.response.data.emailError);
+        setPasswordError(err.response.data.passwordError);
       });
   };
   const showPassword = () => {
@@ -62,7 +63,7 @@ const SignInForm = (props) => {
           <div>
             <label htmlFor="password">Mot de passe</label>
             <br />
-            <div className='password'>
+            <div className="password">
               <input
                 type="password"
                 name="password"
