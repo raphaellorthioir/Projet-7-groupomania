@@ -51,15 +51,15 @@ width: 90%;
             .password{
                 position: relative;
                 width: fit-content;
-                .view{
-                    position: absolute;
-                    right: 0;
-                    bottom: 0;
-                    top: 10px;
-                    margin-right: 5px;
-                    cursor: pointer;
-                }
             }
+            .view{
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                top: 10px;
+                margin-right: 5px;
+                cursor: pointer;
+              }
         }
     }
 

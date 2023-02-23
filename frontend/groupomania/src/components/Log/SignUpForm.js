@@ -57,6 +57,12 @@ const SignUpForm = (props) => {
     }
   };
 
+  const showPassword = () => {
+    let result = password.current.type;
+    if (result === 'text') {
+      password.current.type = 'password';
+    } else password.current.type = 'text';
+  };
   return (
     <form onSubmit={handleRegister}>
       <div className=" flex row ac-center">
@@ -95,13 +101,18 @@ const SignUpForm = (props) => {
           <div>
             <label htmlFor="password">Mot de passe</label>
             <br />
-            <input
-              type="password"
-              name="password"
-              id="password"
-              ref={password}
-              placeholder="Mot de passe"
-            />
+            <div className="password">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                ref={password}
+                placeholder="Mot de passe"
+              />
+              <div onClick={showPassword} className="view">
+                <i class="fa-solid fa-eye"></i>
+              </div>
+            </div>
           </div>
           {errorsPsw && (
             <ul className=" error error-text">
@@ -111,15 +122,18 @@ const SignUpForm = (props) => {
             </ul>
           )}
           <br />
-          <label htmlFor="password-conf">Confirmer mot de passe</label>
-          <br />
-          <input
-            type="password"
-            name="password-conf"
-            id="password-conf"
-            placeholder="Confirmer"
-            ref={confirmPsw}
-          />
+          <div>
+            <label htmlFor="password-conf">Confirmer mot de passe</label>
+            <br />
+            <input
+              type="password"
+              name="password-conf"
+              id="password-conf"
+              placeholder="Confirmer"
+              ref={confirmPsw}
+            />
+          </div>
+
           {errorPswMatch && (
             <div className="error error-text">
               Les mot de passe ne correspondent pas

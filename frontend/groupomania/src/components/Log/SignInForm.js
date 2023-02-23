@@ -29,7 +29,12 @@ const SignInForm = (props) => {
         setPasswordError(res.response.data.passwordError);
       });
   };
-
+  const showPassword = () => {
+    let result = password.current.type;
+    if (result === 'text') {
+      password.current.type = 'password';
+    } else password.current.type = 'text';
+  };
   return (
     <form
       action=""
@@ -57,13 +62,18 @@ const SignInForm = (props) => {
           <div>
             <label htmlFor="password">Mot de passe</label>
             <br />
-            <input
-              type="password"
-              name="password"
-              id="password"
-              ref={password}
-              placeholder="Mot de passe"
-            />
+            <div className='password'>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                ref={password}
+                placeholder="Mot de passe"
+              />
+              <div onClick={showPassword} className="view">
+                <i class="fa-solid fa-eye"></i>
+              </div>
+            </div>
           </div>
           <br />
           {passwordError && <div className=" error">{passwordError}</div>}
