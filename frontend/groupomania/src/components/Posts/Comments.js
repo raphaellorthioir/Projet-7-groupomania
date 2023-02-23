@@ -30,7 +30,7 @@ const Comments = (props) => {
     <div>
       <div className="flex cl space-around comments-container">
         <div className="flex row sb ac-center ai-center">
-          <NavLink className="pseudo-link flex row ai-center ac-center pseudo-container">
+          <NavLink className=" flex row ai-center ac-center pseudo-container">
             <img
               className="profilPicture"
               src={`${comment.profilPicture}`}

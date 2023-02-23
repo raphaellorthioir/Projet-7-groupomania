@@ -153,7 +153,7 @@ const CreatePost = (post) => {
             name="file"
             id="file"
             title=""
-            accept="image/jpeg, image/png image/jpg"
+            accept="image/jpeg image/png image/jpg image/gif"
             style={{ color: 'transparent' }}
             onChange={checkImage}
             className="imgInput"

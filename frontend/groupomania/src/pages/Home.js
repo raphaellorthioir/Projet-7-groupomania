@@ -49,7 +49,7 @@ const Home = () => {
         if (err.response.status === 401) {
           navigate('error-auth-page');
         }
-        if (err.response.status === 500) {
+        if (err.response.status === 404) {
           navigate('/error-page');
         }
       });

@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from 'react';
 import Likes from './Likes';
 import { UserContext } from '../AppContext';
-import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import EditPost from './EditPost';
 import axios from 'axios';
 import Comments from './Comments';
@@ -186,7 +186,7 @@ const Post = (props) => {
                       src={post.profilPicture}
                       alt="Profil"
                     />
-                    <div className="pseudo">{post.pseudo}</div>
+                    <div>{post.pseudo}</div>
                   </div>
                 </div>
               </NavLink>

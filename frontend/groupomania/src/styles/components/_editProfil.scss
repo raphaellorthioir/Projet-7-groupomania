@@ -2,8 +2,13 @@
 .edit-form{
 margin: auto auto;
 width: 90%;
+@media screen and (max-width:1024px) {
+    width: 100%;
+}
     #come-back{
         font-size: 1.5em;
+        padding-left: 10px;
+        padding-top: 10px;
         cursor: pointer;
     }
     .form-container{
@@ -15,10 +20,14 @@ width: 90%;
             text-align: center;
         }
         .textarea-box{
-            width: 90%;
+            width: 95%;
             margin: auto;
+            @media screen and (max-width:1024px) {
+                width: 100%;
+                margin: 0;
+            }
             #bio{
-                width: 90%;
+                width: 95%;
                 border-radius: 5px;
                 margin-left: 0;
                 resize: none;
@@ -32,6 +41,7 @@ width: 90%;
                 &:focus{
                     background-color: white;
                 }
+                
              }
             }
         .separate-line{

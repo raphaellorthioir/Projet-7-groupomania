@@ -116,73 +116,74 @@ const Profil = () => {
               />
             ) : (
               <>
-                <div className="flex cl space-around ">
-                  <div className="flex row sb ai-center relative">
-                    <div
-                      style={{ marginTop: '15px' }}
-                      className="flex row space-around ai-center"
-                    >
-                      <img
-                        className="profilPicture"
-                        src={profilImage}
-                        alt={` Profil de `}
-                        style={{ width: '70px', height: '70px' }}
-                      />
-                      <h1> {userProfil.pseudo} </h1>
-                      {user?.userId === userProfil._id && (
-                        <>
-                          <label className="photo-change " htmlFor="file">
-                            <div className="camera-icon">
-                              <i className="fa-solid fa-camera"></i>
-                            </div>
-                          </label>
-                          <input
-                            ref={image}
-                            onChange={checkImage}
-                            id="file"
-                            type="file"
-                            className="profil-picture-btn"
-                            accept="image/.jpg imgae/.jpeg image/.png"
-                          ></input>
-                        </>
-                      )}
-                    </div>
-                    {(user?.userId === userProfil._id || user?.isAdmin) && (
+                <div style={{ padding: '10px' }}>
+                  <div className="flex cl space-around ">
+                    <div className="flex row sb ai-center relative">
                       <div
-                        onMouseLeave={hideList}
-                        className="settings-icon flex cl ai-f-end"
+                        className="flex row space-around ai-center"
                       >
-                        <div>
-                          <i
-                            onClick={showList}
-                            className="fa-solid fa-gear"
-                          ></i>
-                          <div ref={list} className="list-box">
-                            <ul onMouseLeave={hideList}>
-                              {user?.userId === userProfil._id && (
-                                <li
-                                  className="set-profil"
-                                  onClick={() => setIsSettingProfil(true)}
-                                >
-                                  Modifier Profil
-                                </li>
-                              )}
-                              {(user?.userId === userProfil._id ||
-                                user.isAdmin) && (
-                                <li onClick={openModal} id="delete-profil">
-                                  Supprimer mon compte
-                                </li>
-                              )}
-                            </ul>
+                        <img
+                          className="profilPicture"
+                          src={profilImage}
+                          alt={` Profil de `}
+                          style={{ width: '70px', height: '70px' }}
+                        />
+                        <h1> {userProfil.pseudo} </h1>
+                        {user?.userId === userProfil._id && (
+                          <>
+                            <label className="photo-change " htmlFor="file">
+                              <div className="camera-icon">
+                                <i className="fa-solid fa-camera"></i>
+                              </div>
+                            </label>
+                            <input
+                              ref={image}
+                              onChange={checkImage}
+                              id="file"
+                              type="file"
+                              className="profil-picture-btn"
+                              accept="image/.jpg imgae/.jpeg image/.png"
+                            ></input>
+                          </>
+                        )}
+                      </div>
+                      {(user?.userId === userProfil._id || user?.isAdmin) && (
+                        <div
+                          onMouseLeave={hideList}
+                          className="settings-icon flex cl ai-f-end"
+                        >
+                          <div>
+                            <i
+                              onClick={showList}
+                              className="fa-solid fa-gear"
+                            ></i>
+                            <div ref={list} className="list-box">
+                              <ul onMouseLeave={hideList}>
+                                {user?.userId === userProfil._id && (
+                                  <li
+                                    className="set-profil"
+                                    onClick={() => setIsSettingProfil(true)}
+                                  >
+                                    Modifier Profil
+                                  </li>
+                                )}
+                                {(user?.userId === userProfil._id ||
+                                  user.isAdmin) && (
+                                  <li onClick={openModal} id="delete-profil">
+                                    Supprimer mon compte
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
+                    <time>Inscrit depuis le {createDate}</time>
                   </div>
-                  <time>Inscrit depuis le {createDate}</time>
+                  <h2>Biographie</h2>
+                  <p style={{ whiteSpace: 'pre' }}>{userProfil.bio}</p>
                 </div>
-                <h2>Biographie</h2>
-                <p style={{ whiteSpace: 'pre' }}>{userProfil.bio}</p>
               </>
             )}
           </section>

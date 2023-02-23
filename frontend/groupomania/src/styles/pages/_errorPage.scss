@@ -1,0 +1,14 @@
+.error-page{
+    height: 100%;
+    background-color: white;
+    @media screen and(max-width:760px) {
+        h1{
+            font-size: 1.4em;
+        }
+    }
+    @media screen and(max-width:540px) {
+        h1{
+            font-size: 1.2em;
+        }
+    }
+}

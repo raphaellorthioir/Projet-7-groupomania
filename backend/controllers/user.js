@@ -97,7 +97,7 @@ exports.userProfil = (req, res, next) => {
       res.send({ message: "user's profil access granted ", docs });
     } else {
       res.clearCookie('jwt');
-      res.status(500).json(err);
+      res.status(404).json(err);
     }
   }).select('  -password -email -isAdmin');
 };
@@ -157,14 +157,21 @@ exports.updateUser = (req, res, next) => {
                   timestamps: false,
                 },
                 (err, posts) => {
-                  if (!err)
+                  if (!err) {
                     console.log({ message: 'sucéés update many', posts });
-                  console.log({ message: 'echec update many', err });
+                    console.log({ message: 'echec update many', err });
+                  } else {
+                    res.clearCookie('jwt');
+                    res.status(404).json(err);
+                  }
                 }
               );
               return res.status(200).json(docs);
             }
-            if (err) return res.status(500).send({ message: 'erreur' });
+            if (err){
+              res.clearCookie("jwt")
+              return res.status(404).send(err);
+            } 
           }
         ).select('-password -email -_id -isAdmin  -__v ');
       } else {

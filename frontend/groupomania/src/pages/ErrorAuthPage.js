@@ -10,13 +10,18 @@ const ErrorAuthPage = (props) => {
   };
   useEffect(() => {
     props.unlog();
-    setTimeout(logout, 5000);
+    setTimeout(logout, 3000);
   }, []);
 
   return (
-    <div className="flex cl ac-center ai-center">
-      <h1 style={{ color: 'red' }}>Erreur 401 : Erreur d'authentification</h1>
-      <p> Retour à la page de connexion ...</p>
+    <div className="error-page">
+      <div
+        style={{ position: 'relative', top: '25%' }}
+        className="flex cl ac-center ai-center"
+      >
+        <h1 style={{ color: 'red' }}>Erreur 401 : Erreur d'authentification</h1>
+        <p style={{ fontSize: '1.2em' }}> Retour à la page de connexion ...</p>
+      </div>
     </div>
   );
 };

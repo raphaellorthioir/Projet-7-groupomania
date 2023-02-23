@@ -84,19 +84,20 @@ li{
 .cl{
   flex-direction: column;
 }
-
-
 .txt-al-j{
   text-align: justify;
 }
-
-
 #passwordErrorsList li{
   cursor:auto ;
   transform: none;
 }
-
-.pseudo{font-size: 1.5em;}
+.pseudo-container{
+  margin-top: 8px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 1.2em;
+  text-decoration: none;
+}
 
 .overlay{
   position: fixed;
@@ -200,24 +201,19 @@ li{
   background-color: rgba(255, 255, 255, 0.529);
 }
 
-.pseudo-container{
-  margin-top: 8px;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
 .create-post-btn{
   position: fixed;
   display: block;
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
   border: 0;
   text-align: center;
   padding: 0;
   color: #050100;
-  bottom: 70px;
-  right: 2%;
+  bottom: 10px;
+  right: 55px;
+  margin-right: 5px;
   box-shadow:  rgba(0, 0, 0, 0.3) 1px 2px 1px 1.5px;
   background-color: #0077ff; 
  
@@ -233,15 +229,15 @@ li{
 #refresh{
   position: fixed;
   display: block;
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
   border: 0;
   text-align: center;
   padding: 0;
   color: #050100;
   bottom: 10px;
-  right: 2%;
+  right: 5px;
   &:hover{
     background-color: #0077ff;
     color: rgb(255, 255, 255);
@@ -260,6 +256,7 @@ li{
   position: absolute;
   border-radius: 50%;
   background-color: #0077ff;
+  color: #050100;
   z-index: 1;
   top: 8%;
   left: 46%;

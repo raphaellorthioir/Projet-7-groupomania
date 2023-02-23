@@ -127,7 +127,7 @@ const UpdateProfil = (props) => {
         <h1> Modifier votre profil</h1>
         <form ref={formEdit} onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="bio"> Biographie</label>
+            <label htmlFor="bio">Biographie</label>
             <br />
             <br />
             <div className="textarea-box">
@@ -193,6 +193,8 @@ const UpdateProfil = (props) => {
                 value={'Enregistrer'}
               ></input>
             </div>
+            <br />
+            <br />
             <div>
               {success && (
                 <p style={{ color: 'green', marginRight: '20px' }}>
@@ -257,8 +259,6 @@ const UpdateProfil = (props) => {
                 ></input>
               </div>
             </div>
-
-            <br />
           </div>
         </form>
       </div>
