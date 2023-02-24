@@ -16,10 +16,10 @@ npm i
     #Votre lien vers votre base de données MongoDb
     MY_MONGO_DB_LINK = "Lien MongoDB"
 
-    # L'adresse URL d'origine côté qui sera autorisée pour les requêtes (celle du frontend) , p
+    # L'adresse URL d'origine côté qui sera autorisée pour les requêtes (celle du frontend) 
     API_URL= 'http://localhost:3001'
 
-    # Doit contenir une chaîe de caractères afin de protéger votre API
+    # Doit contenir une chaîe de caractères afin de protéger l'API
     SECRET_TOKEN= " une chaîne de caractère secrète"
 
     #Le port que vous souhaitez utiliser pour écouter le serveur (3000 par défaut)
