@@ -25,16 +25,7 @@ npm i
     #Le port que vous souhaitez utiliser pour écouter le serveur (3000 par défaut)
     PORT =3000
    ```
-4. Dans le dossier frontend/groupomania, créez in fichier .env et remplissez le avec les variables suivantes :
 
-    ```python
-
-        # La route racine de l'API (backend)
-        REACT_APP_API_URL=http://localhost:3000/
-
-        # Le port que vous souhaitez utiliser dans votre navigateur ( 3001 par défaut, si vous le changer , pensez à modifier le port dans"API_URL" dans le fichier .env dans le backend )
-        PORT= 3001
-    ```
 
 ## Démarrage 
 
