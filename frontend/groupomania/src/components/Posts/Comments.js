@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from '../AppContext';
+import axios from 'axios';
 
 const Comments = (props) => {
   const user = useContext(UserContext);
+  const navigate = useNavigate();
+  const [oneUser, setUser] = useState();
+  useEffect(() => {
+    const fetchUsers = async () => {
+      await axios
+        .get(
+          `${process.env.REACT_APP_API_URL}api/auth/${props.comment.userId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          setUser(res.data.docs);
+        })
+        .catch((err) => {
+          if (err.response.status === 404) navigate('/error-page');
+        });
+    };
+    fetchUsers();
+  }, []);
 
   const comment = props.comment;
-
   const date = comment.timestamp;
   const formatUpdateDate = (date) => {
     const options = {
@@ -24,6 +44,7 @@ const Comments = (props) => {
   const deleteComment = () => {
     props.deleteComment(comment._id);
   };
+
   return (
     // essai import create comments
 
@@ -31,11 +52,14 @@ const Comments = (props) => {
       <div className="flex cl space-around comments-container">
         <div className="flex row sb ac-center ai-center">
           <NavLink className=" flex row ai-center ac-center pseudo-container">
-            <img
-              className="profilPicture"
-              src={`${comment.profilPicture}`}
-              alt=""
-            />
+            {oneUser?._id === comment.userId && (
+              <img
+                className="profilPicture"
+                src={oneUser?.profilPicture}
+                alt=""
+              />
+            )}
+
             <div>{props.comment.pseudo}</div>
           </NavLink>
           {(user.userId === props.comment.userId || user.isAdmin) && (

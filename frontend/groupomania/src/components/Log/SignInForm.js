@@ -9,7 +9,6 @@ const SignInForm = (props) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     const focusedEmail = email.current.value;
     const focusedPsw = password.current.value;
     axios({
@@ -21,7 +20,7 @@ const SignInForm = (props) => {
         password: focusedPsw,
       },
     })
-      .then(() => {
+      .then((res) => {
         props.logging();
       })
       .catch((err) => {

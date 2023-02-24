@@ -63,8 +63,8 @@ exports.login = (req, res, next) => {
               { expiresIn: '24h' }
             );
           }
-
           res.cookie('jwt', token, { httpOnly: true });
+          res.status(200).json(user);
         })
         .catch((err) => res.status(500).json('Wrong password', err));
     })
@@ -102,7 +102,6 @@ exports.userProfil = (req, res, next) => {
   }).select('  -password -email -isAdmin');
 };
 
-//UPDATE USER PROFIL PAGE
 exports.updateUser = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
@@ -161,8 +160,8 @@ exports.updateUser = (req, res, next) => {
                     console.log({ message: 'sucéés update many', posts });
                     console.log({ message: 'echec update many', err });
                   } else {
-                    res.clearCookie('jwt');
                     res.status(404).json(err);
+                    res.clearCookie('jwt');
                   }
                 }
               );
