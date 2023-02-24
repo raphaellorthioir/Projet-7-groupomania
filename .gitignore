@@ -2,6 +2,7 @@
 
 # dependencies
 /backend/node_modules
+/backeend/uploads/client/images
 .env
 /.pnp
 .pnp.js

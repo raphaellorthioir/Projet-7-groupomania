@@ -32,10 +32,6 @@ const Home = () => {
         navigate('/error-page');
       });
   };
-  const updatePosts = () => {
-    fetchPosts();
-    setIsOpen(false);
-  };
 
   const fetchUser = async () => {
     await axios
@@ -69,21 +65,25 @@ const Home = () => {
       }, 1000);
     }
   };
-
-  const refresh = () => {
-    window.location.reload();
-    window.scroll(0, 0);
-  };
-  
   useEffect(() => {
-    if (user) fetchUser();
-  }, []);
-  useEffect(() => {
+    if (user && numberOfPosts === 0) {
+      fetchUser();
+    }
     fetchPosts();
     setLoadPosts(false);
     window.addEventListener('scroll', loadMore);
     return () => window.removeEventListener('scroll', loadMore);
   }, [loadPosts]);
+  const refresh = () => {
+    window.location.reload();
+    window.scroll(0, 5);
+  };
+
+  const updatePosts = () => {
+    fetchPosts();
+    setIsOpen(false);
+    window.scroll(0, 5);
+  };
 
   const createPostModal = () => {
     setIsOpen(true);

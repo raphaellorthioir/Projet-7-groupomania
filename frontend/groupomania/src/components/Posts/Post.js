@@ -124,10 +124,12 @@ const Post = (props) => {
         withCredentials: true,
       })
       .then((res) => {
+        console.log(res)
         props.updatePosts();
       })
-      .catch(() => {
-        navigate('/logout');
+      .catch((err) => {
+        console.log(err)
+        //navigate('/logout');
       });
   };
 

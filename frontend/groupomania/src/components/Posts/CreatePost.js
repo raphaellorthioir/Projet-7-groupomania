@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CreatePost = (post) => {
   const user = useContext(UserContext);
+  console.log(post);
   const navigate = useNavigate();
   const form = useRef();
   const title = useRef();
@@ -34,7 +35,10 @@ const CreatePost = (post) => {
         })
         .then(() => {
           post.updatePosts();
-          post.unSwitchCreatePost();
+          if (windowSize.current[0] >= 1024) {
+            post.unSwitchCreatePost();
+          }
+
           text.current.innerText = '';
           form.current.reset();
           setFile(null);
@@ -71,9 +75,7 @@ const CreatePost = (post) => {
   const closeModal = () => {
     post.closeModal();
   };
-  const clear = () => {
-    setError(null);
-  };
+
   return (
     <article
       ref={createPost}
@@ -81,9 +83,9 @@ const CreatePost = (post) => {
       className="newPostContainer flex cl"
     >
       <div className="flex row sb" style={{ position: 'relative' }}>
-        <div className="flex row fs ai-center">
+        <div className="flex row fs ai-center pseudo-container">
           <img
-            className="profilPicture"
+            className="  profilPicture"
             src={post.getUser.profilPicture}
             alt={post.getUser.pseudo}
           />
