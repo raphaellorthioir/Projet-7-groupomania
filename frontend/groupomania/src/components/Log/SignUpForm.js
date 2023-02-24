@@ -110,7 +110,7 @@ const SignUpForm = (props) => {
                 placeholder="Mot de passe"
               />
               <div onClick={showPassword} className="view">
-                <i class="fa-solid fa-eye"></i>
+                <i className="fa-solid fa-eye"></i>
               </div>
             </div>
           </div>

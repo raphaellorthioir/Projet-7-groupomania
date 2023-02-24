@@ -128,64 +128,56 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.likePost = (req, res, next) => {
-  Post.findOne({ _id: req.params.postId }).then((post) => {
-    if (req.body.like == 1) {
-      if (!post.usersLiked.includes(req.auth.userId)) {
-        post.usersLiked.push(req.auth.userId);
-        post.usersDisliked.splice(
-          post.usersDisliked.indexOf(req.auth.userId),
-          1
-        );
-      } else {
-        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
-      }
-
-      Post.updateOne({ _id: req.params.postId }, post, { timestamps: false })
-        .then(() => {
-          if (!post.usersLiked.includes(req.auth.userId)) {
-            return res.status(200).json({
-              usersLikes: post.usersLiked,
-              usersDislikes: post.usersDisliked,
-            });
-          } else {
-            return res.status(200).json({
-              usersLikes: post.usersLiked,
-              usersDislikes: post.usersDisliked,
-            });
-          }
-        })
-        .catch((error) => res.status(400).json({ error }));
-    }
-
-    if (req.body.like == -1) {
-      if (!post.usersDisliked.includes(req.auth.userId)) {
-        post.usersDisliked.push(req.auth.userId);
-        post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
-      } else {
-        post.usersDisliked.splice(
-          post.usersDisliked.indexOf(req.auth.userId),
-          1
-        );
-      }
-      Post.updateOne({ _id: req.params.postId }, post, { timestamps: false })
-        .then(() => {
+  Post.findOne({ _id: req.params.postId })
+    .then((post) => {
+      if (req.body.like === 1) {
+        if (!post.usersLiked.includes(req.auth.userId)) {
+          post.usersLiked.push(req.auth.userId);
           if (post.usersDisliked.includes(req.auth.userId)) {
-            return res.status(200).json({
-              usersLikes: post.usersLiked,
-              usersDislikes: post.usersDisliked,
-            });
-          } else {
-            return res.status(200).json({
-              usersLikes: post.usersLiked,
-              usersDislikes: post.usersDisliked,
-            });
+            post.usersDisliked.splice(
+              post.usersDisliked.indexOf(req.auth.userId),
+              1
+            );
           }
-        })
-        .catch((error) => res.status(400).json({ error }));
-    }
-  }).catch((err)=>{
-    res.status(500).json(err)
-  });
+        } else {
+          post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
+        }
+
+        Post.updateOne({ _id: req.params.postId }, post, { timestamps: false })
+          .then(() => {
+            return res.status(200).json({
+              usersLikes: post.usersLiked,
+              usersDislikes: post.usersDisliked,
+            });
+          })
+          .catch((error) => res.status(400).json({ error }));
+      }
+
+      if (req.body.like === -1) {
+        if (!post.usersDisliked.includes(req.auth.userId)) {
+          post.usersDisliked.push(req.auth.userId);
+          if (post.usersLiked.includes(req.auth.userId)) {
+            post.usersLiked.splice(post.usersLiked.indexOf(req.auth.userId), 1);
+          }
+        } else {
+          post.usersDisliked.splice(
+            post.usersDisliked.indexOf(req.auth.userId),
+            1
+          );
+        }
+        Post.updateOne({ _id: req.params.postId }, post, { timestamps: false })
+          .then(() => {
+            return res.status(200).json({
+              usersLikes: post.usersLiked,
+              usersDislikes: post.usersDisliked,
+            });
+          })
+          .catch((error) => res.status(400).json({ error }));
+      }
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
 };
 
 exports.commentPost = (req, res, next) => {
@@ -221,7 +213,7 @@ exports.commentPost = (req, res, next) => {
           else if (err) return res.status(500).json(err);
         }
       );
-    } else res.status(401).json(err)
+    } else res.status(401).json(err);
   });
 };
 

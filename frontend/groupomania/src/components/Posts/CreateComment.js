@@ -67,7 +67,7 @@ const CreateComment = (props) => {
                 id="comment"
                 placeholder="Commenter..."
                 minLength={10}
-                maxLength={20}
+                maxLength={500}
                 minRows={1}
                 maxRows={20}
                 autoFocus

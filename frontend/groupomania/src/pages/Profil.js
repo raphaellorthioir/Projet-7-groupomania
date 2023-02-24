@@ -49,7 +49,6 @@ const Profil = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         setProfilImage(res.data.profilPicture);
       })
       .catch((err) => {
@@ -119,9 +118,7 @@ const Profil = () => {
                 <div style={{ padding: '10px' }}>
                   <div className="flex cl space-around ">
                     <div className="flex row sb ai-center relative">
-                      <div
-                        className="flex row space-around ai-center"
-                      >
+                      <div className="flex row space-around ai-center">
                         <img
                           className="profilPicture"
                           src={profilImage}
@@ -182,7 +179,7 @@ const Profil = () => {
                     <time>Inscrit depuis le {createDate}</time>
                   </div>
                   <h2>Biographie</h2>
-                  <p style={{ whiteSpace: 'pre' }}>{userProfil.bio}</p>
+                  <p style={{ whiteSpace: 'pre-wrap' }}>{userProfil.bio}</p>
                 </div>
               </>
             )}

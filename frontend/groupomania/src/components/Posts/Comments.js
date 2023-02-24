@@ -56,7 +56,7 @@ const Comments = (props) => {
               <img
                 className="profilPicture"
                 src={oneUser?.profilPicture}
-                alt=""
+                alt={oneUser?.pseudo}
               />
             )}
 

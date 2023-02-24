@@ -5,9 +5,9 @@ const postSchema = mongoose.Schema(
   {
     userId: { type: String, required: true },
     profilPicture: { type: String },
-    title: { type: String, required: true, maxlength: 50 },
+    title: { type: String, required: true, maxlength: 100 },
     pseudo: { type: String },
-    text: { type: String, maxlength: 250 },
+    text: { type: String, maxlength: 1000 },
     date: { type: Date },
     imageUrl: { type: String },
     video: { type: String },

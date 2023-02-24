@@ -134,9 +134,9 @@ const UpdateProfil = (props) => {
               <TextareaAutosize
                 name="bio"
                 id="bio"
-                placeholder="Présentez vous ( 250 caractères maximum )"
-                minLength={10}
-                maxLength={250}
+                placeholder="Présentez vous ( 1000 caractères maximum )"
+                minLength={1}
+                maxLength={1000}
                 minRows={10}
                 maxRows={20}
                 autoFocus

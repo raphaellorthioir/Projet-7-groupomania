@@ -113,7 +113,7 @@ const CreatePost = (post) => {
           name="Titre"
           id="Titre"
           placeholder="Titre"
-          maxLength={45}
+          maxLength={100}
           ref={title}
           autoFocus
           required

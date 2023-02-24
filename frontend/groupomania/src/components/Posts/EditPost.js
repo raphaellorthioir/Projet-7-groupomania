@@ -41,8 +41,9 @@ const EditPost = (props) => {
           props.stopEdit();
         })
         .catch((err) => {
-          if (err.response.status === 400)
-            setError('Votre post ne doit pas dépasser les 250 caractères');
+          console.log(err);
+          if (err.response.status === 500)
+            setError('Votre post ne doit pas dépasser les 1000 caractères');
           if (err.response.status === 401) {
             navigate('/error-auth-page');
           } else navigate('/error-page');
