@@ -78,7 +78,7 @@ const Home = () => {
     window.location.reload();
     window.scroll(0, 5);
   };
-  console.log('um');
+  
   const updatePosts = () => {
     fetchPosts();
     setIsOpen(false);
