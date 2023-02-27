@@ -2,6 +2,7 @@
 
 Création d'une app de réseau de discussion d'entreprise visant à consolider l'esprit d'équipe et améliorer les échanges professionnels et sociaux entre les différents départements.
 
+
 ## Installation
 
 1. Clonez le projet dans un dossier 
@@ -34,7 +35,7 @@ Ouvrez votre terminal en précisant le chemin vers le dossier /backend lancez le
 ```bash
 npm start
 ```
-Faîtes de même vers le chemin /frontend/groupomania.
+Faîtes de même vers le dossier /frontend/groupomania.
 
 ```bash
 npm start

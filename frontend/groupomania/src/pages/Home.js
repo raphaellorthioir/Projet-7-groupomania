@@ -15,6 +15,7 @@ const Home = () => {
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [spinner, setSpinner] = useState(false);
+
   ReactModal.setAppElement('#root');
   const windowSize = useRef([window.innerWidth]);
 
@@ -28,8 +29,8 @@ const Home = () => {
         setNumberOfPosts(numberOfPosts + 5);
         setPosts(data);
       })
-      .catch(() => {
-        navigate('/error-page');
+      .catch((err) => {
+        if (err.status === 500) navigate('/error-page');
       });
   };
 
@@ -78,7 +79,7 @@ const Home = () => {
     window.location.reload();
     window.scroll(0, 5);
   };
-  
+
   const updatePosts = () => {
     fetchPosts();
     setIsOpen(false);
