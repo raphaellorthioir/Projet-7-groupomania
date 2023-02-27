@@ -99,7 +99,8 @@ const Post = (props) => {
         }
       })
       .catch((err) => {
-        navigate('/logout');
+        if (err.response.status === 401) navigate('/error-auth-page');
+        navigate('/error-page');
       });
   };
 
@@ -113,7 +114,9 @@ const Post = (props) => {
   };
   const updatePost = (data) => {
     const newUpdateDate = formatUpdateDate(data.updatedAt);
+    console.log(date);
     setDate(newUpdateDate);
+    console.log(date);
     setPost(data);
     setIsEditing(false);
     setDisplayValidationMessage(true);
@@ -124,11 +127,11 @@ const Post = (props) => {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         props.updatePosts();
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         //navigate('/logout');
       });
   };
@@ -202,7 +205,7 @@ const Post = (props) => {
                       ></i>
                     </div>
 
-                    <ul
+                    <menu
                       onMouseLeave={handleMouseLeave}
                       className="list-box"
                       ref={ul}
@@ -218,7 +221,7 @@ const Post = (props) => {
                           <li onClick={openModal}>Supprimer</li>
                         </>
                       )}
-                    </ul>
+                    </menu>
                   </div>
                   <ReactModal
                     isOpen={isOpen}

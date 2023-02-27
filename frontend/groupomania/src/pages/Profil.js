@@ -155,7 +155,7 @@ const Profil = () => {
                               className="fa-solid fa-gear"
                             ></i>
                             <div ref={list} className="list-box">
-                              <ul onMouseLeave={hideList}>
+                              <menu onMouseLeave={hideList}>
                                 {user?.userId === userProfil._id && (
                                   <li
                                     className="set-profil"
@@ -170,7 +170,7 @@ const Profil = () => {
                                     Supprimer mon compte
                                   </li>
                                 )}
-                              </ul>
+                              </menu>
                             </div>
                           </div>
                         </div>

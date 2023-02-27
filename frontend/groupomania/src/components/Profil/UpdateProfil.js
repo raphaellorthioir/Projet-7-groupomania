@@ -93,7 +93,6 @@ const UpdateProfil = (props) => {
           setSuccess(true);
         })
         .catch((err) => {
-          console.log(err);
           if (err.response.status === 400) {
             setPasswordErrors(
               'Votre mot de passe ne respecte pas les conditions ci dessus'
