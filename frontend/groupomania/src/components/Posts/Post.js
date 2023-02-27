@@ -160,7 +160,7 @@ const Post = (props) => {
           updatePost={updatePost}
         />
       ) : (
-        <article>
+        <article className='post-article'>
           <div
             className="post"
             style={

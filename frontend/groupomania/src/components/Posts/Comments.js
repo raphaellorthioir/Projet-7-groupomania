@@ -48,7 +48,7 @@ const Comments = (props) => {
   return (
     // essai import create comments
 
-    <div>
+    <article>
       <div className="flex cl space-around comments-container">
         <div className="flex row sb ac-center ai-center">
           <NavLink className=" flex row ai-center ac-center pseudo-container">
@@ -72,7 +72,7 @@ const Comments = (props) => {
         <div className="date">{formatedDate}</div>
         <p className="text">{comment.text}</p>
       </div>
-    </div>
+    </article>
   );
 };
 
