@@ -21,12 +21,10 @@ const Likes = (props) => {
         }
       )
       .then((res) => {
-        console.log(res)
         setLike(res.data.usersLikes);
         setDisLike(res.data.usersDislikes);
       })
       .catch((err) => {
-        console.log(err)
         if (err.response.status === 401) {
           navigate('/error-auth-page');
         }

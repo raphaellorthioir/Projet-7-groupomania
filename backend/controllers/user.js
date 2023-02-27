@@ -190,7 +190,6 @@ exports.updateUser = (req, res, next) => {
             runValidators: true,
           },
           (err, docs) => {
-            console.log(docs);
             if (!err) {
               Post.updateMany(
                 { userId: docs._id },

@@ -20,11 +20,10 @@ const SignInForm = (props) => {
         password: focusedPsw,
       },
     })
-      .then((res) => {
+      .then(() => {
         props.logging();
       })
       .catch((err) => {
-        console.log(err);
         setEmailError(err.response.data.emailError);
         setPasswordError(err.response.data.passwordError);
       });

@@ -21,7 +21,6 @@ const App = () => {
         setIsLogged(true);
       })
       .catch((err) => {
-        console.log(err);
         setUserData(null);
       });
   };

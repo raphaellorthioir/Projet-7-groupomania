@@ -10,10 +10,9 @@ import ReactModal from 'react-modal';
 
 const Post = (props) => {
   const navigate = useNavigate();
-  // CONTEXT \\
+
   const user = useContext(UserContext);
 
-  // DATE \\
   const createdAt = props.post.createdAt;
   const updatedAt = props.post.updatedAt;
 
@@ -76,7 +75,6 @@ const Post = (props) => {
       setCommentsData(newCommentsArr);
     }
   };
-
   const deleteComment = async (commentId) => {
     await axios
       .put(
@@ -114,9 +112,7 @@ const Post = (props) => {
   };
   const updatePost = (data) => {
     const newUpdateDate = formatUpdateDate(data.updatedAt);
-    console.log(date);
     setDate(newUpdateDate);
-    console.log(date);
     setPost(data);
     setIsEditing(false);
     setDisplayValidationMessage(true);
@@ -126,13 +122,12 @@ const Post = (props) => {
       .delete(`${process.env.REACT_APP_API_URL}api/post/${props.post._id}`, {
         withCredentials: true,
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         props.updatePosts();
       })
       .catch((err) => {
-        console.log(err);
-        //navigate('/logout');
+        if (err.response.status === 401) navigate('/error-auth-page');
+        navigate('/error-page');
       });
   };
 

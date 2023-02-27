@@ -41,7 +41,6 @@ const EditPost = (props) => {
           props.stopEdit();
         })
         .catch((err) => {
-          console.log(err);
           if (err.response.status === 500)
             setError('Votre post ne doit pas dépasser les 1000 caractères');
           if (err.response.status === 401) {

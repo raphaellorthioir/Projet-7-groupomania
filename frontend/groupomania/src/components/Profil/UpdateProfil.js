@@ -57,7 +57,6 @@ const UpdateProfil = (props) => {
         props.setProfil(res.data);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response) {
           if (err.response.status === 401) {
             navigate('/error-auth-page');
