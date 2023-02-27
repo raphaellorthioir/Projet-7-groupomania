@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 const CreatePost = (post) => {
   const user = useContext(UserContext);
-  console.log(post);
   const navigate = useNavigate();
   const form = useRef();
   const title = useRef();
@@ -15,7 +14,6 @@ const CreatePost = (post) => {
   const [file, setFile] = useState();
   const [error, setError] = useState();
   const windowSize = useRef([window.innerWidth]);
-  // When is Editing
 
   const handleNewPost = (e) => {
     e.preventDefault();
@@ -138,7 +136,7 @@ const CreatePost = (post) => {
               <i className="fa-solid fa-xmark" onClick={removeImage}></i>
             </div>
 
-            <img src={file} alt="" />
+            <img src={file} alt={image.current.files[0].name} />
           </div>
         )}
 

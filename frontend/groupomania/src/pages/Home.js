@@ -139,7 +139,7 @@ const Home = () => {
                     <img
                       className="profilPicture"
                       src={getUser?.profilPicture}
-                      alt=""
+                      alt={getUser?.pseudo}
                     />
                     <div className="createSwitch" onClick={switchCreatePost}>
                       Quoi de neuf, {getUser?.pseudo} ?

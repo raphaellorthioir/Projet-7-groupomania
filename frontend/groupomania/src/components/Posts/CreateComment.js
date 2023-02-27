@@ -52,7 +52,7 @@ const CreateComment = (props) => {
             <img
               className="profilPicture"
               src={userProps.profilPicture}
-              alt="Profil"
+              alt={userProps.pseudo}
             />
             <div className="pseudo">{userProps.pseudo}</div>
           </div>

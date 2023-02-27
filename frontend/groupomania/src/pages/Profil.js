@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../components/AppContext';
 import UpdateProfil from '../components/Profil/UpdateProfil';
@@ -122,7 +122,7 @@ const Profil = () => {
                         <img
                           className="profilPicture"
                           src={profilImage}
-                          alt={` Profil de `}
+                          alt={` Profil de ${userProfil.pseudo} `}
                           style={{ width: '70px', height: '70px' }}
                         />
                         <h1> {userProfil.pseudo} </h1>
@@ -139,7 +139,7 @@ const Profil = () => {
                               id="file"
                               type="file"
                               className="profil-picture-btn"
-                              accept="image/.jpg imgae/.jpeg image/.png"
+                              accept="image/.jpg image/.jpeg image/.png"
                             ></input>
                           </>
                         )}
@@ -208,7 +208,7 @@ const Profil = () => {
           </ReactModal>
         </main>
       ) : (
-        <div></div>
+        <Navigate to="/signing" />
       )}
     </>
   );
