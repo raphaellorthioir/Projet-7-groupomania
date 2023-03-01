@@ -53,7 +53,7 @@ exports.updatePost = (req, res, next) => {
     : { ...req.body, imageUrl: req.body.imageUrl };
 
   Post.findById(req.params.postId, (err, post) => {
-    if (post.userId === req.auth.userId) {
+    if (post.userId === req.auth.userId || req.auth.isAdmin) {
       if (req.file && post.imageUrl) {
         const pathImg = post.imageUrl.substring(44);
         fs.unlink(`./uploads/client/images/${pathImg}`, (err) => {

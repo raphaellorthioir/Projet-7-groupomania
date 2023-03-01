@@ -160,7 +160,7 @@ const Post = (props) => {
           updatePost={updatePost}
         />
       ) : (
-        <article className='post-article'>
+        <article className="post-article">
           <div
             className="post"
             style={
@@ -205,14 +205,9 @@ const Post = (props) => {
                       className="list-box"
                       ref={ul}
                     >
-                      {user.userId === post.userId && (
+                      {(user.userId === post.userId || user.isAdmin) && (
                         <>
                           <li onClick={editPost}>Modifier</li>
-                          <li onClick={openModal}>Supprimer</li>
-                        </>
-                      )}
-                      {user.isAdmin && user.userId !== post.userId && (
-                        <>
                           <li onClick={openModal}>Supprimer</li>
                         </>
                       )}

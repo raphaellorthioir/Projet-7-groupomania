@@ -11,6 +11,7 @@ const SignInForm = (props) => {
     e.preventDefault();
     const focusedEmail = email.current.value;
     const focusedPsw = password.current.value;
+    if (emailError) setEmailError('');
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}api/auth/login`,
@@ -57,7 +58,7 @@ const SignInForm = (props) => {
           </div>
 
           {emailError && <div className="error">{emailError}</div>}
-          <br />
+
           <div>
             <label htmlFor="password">Mot de passe</label>
             <br />
@@ -70,7 +71,7 @@ const SignInForm = (props) => {
                 placeholder="Mot de passe"
               />
               <div onClick={showPassword} className="view">
-                <i class="fa-solid fa-eye"></i>
+                <i className="fa-solid fa-eye"></i>
               </div>
             </div>
           </div>
