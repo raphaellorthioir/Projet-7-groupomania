@@ -17,6 +17,8 @@ const Profil = () => {
   const image = useRef();
   const list = useRef();
   const param = searchParams.get('user');
+  
+
   useEffect(() => {
     const fetch = async () => {
       await axios
@@ -37,7 +39,7 @@ const Profil = () => {
         });
     };
     fetch();
-  }, []);
+  }, [param]);
 
   const fetchProfilImage = () => {
     const data = new FormData();

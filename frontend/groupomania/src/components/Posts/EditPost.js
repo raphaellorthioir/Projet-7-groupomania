@@ -1,8 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../AppContext';
+
 const EditPost = (props) => {
+  const user = useContext(UserContext);
   const postToEdit = props.postToEdit;
+  console.log(props)
 
   const stopEdit = () => {
     props.stopEdit();
@@ -19,7 +23,9 @@ const EditPost = (props) => {
     setError(null);
     if (files || updatedText.current.innerText) {
       const data = new FormData();
-      data.append('profilPicture', props.getUser.profilPicture);
+     /* if (!user.isAdmin) {
+        data.append('profilPicture', props.getUser.profilPicture);
+      }*/
       data.append('title', updatedTitle.current.value);
       if (updatedImage.current.files[0]) {
         data.append('image', updatedImage.current.files[0]);
@@ -27,7 +33,7 @@ const EditPost = (props) => {
         data.append('imageUrl', '');
       }
       data.append('text', updatedText.current.innerText);
-      data.append('pseudo', props.getUser.pseudo);
+      //data.append('pseudo', props.postToEdit.pseudo);
       axios
         .put(
           `${process.env.REACT_APP_API_URL}api/post/${postToEdit._id}`,
@@ -37,6 +43,7 @@ const EditPost = (props) => {
           }
         )
         .then((res) => {
+          console.log(res)
           props.updatePost(res.data);
           props.stopEdit();
         })
@@ -68,8 +75,8 @@ const EditPost = (props) => {
         <div className="flex row ai-center">
           <img
             className="profilPicture"
-            src={props.getUser.profilPicture}
-            alt={props.getUser.pseudo}
+            src={props.postToEdit.profilPicture}
+            alt={props.postToEdit.pseudo}
           />
           <div className="pseudo">{props.getUser.pseudo}</div>
         </div>

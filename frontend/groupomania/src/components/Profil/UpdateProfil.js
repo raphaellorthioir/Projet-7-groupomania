@@ -9,6 +9,7 @@ const UpdateProfil = (props) => {
   const formEdit = useRef();
   const formPassword = useRef();
   const [pseudoErrors, setPseudoErrors] = useState();
+  const[pseudoSuccess,setPseudoSuccess]=useState()
   const [emailErrors, setEmailErrors] = useState();
   const [passwordErrors, setPasswordErrors] = useState();
   const [success, setSuccess] = useState({
@@ -138,8 +139,9 @@ const UpdateProfil = (props) => {
                 minRows={10}
                 maxRows={20}
                 autoFocus
+                defaultValue={props.bio}
               >
-                {props.bio}
+                
               </TextareaAutosize>
             </div>
           </div>
