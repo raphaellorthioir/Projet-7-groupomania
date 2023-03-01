@@ -10,6 +10,7 @@ const SignUpForm = (props) => {
 
   const [errorPswMatch, setErrorPswMatch] = useState(null);
   const [errorsPsw, setErrorsPsw] = useState();
+  const [errorMessageEmail, setErrorMessageEmail] = useState();
   const [errorEmail, setErrorEmail] = useState(null);
   const [errorPseudo, setErrorPseudo] = useState();
 
@@ -22,6 +23,7 @@ const SignUpForm = (props) => {
     if (errorPseudo) setErrorPseudo(null);
     if (errorPswMatch) setErrorPswMatch(null);
     if (errorEmail) setErrorEmail(null);
+    if (errorMessageEmail) setErrorMessageEmail(null);
 
     const focusedPseudo = pseudo.current.value;
     const focusedEmail = email.current.value;
@@ -46,6 +48,14 @@ const SignUpForm = (props) => {
           navigate('/', { replace: true });
         })
         .catch((err) => {
+          if (err.response.status === 400 && err.response.data.emailError) {
+            setErrorMessageEmail([err.response.data.emailError]);
+            setErrorEmail([
+              err.response.data.exempleEmail.exemple1,
+              err.response.data.exempleEmail.exemple2,
+            ]);
+            console.log(errorEmail);
+          }
           if (err.response.data.passwordErrorList) {
             setErrorsPsw(err.response.data.passwordErrorList);
           }
@@ -96,7 +106,24 @@ const SignUpForm = (props) => {
               placeholder="email"
             />
           </div>
-          {errorEmail && <div className=" error error-text"> {errorEmail}</div>}
+          <>
+            {errorEmail && !errorMessageEmail && (
+              <div className=" error error-text"> {errorEmail}</div>
+            )}
+            {errorMessageEmail && (
+              <div style={{ textAlign: 'justify', marginTop: '10px' }}>
+                <div className="error error-text">{errorMessageEmail}</div>
+                <br />
+                <div className=" error error-text">
+                  exemple 1 : {errorEmail[0]}
+                </div>
+                <div className=" error error-text">
+                  exemple 2 : {errorEmail[1]}
+                </div>
+              </div>
+            )}
+          </>
+
           <br />
           <div>
             <label htmlFor="password">Mot de passe</label>
@@ -135,9 +162,12 @@ const SignUpForm = (props) => {
           </div>
 
           {errorPswMatch && (
-            <div className="error error-text">
-              Les mot de passe ne correspondent pas
-            </div>
+            <>
+              <br />
+              <div className="error error-text">
+                Les mots de passe ne se correspondent pas.
+              </div>
+            </>
           )}
           <br />
           <br />

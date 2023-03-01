@@ -5,10 +5,10 @@ module.exports = (req, res, next) => {
     if (validator.validate(req.body.email)) {
     } else {
       return res.status(400).json({
-        emailError: 'Email non valide,veuillez respecter le format suivant',
-        exampleEmail: {
+        emailError: 'Email non valide, veuillez respecter le format suivant :',
+        exempleEmail: {
           exemple1: 'henry-dupont@gmail.com',
-          example2: 'henry.dupont@yahoo.fr',
+          exemple2: 'henry.dupont@yahoo.fr',
         },
       });
     }

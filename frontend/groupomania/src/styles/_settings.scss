@@ -146,13 +146,14 @@ li{
   }
 }
 .create-post-modal{
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
   background-color: rgb(245, 244, 244);
   width: 80%;
   height: fit-content;
+  max-height: 90%;
   margin: auto;
   border: 1px solid black;
   border-radius: 25px;
@@ -186,7 +187,8 @@ li{
         margin-bottom: 20px;
       }
       .textEditable{
-        min-height: 300px;
+        min-height: 10px;
+        max-height: auto;
         font-family: $font-2;
       }
     }
