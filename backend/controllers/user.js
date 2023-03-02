@@ -99,7 +99,7 @@ exports.userProfil = (req, res, next) => {
       res.clearCookie('jwt');
       res.status(404).json(err);
     }
-  }).select('  -password -email -isAdmin');
+  }).select('  -password  -isAdmin');
 };
 
 exports.updateUser = (req, res, next) => {
@@ -215,7 +215,7 @@ exports.updateUser = (req, res, next) => {
             }
             if (err) return res.status(500).send(err);
           }
-        ).select('-password -email  -isAdmin  -updatedAt -__v ');
+        ).select('-password   -isAdmin  -updatedAt -__v ');
       }
     });
   } else {
@@ -228,7 +228,7 @@ exports.updatePassword = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send('ID unknown :' + req.params.id);
 
-  if (req.params.id === req.auth.userId) {
+  if (req.params.id === req.auth.userId || req.auth.isAdmin) {
     User.findById(req.params.id, (err, user) => {
       bcrypt.hash(req.body.password, 10).then((hash) => {
         User.findOneAndUpdate(
@@ -247,8 +247,8 @@ exports.updatePassword = (req, res, next) => {
           },
 
           (err, docs) => {
-            if (!err) return res.send(' Password changed');
-            if (err) return res.status(500).send('User not found');
+            if (!err) return res.status(200).json(' Password changed');
+            if (err) return res.status(500).json('User not found');
           }
         );
       });

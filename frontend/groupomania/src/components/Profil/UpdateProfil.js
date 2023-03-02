@@ -9,14 +9,14 @@ const UpdateProfil = (props) => {
   const formEdit = useRef();
   const formPassword = useRef();
   const [pseudoErrors, setPseudoErrors] = useState();
-  const[pseudoSuccess,setPseudoSuccess]=useState()
+  const [errorMessageEmail, setErrorMessageEmail] = useState();
   const [emailErrors, setEmailErrors] = useState();
   const [passwordErrors, setPasswordErrors] = useState();
   const [success, setSuccess] = useState({
-    profil: '',
+    pseudo: '',
+    email: '',
     password: '',
   });
-
   const navigate = useNavigate();
   const showPassword = () => {
     let result = formPassword.current.elements.password.type;
@@ -32,13 +32,22 @@ const UpdateProfil = (props) => {
     let bio;
     let pseudo;
     let email;
-    if (formEdit.current[0].value) {
+    if (
+      formEdit.current[0].value !== formEdit.current[0].innerHTML &&
+      formEdit.current[0].value
+    ) {
       bio = formEdit.current[0].value;
     }
-    if (formEdit.current[1].value) {
+    if (
+      formEdit.current[1].value !== formEdit.current[1].defaultValue &&
+      formEdit.current[1].value
+    ) {
       pseudo = formEdit.current[1].value;
     }
-    if (formEdit.current[2].value) {
+    if (
+      formEdit.current[2].value !== formEdit.current[2].defaultValue &&
+      formEdit.current[2].value
+    ) {
       email = formEdit.current[2].value;
     }
     await axios
@@ -52,10 +61,41 @@ const UpdateProfil = (props) => {
         { withCredentials: true }
       )
       .then((res) => {
-        setSuccess({
-          profil: 'Profil modifié',
-        });
+        console.log(res);
+        if (bio || pseudo || email) {
+          if (bio && pseudo && email) {
+            setSuccess({
+              bio: 'Votre biographie à été modifiée',
+              pseudo: 'Votre pseudo a bien été modifié.',
+              email: 'Votre email a bien été modfié.',
+            });
+          } else if (bio && pseudo) {
+            setSuccess({
+              bio: 'Votre biographie a été modifiée',
+              pseudo: 'Votre pseudo a bien été modifié.',
+            });
+          } else if (bio && email) {
+            setSuccess({
+              bio: 'Votre biographie a été modifiée',
+              email: 'Votre email a bien été modfié.',
+            });
+          } else if (pseudo && email) {
+            setSuccess({
+              pseudo: 'Votre pseudo a bien été modifié.',
+              email: 'Votre email a bien été modfié.',
+            });
+          } else if (bio) {
+            setSuccess({
+              bio: 'Votre biographie a été modifiée',
+            });
+          } else if (email) {
+            setSuccess({ email: 'Votre email a bien été modfié.' });
+          } else if (pseudo) {
+            setSuccess({ pseudo: 'Votre pseudo a bien été modifié.' });
+          }
+        }
         props.setProfil(res.data);
+        formEdit.current.reset();
       })
       .catch((err) => {
         if (err.response) {
@@ -63,13 +103,20 @@ const UpdateProfil = (props) => {
             navigate('/error-auth-page');
           }
           if (err.response.status === 500 && err.response.data.errors.pseudo) {
-            setPseudoErrors('Ce pseudo est déjà pris');
+            setPseudoErrors('Ce pseudonyme est déjà pris.');
           }
           if (
             err.response.status === 500 &&
             err.response.data.errors.email.kind
           ) {
             setEmailErrors('Cet email est lié à un compte existant.');
+          }
+          if (err.response.status === 400 && err.response.data.emailError) {
+            setErrorMessageEmail([err.response.data.emailError]);
+            setEmailErrors([
+              err.response.data.exempleEmail.exemple1,
+              err.response.data.exempleEmail.exemple2,
+            ]);
           }
         }
       });
@@ -90,7 +137,7 @@ const UpdateProfil = (props) => {
           { withCredentials: true }
         )
         .then((res) => {
-          setSuccess(true);
+          setSuccess({ password: 'Votre mot de passe a bien été modifié.' });
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -100,6 +147,9 @@ const UpdateProfil = (props) => {
           }
           if (err.response.status === 401) {
             navigate('/error-auth-page');
+          }
+          if (err.response.status === 500) {
+            navigate('/error-page');
           }
         });
     } else setPasswordErrors('Les mots de passe ne correspondent pas');
@@ -114,6 +164,12 @@ const UpdateProfil = (props) => {
     }
     if (passwordErrors) {
       setPasswordErrors(null);
+    }
+    if (success) {
+      setSuccess(null);
+    }
+    if (errorMessageEmail) {
+      setErrorMessageEmail(null);
     }
   };
   return (
@@ -139,11 +195,11 @@ const UpdateProfil = (props) => {
                 minRows={10}
                 maxRows={20}
                 autoFocus
-                defaultValue={props.bio}
-              >
-                
-              </TextareaAutosize>
+                defaultValue={props.user.bio}
+                spellcheck="false"
+              ></TextareaAutosize>
             </div>
+            {success && <p className="success">{success.bio}</p>}
           </div>
           <span className="separate-line"></span>
           <label htmlFor="pseudo">
@@ -157,8 +213,10 @@ const UpdateProfil = (props) => {
             id="pseudo"
             maxLength={20}
             placeholder="Nouveau Pseudo"
+            defaultValue={props.user.pseudo}
             onChange={clear}
           />
+          {success && <p className="success">{success.pseudo}</p>}
           {pseudoErrors && <p className="error"> {pseudoErrors}</p>}
           <span className="separate-line"></span>
           <div>
@@ -169,17 +227,30 @@ const UpdateProfil = (props) => {
             <br />
             <br />
             <input
-              defaultValue={''}
+              defaultValue={props.user.email}
               type="email"
               name="email"
               id="email"
               placeholder="Email"
               onChange={clear}
             />
-            {emailErrors && (
+            {success && <p className="success">{success.email}</p>}
+            {emailErrors && !errorMessageEmail && (
               <p style={{ marginLeft: '10px' }} className="error">
                 {emailErrors}
               </p>
+            )}
+            {errorMessageEmail && (
+              <div style={{ textAlign: 'justify', marginTop: '10px' }}>
+                <div className="error error-text">{errorMessageEmail}</div>
+                <br />
+                <div className=" error error-text">
+                  exemple 1 : {emailErrors[0]}
+                </div>
+                <div className=" error error-text">
+                  exemple 2 : {emailErrors[1]}
+                </div>
+              </div>
             )}
           </div>
           <br />
@@ -227,6 +298,7 @@ const UpdateProfil = (props) => {
                 name="password"
                 id="password"
                 placeholder="Mot de passe"
+                autoComplete="on"
                 onChange={clear}
               />
               <div onClick={showPassword} className="view">
@@ -248,7 +320,7 @@ const UpdateProfil = (props) => {
                 />
               </div>
               {passwordErrors && <p className="error">{passwordErrors}</p>}
-              {success && <p style={{ color: 'green' }}>{success.password}</p>}
+              {success && <p className="success">{success.password}</p>}
               <br />
               <div>
                 <label htmlFor="sendPassword"></label>

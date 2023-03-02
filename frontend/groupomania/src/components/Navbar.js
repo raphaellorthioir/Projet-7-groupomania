@@ -22,12 +22,19 @@ const Navbar = () => {
           <div className=" profil-container flex fe ai-center ac-center">
             <NavLink
               to={{
+                pathname: '/',
+              }}
+            >
+              <i className="fa-solid fa-house"></i>
+            </NavLink>
+            <NavLink
+              to={{
                 pathname: '/profil',
                 search: `?user=${user?.userId}`,
               }}
             >
               <i className="fa-regular fa-user"></i>
-            </NavLink> 
+            </NavLink>
             <Logout></Logout>
           </div>
         </div>

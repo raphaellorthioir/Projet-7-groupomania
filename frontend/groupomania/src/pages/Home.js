@@ -95,13 +95,7 @@ const Home = () => {
   const goToCreatePost = (e) => {
     e.preventDefault();
     setWantCreatePost(true);
-    const el = document.getElementById('createPost');
-
-    el?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-      inline: 'center',
-    });
+    window.scroll(0, 5);
   };
   const switchCreatePost = () => {
     setWantCreatePost(true);
@@ -175,8 +169,8 @@ const Home = () => {
             </button>
             <button
               id="refresh"
-              title="créer un post"
-              name="création de post"
+              title="Rafraîchir la page des posts"
+              name="Rafraîchir la page des posts"
               type="button"
               aria-pressed="false"
               className="home-btn"
@@ -191,7 +185,7 @@ const Home = () => {
               overlayClassName="create-post-overlay"
               onRequestClose={closeModal}
               shouldCloseOnOverlayClick={false}
-              preventScroll={true}
+              preventScroll={false}
             >
               <CreatePost
                 getUser={getUser}

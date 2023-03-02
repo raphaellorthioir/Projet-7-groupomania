@@ -42,8 +42,9 @@ const CreatePost = (post) => {
           setFile(null);
         })
         .catch((err) => {
+          console.log(err)
           if (err.response.status === 400)
-            setError('Votre envoi ne doit pas dépasser les 250 caractères');
+            setError('Votre texte ne doit pas dépasser les 1000 caractères');
           if (err.response.status === 401) {
             navigate('/error-auth-page');
           }
@@ -70,9 +71,6 @@ const CreatePost = (post) => {
     image.current.value = null;
     setFile(null);
   };
-  const closeModal = () => {
-    post.closeModal();
-  };
 
   return (
     <article
@@ -88,15 +86,16 @@ const CreatePost = (post) => {
             alt={post.getUser.pseudo}
           />
           <div className="pseudo">{post.getUser.pseudo}</div>
-          {windowSize.current[0] <= 480 && (
-            <span onClick={closeModal} className="stop-create">
-              {' '}
-              <i className="fa-solid fa-xmark"></i>{' '}
-            </span>
+          {windowSize.current[0] <= 1024 ? (
+            <></>
+          ) : (
+            <div
+              onClick={() => post.unSwitchCreatePost()}
+              className="stop-create"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </div>
           )}
-        </div>
-        <div onClick={() => post.unSwitchCreatePost()} className="stop-create">
-          <i class="fa-solid fa-xmark"></i>
         </div>
       </div>
       <form
@@ -113,7 +112,7 @@ const CreatePost = (post) => {
           name="Titre"
           id="Titre"
           placeholder="Titre"
-          maxLength={100}
+          maxLength={50}
           ref={title}
           autoFocus
           required
@@ -141,6 +140,7 @@ const CreatePost = (post) => {
         )}
 
         <br />
+
         <div className=" join-img-container flex row space-around ai-center ac-center ">
           <div className="flex row ai-center ac-center">
             <label htmlFor="file">

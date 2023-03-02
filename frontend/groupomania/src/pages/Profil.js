@@ -17,7 +17,6 @@ const Profil = () => {
   const image = useRef();
   const list = useRef();
   const param = searchParams.get('user');
-  
 
   useEffect(() => {
     const fetch = async () => {
@@ -112,7 +111,7 @@ const Profil = () => {
             {isSettingProfil ? (
               <UpdateProfil
                 stopEdit={stopEdit}
-                bio={userProfil.bio}
+                user={userProfil}
                 setProfil={setProfil}
               />
             ) : (
@@ -158,19 +157,19 @@ const Profil = () => {
                             ></i>
                             <div ref={list} className="list-box">
                               <menu onMouseLeave={hideList}>
-                                {user?.userId === userProfil._id && (
-                                  <li
-                                    className="set-profil"
-                                    onClick={() => setIsSettingProfil(true)}
-                                  >
-                                    Modifier Profil
-                                  </li>
-                                )}
                                 {(user?.userId === userProfil._id ||
                                   user.isAdmin) && (
-                                  <li onClick={openModal} id="delete-profil">
-                                    Supprimer mon compte
-                                  </li>
+                                  <>
+                                    <li
+                                      className="set-profil"
+                                      onClick={() => setIsSettingProfil(true)}
+                                    >
+                                      Modifier Profil
+                                    </li>
+                                    <li onClick={openModal} id="delete-profil">
+                                      Supprimer mon compte
+                                    </li>
+                                  </>
                                 )}
                               </menu>
                             </div>
@@ -181,7 +180,14 @@ const Profil = () => {
                     <time>Inscrit depuis le {createDate}</time>
                   </div>
                   <h2>Biographie</h2>
-                  <p style={{ whiteSpace: 'pre-wrap' }}>{userProfil.bio}</p>
+                  <p
+                    style={{
+                      whiteSpace: 'pre-wrap',
+                      overflowWrap: 'break-words',
+                    }}
+                  >
+                    {userProfil.bio}
+                  </p>
                 </div>
               </>
             )}

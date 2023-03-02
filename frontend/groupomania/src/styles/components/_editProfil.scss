@@ -16,6 +16,12 @@ width: 90%;
         width: auto;
         box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
         padding: 5px;
+        background-color: white;
+        @media screen and (max-width:1024px) {
+            margin: 0;
+            padding: 2px;
+            box-shadow: none;
+        }
         h1{
             text-align: center;
         }
@@ -34,7 +40,9 @@ width: 90%;
                 outline: none;
                 border: 0;
                 box-shadow: 1px 1px 3px 1px gray;
-                padding: 20px;
+                padding: 10px;
+                font-family: $font-2;
+                color: $color-3;
                 &:hover{
                     background-color: rgba(128, 128, 128, 0.2);
                 }
