@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
       return res.status(400).json({
         emailError: 'Email non valide, veuillez respecter le format suivant :',
         exempleEmail: {
-          exemple1: 'henry-dupont@gmail.com',
+          exemple1: 'Dupont@gmail.com',
           exemple2: 'henry.dupont@yahoo.fr',
         },
       });
