@@ -33,6 +33,7 @@
           outline: none;
           margin-left: 10px;
           overflow-y: scroll;
+          white-space: pre-wrap;
           cursor: text;
           border-left: 1px solid rgba(0, 0, 0, 0.5);
           transition: background-color ease 0.1s ;

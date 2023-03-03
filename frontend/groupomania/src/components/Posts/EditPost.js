@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../AppContext';
 
 const EditPost = (props) => {
-  const user = useContext(UserContext);
   const postToEdit = props.postToEdit;
-  console.log(props)
 
   const stopEdit = () => {
     props.stopEdit();
@@ -23,9 +21,6 @@ const EditPost = (props) => {
     setError(null);
     if (files || updatedText.current.innerText) {
       const data = new FormData();
-     /* if (!user.isAdmin) {
-        data.append('profilPicture', props.getUser.profilPicture);
-      }*/
       data.append('title', updatedTitle.current.value);
       if (updatedImage.current.files[0]) {
         data.append('image', updatedImage.current.files[0]);
@@ -33,7 +28,6 @@ const EditPost = (props) => {
         data.append('imageUrl', '');
       }
       data.append('text', updatedText.current.innerText);
-      //data.append('pseudo', props.postToEdit.pseudo);
       axios
         .put(
           `${process.env.REACT_APP_API_URL}api/post/${postToEdit._id}`,
@@ -43,7 +37,7 @@ const EditPost = (props) => {
           }
         )
         .then((res) => {
-          console.log(res)
+          console.log(res);
           props.updatePost(res.data);
           props.stopEdit();
         })
@@ -78,7 +72,7 @@ const EditPost = (props) => {
             src={props.postToEdit.profilPicture}
             alt={props.postToEdit.pseudo}
           />
-          <div className="pseudo">{props.getUser.pseudo}</div>
+          <div className="pseudo">{props.postToEdit.pseudo}</div>
         </div>
 
         <div onClick={stopEdit} className="stop-edit flex row ai-center">
@@ -134,7 +128,6 @@ const EditPost = (props) => {
         <div className="flex row space-around">
           <div className=" send-box flex row space-around ai-center ">
             <div className="flex row ai-center">
-              <p>Joindre une image</p>
               <label htmlFor="EditPostFile">
                 <i className="fa-regular fa-file-image"></i>
               </label>
