@@ -20,8 +20,13 @@ $black: rgb(40, 40, 40);
 $white: rgb(253, 253, 253);
 $shadow: rgb(219, 218, 218);
 
+
+html{
+  scroll-behavior: smooth;
+}
 #root{
   height: 100vh;
+
 }
 body {
   margin:0;
@@ -230,7 +235,8 @@ li{
     transform: scale(1.1);
   }
   i{
-    font-size: 1.5em;
+    font-size: 1.5rem;
+    margin: 0.5rem;
   }
 }
 #refresh{
@@ -318,7 +324,7 @@ input::file-selector-button{
   color: white;
   font-weight: 800;
   transition: 150ms ease;
- // margin: 10px 10px;
+ 
   &:hover{
    box-shadow:1px 1px 10px 1px rgba(0, 0, 0, 0.38) ;
    transform: scale(1.01);

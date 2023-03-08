@@ -196,7 +196,7 @@ const UpdateProfil = (props) => {
                 maxRows={20}
                 autoFocus
                 defaultValue={props.user.bio}
-                spellcheck="false"
+                spellCheck="true"
               ></TextareaAutosize>
             </div>
             {success && <p className="success">{success.bio}</p>}
@@ -327,7 +327,7 @@ const UpdateProfil = (props) => {
                 <input
                   onClick={changePassword}
                   type="submit"
-                  value={'Envoyer'}
+                  value={'Modifier'}
                 ></input>
               </div>
             </div>

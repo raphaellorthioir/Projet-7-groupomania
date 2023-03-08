@@ -4,6 +4,7 @@ import Post from '../components/Posts/Post';
 import axios from 'axios';
 import CreatePost from '../components/Posts/CreatePost';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-scroll';
 import ReactModal from 'react-modal';
 const Home = () => {
   const user = useContext(UserContext);
@@ -95,7 +96,7 @@ const Home = () => {
   const goToCreatePost = (e) => {
     e.preventDefault();
     setWantCreatePost(true);
-    window.scroll(0, 5);
+    //window.scroll(0, 5);
   };
   const switchCreatePost = () => {
     setWantCreatePost(true);
@@ -154,19 +155,20 @@ const Home = () => {
                   />
                 ))}
             </section>
-            <button
-              id="scrollToCreate"
-              title="créer un post"
-              name="création de post"
-              type="button"
-              aria-pressed="false"
+            <Link
+              to="createPost"
+              activeClass="active"
+              smooth={true}
+              spy={true}
+              duration={700}
+              offset={-70}
               className="create-post-btn"
               onClick={
                 windowSize.current[0] <= 1024 ? createPostModal : goToCreatePost
               }
             >
               <i className="fa-solid fa-pencil"></i>{' '}
-            </button>
+            </Link>
             <button
               id="refresh"
               title="Rafraîchir la page des posts"
